@@ -1,0 +1,36 @@
+import { CattleGender } from '../enums/cattle-gender.enum';
+import { CattleStatus } from '../entities/cattle.entity';
+export declare class CreateCattleDto {
+    idTenant: string;
+    idDevice?: string;
+    deveui?: string;
+    sysNumber: string;
+    number: string;
+    brand?: string;
+    receivedAt: string;
+    receivedWeight: number;
+    purchaseWeight: number;
+    comments?: string;
+    purchasedFrom?: string;
+    purchasePrice: number;
+    purchaseCommission?: number;
+    negotiatedPricePerKg?: number;
+    lotPricePerWeight?: number;
+    salePrice?: number;
+    salePricePerKg?: number;
+    saleWeight?: number;
+    averageGr?: number;
+    color?: string;
+    characteristics?: string[];
+    hasHorn?: boolean;
+    castrated?: boolean;
+    eartagLeft?: string;
+    eartagRight?: string;
+    idLot?: string;
+    gender?: CattleGender;
+    status?: CattleStatus;
+    birthDateAprx?: string;
+    newFeedStartDate?: string;
+    averageDailyGain?: number;
+    lastWeight?: number;
+}

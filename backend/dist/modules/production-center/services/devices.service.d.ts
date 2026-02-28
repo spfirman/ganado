@@ -1,0 +1,37 @@
+import { DeviceRepository } from '../repositories/device.repository';
+import { CreateDeviceDto } from '../dto/create-device.dto';
+import { UpdateDeviceDto } from '../dto/update-device.dto';
+import { Device } from '../entities/device.entity';
+import { HttpService } from '@nestjs/axios';
+import { ConfigService } from '@nestjs/config';
+import { DeviceProfileRepository } from '../repositories/device-profile.repository';
+import { ChirpstackDeviceInterface, ChirpstackDeviceKeysInterface, ChirpstackDeviceKeysUpdateInterface, ChirpstackDeviceUpdateInterface } from '../interfaces/chirpstack-device.interface';
+import * as ExcelJS from 'exceljs';
+import { DeviceProfile } from '../entities/device-profile.entity';
+import { EntityManager } from 'typeorm';
+export declare class DevicesService {
+    private readonly deviceRepository;
+    private readonly deviceProfileRepository;
+    private readonly httpService;
+    private readonly configService;
+    private readonly chirpstackUrl;
+    private readonly chirpstackToken;
+    private readonly logger;
+    constructor(deviceRepository: DeviceRepository, deviceProfileRepository: DeviceProfileRepository, httpService: HttpService, configService: ConfigService);
+    create(createDeviceDto: CreateDeviceDto): Promise<Device>;
+    createDevice(createDeviceDto: CreateDeviceDto, deviceProfile: DeviceProfile, deviceChirpstack: ChirpstackDeviceInterface, deviceKeys: ChirpstackDeviceKeysInterface): Promise<Device>;
+    getDeviceFromChirpstack(deveui: string): Promise<boolean>;
+    createDeviceInChirpstack(chirpstackDevice: ChirpstackDeviceInterface, deviceKeys: ChirpstackDeviceKeysInterface): Promise<boolean>;
+    findOne(deveui: string, idTenant: string, manager?: EntityManager): Promise<Device>;
+    findById(id: string, idTenant: string, manager?: EntityManager): Promise<Device>;
+    update(deveui: string, idTenant: string, updateDeviceDto: UpdateDeviceDto, manager?: EntityManager): Promise<Device>;
+    updateWithDevice(device: Device, updateDeviceDto: UpdateDeviceDto, manager?: EntityManager): Promise<Device>;
+    updateDeviceInChirpstack(deveui: string, updateDeviceDto: UpdateDeviceDto, device: Device): Promise<boolean>;
+    callUpdateDeviceInChirpstack(deveui: string, deviceChirpstack: ChirpstackDeviceUpdateInterface, deviceKeys: ChirpstackDeviceKeysUpdateInterface): Promise<boolean>;
+    remove(id: string, idTenant: string): Promise<void>;
+    existChirpstackApplicationId(idApplication: string): Promise<boolean>;
+    findAll(idTenant: string): Promise<Device[]>;
+    importDevicesFromExcel(file: Express.Multer.File, idTenant: string, deviceProfileId: string): Promise<any[]>;
+    processSheet(worksheet: ExcelJS.Worksheet, idTenant: string, deviceProfile: DeviceProfile | null): Promise<any>;
+    processExcelRow(rowValues: any[], rowNumber: number, idTenant: string, deviceProfile: DeviceProfile): Promise<Device>;
+}

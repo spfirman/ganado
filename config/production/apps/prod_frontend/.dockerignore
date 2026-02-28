@@ -1,0 +1,48 @@
+# Build outputs
+# Build outputs
+build/
+
+.dart_tool/
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Environment files (will be provided via docker-compose)
+.env
+.env.*
+
+# Documentation
+README.md
+*.md
+
+# Testing
+test/
+coverage/
+
+# Metadata
+.metadata
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Platform specific
+android/
+ios/
+linux/
+macos/
+windows/
+
+# Logs
+*.log
+
+# Docker files
+Dockerfile*
+docker-compose*.yml
+docker-compose*.yaml

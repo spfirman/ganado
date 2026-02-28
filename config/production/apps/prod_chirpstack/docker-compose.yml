@@ -1,0 +1,96 @@
+services:
+  chirpstack:
+    container_name: ${ENVIRONMENT}_nsc_chirpstack
+    image: chirpstack/chirpstack:4.14.0
+    command: -c /etc/chirpstack
+    restart: unless-stopped
+    ports:
+      - "${CHIRPSTACK_PORT}:8080"
+    volumes:
+      - ./configuration/chirpstack:/etc/chirpstack
+      - ${BASE_PATH}/${ENVIRONMENT}-srv/docker-data/chirpstack:/var/lib/chirpstack
+    environment:
+      MQTT_BROKER_HOST: mosquitto
+      REDIS_HOST: redis
+      POSTGRESQL_HOST: ${ENVIRONMENT}_nsc_postgres
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    depends_on:
+      - postgres
+      - mosquitto
+      - redis
+
+  chirpstack-rest-api:
+    container_name: ${ENVIRONMENT}_nsc_chirpstack_rest_api
+    image: chirpstack/chirpstack-rest-api:4.13.0
+    restart: unless-stopped
+    command: --server chirpstack:8080 --bind 0.0.0.0:8090 --insecure
+    ports:
+      - "${CS_REST_API_PORT}:8090"
+    depends_on:
+      - chirpstack
+
+  chirpstack-gateway-bridge:
+    container_name: ${ENVIRONMENT}_nsc_chirpstack_gateway_bridge
+    image: chirpstack/chirpstack-gateway-bridge:4.0.11
+    restart: unless-stopped
+    ports:
+      - "${CS_G_BRIDGE_PORT}:1700/udp"
+    volumes:
+      - ./configuration/chirpstack-gateway-bridge:/etc/chirpstack-gateway-bridge
+    environment:
+      - INTEGRATION__MQTT__EVENT_TOPIC_TEMPLATE=au915_0/gateway/{{ .GatewayID }}/event/{{ .EventType }}
+      - INTEGRATION__MQTT__STATE_TOPIC_TEMPLATE=au915_0/gateway/{{ .GatewayID }}/state/{{ .StateType }}
+      - INTEGRATION__MQTT__COMMAND_TOPIC_TEMPLATE=au915_0/gateway/{{ .GatewayID }}/command/#
+    depends_on:
+      - mosquitto
+
+  chirpstack-gateway-bridge-basicstation:
+    container_name: ${ENVIRONMENT}_nsc_chirpstack_gateway_bridge_basicstation
+    image: chirpstack/chirpstack-gateway-bridge:4.0.11
+    restart: unless-stopped
+    command: -c /etc/chirpstack-gateway-bridge/chirpstack-gateway-bridge-basicstation-au915_0.toml
+    ports:
+      - "${CS_G_B_BASIC_PORT}:3001"
+    volumes:
+      - ./configuration/chirpstack-gateway-bridge:/etc/chirpstack-gateway-bridge
+    depends_on:
+      - mosquitto
+
+  postgres:
+    container_name: ${ENVIRONMENT}_nsc_postgres
+    image: postgres:14-alpine
+    restart: unless-stopped
+    ports:
+      - "${CS_DB_PORT}:5432"
+    volumes:
+      - ./configuration/postgresql/initdb:/docker-entrypoint-initdb.d
+      - ${BASE_PATH}/${ENVIRONMENT}-srv/docker-data/chirpstack-db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 300s
+      timeout: 30s
+      retries: 3
+
+  redis:
+    container_name: ${ENVIRONMENT}_nsc_redis
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: redis-server --save 300 1 --save 60 100 --appendonly no
+    volumes:
+      - ${BASE_PATH}/${ENVIRONMENT}-srv/docker-data/chirpstack-redis:/data
+
+  mosquitto:
+    container_name: ${ENVIRONMENT}_nsc_mosquitto
+    image: eclipse-mosquitto:2.0.22
+    restart: unless-stopped
+    ports:
+      - "${CS_MOSQUITTO_MQTT_PORT}:1883"
+    volumes:
+      - ./configuration/mosquitto/config/:/mosquitto/config/
+      - ./mosquitto/certs:/mosquitto/certs

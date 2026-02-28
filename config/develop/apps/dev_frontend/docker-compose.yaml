@@ -1,0 +1,25 @@
+services:
+  # Frontend Web App
+  web:
+    container_name: ${ENVIRONMENT}_finca_app_frontend
+    image: finca_app_frontend:latest
+    restart: unless-stopped
+    ports:
+      - '${FRONTEND_PORT}:80'
+    environment:
+      API_BASE_URL: ${API_BASE_URL}
+      BACKEND_URL: ${BACKEND_URL}
+    networks:
+      - finca_app_net
+    healthcheck:
+      test: [ "CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+networks:
+  finca_app_net:
+    name: '${ENVIRONMENT}_finca_app_net'
+    driver: bridge
+    external: true

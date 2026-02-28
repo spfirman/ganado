@@ -1,0 +1,38 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CattleCharacteristicEnum = void 0;
+var CattleCharacteristicEnum;
+(function (CattleCharacteristicEnum) {
+    CattleCharacteristicEnum["BLACK_BELLY"] = "BLACK_BELLY";
+    CattleCharacteristicEnum["WHITE_BELLY"] = "WHITE_BELLY";
+    CattleCharacteristicEnum["BROWN_BELLY"] = "BROWN_BELLY";
+    CattleCharacteristicEnum["LIGHT_BROWN_BELLY"] = "LIGHT_BROWN_BELLY";
+    CattleCharacteristicEnum["GREY_BELLY"] = "GREY_BELLY";
+    CattleCharacteristicEnum["BLACK_HEAD"] = "BLACK_HEAD";
+    CattleCharacteristicEnum["WHITE_HEAD"] = "WHITE_HEAD";
+    CattleCharacteristicEnum["BROWN_HEAD"] = "BROWN_HEAD";
+    CattleCharacteristicEnum["LIGHT_BROWN_HEAD"] = "LIGHT_BROWN_HEAD";
+    CattleCharacteristicEnum["GREY_HEAD"] = "GREY_HEAD";
+    CattleCharacteristicEnum["BLACK_HALF_HEAD"] = "BLACK_HALF_HEAD";
+    CattleCharacteristicEnum["WHITE_HALF_HEAD"] = "WHITE_HALF_HEAD";
+    CattleCharacteristicEnum["BROWN_HALF_HEAD"] = "BROWN_HALF_HEAD";
+    CattleCharacteristicEnum["LIGHT_BROWN_HALF_HEAD"] = "LIGHT_BROWN_HALF_HEAD";
+    CattleCharacteristicEnum["GREY_HALF_HEAD"] = "GREY_HALF_HEAD";
+    CattleCharacteristicEnum["BLACK_LEGS"] = "BLACK_LEGS";
+    CattleCharacteristicEnum["WHITE_LEGS"] = "WHITE_LEGS";
+    CattleCharacteristicEnum["BROWN_LEGS"] = "BROWN_LEGS";
+    CattleCharacteristicEnum["LIGHT_BROWN_LEGS"] = "LIGHT_BROWN_LEGS";
+    CattleCharacteristicEnum["GREY_LEGS"] = "GREY_LEGS";
+    CattleCharacteristicEnum["BLACK_FEET"] = "BLACK_FEET";
+    CattleCharacteristicEnum["WHITE_FEET"] = "WHITE_FEET";
+    CattleCharacteristicEnum["BROWN_FEET"] = "BROWN_FEET";
+    CattleCharacteristicEnum["LIGHT_BROWN_FEET"] = "LIGHT_BROWN_FEET";
+    CattleCharacteristicEnum["GREY_FEET"] = "GREY_FEET";
+    CattleCharacteristicEnum["BLACK_SPOTS"] = "BLACK_SPOTS";
+    CattleCharacteristicEnum["BROWN_SPOTS"] = "BROWN_SPOTS";
+    CattleCharacteristicEnum["LIGHT_BROWN_SPOTS"] = "LIGHT_BROWN_SPOTS";
+    CattleCharacteristicEnum["GREY_SPOTS"] = "GREY_SPOTS";
+    CattleCharacteristicEnum["BLACK_PATTERN"] = "BLACK_PATTERN";
+    CattleCharacteristicEnum["BROWN_PATTERN"] = "BROWN_PATTERN";
+})(CattleCharacteristicEnum || (exports.CattleCharacteristicEnum = CattleCharacteristicEnum = {}));
+//# sourceMappingURL=cattle-characteristic.enum.js.map
