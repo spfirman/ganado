@@ -11,7 +11,7 @@
 #   - PostGIS packages installed on host
 #
 # Usage:
-#   cd /opt/ganado-app/config/production/apps/shared
+#   cd ~/apps/ganado/config/production/apps/shared
 #   cp .env.example .env
 #   # Edit .env with your passwords and domain
 #   bash deploy.sh
