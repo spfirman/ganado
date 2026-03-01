@@ -177,18 +177,22 @@ fi
 # ============================================================
 log "Checking disk usage..."
 
-while read -r LINE; do
-    USAGE=$(echo "$LINE" | awk '{print $5}' | tr -d '%')
-    MOUNT=$(echo "$LINE" | awk '{print $6}')
+while read -r USAGE MOUNT; do
+    USAGE=$(echo "$USAGE" | tr -d '%' | tr -d ' ')
 
-    if [ "$USAGE" -ge "$DISK_CRIT_PERCENT" ]; then
+    # Skip empty lines
+    if [ -z "$USAGE" ] || [ -z "$MOUNT" ]; then
+        continue
+    fi
+
+    if [ "$USAGE" -ge "$DISK_CRIT_PERCENT" ] 2>/dev/null; then
         check_fail "DISK CRITICAL: $MOUNT at ${USAGE}% (threshold: ${DISK_CRIT_PERCENT}%)"
-    elif [ "$USAGE" -ge "$DISK_WARN_PERCENT" ]; then
+    elif [ "$USAGE" -ge "$DISK_WARN_PERCENT" ] 2>/dev/null; then
         check_warn "Disk warning: $MOUNT at ${USAGE}%"
     else
         check_pass "Disk $MOUNT: ${USAGE}%"
     fi
-done < <(df -h --output=pcent,target -x tmpfs -x devtmpfs 2>/dev/null | tail -n +2)
+done < <(df -h --output=pcent,target -x tmpfs -x devtmpfs -x overlay 2>/dev/null | tail -n +2)
 
 # Check backup directory size
 BACKUP_DIR="/srv/backups"
@@ -226,7 +230,9 @@ elif [ "$SWAP_USED_MB" -gt 0 ]; then
 fi
 
 # OOM check
-OOM_COUNT=$(dmesg 2>/dev/null | grep -c "Out of memory" || echo "0")
+OOM_COUNT=$(dmesg 2>/dev/null | grep -c "Out of memory" | head -1 || echo "0")
+OOM_COUNT="${OOM_COUNT//[^0-9]/}"
+OOM_COUNT="${OOM_COUNT:-0}"
 if [ "$OOM_COUNT" -gt 0 ]; then
     check_fail "OOM KILLS: ${OOM_COUNT} occurrence(s) in kernel log"
 fi
