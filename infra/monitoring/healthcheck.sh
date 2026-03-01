@@ -62,13 +62,26 @@ log "--- Health check started ---"
 # ============================================================
 log "Checking Docker containers..."
 
-# Expected containers (adjust as needed)
+# Expected containers — actual GPCB server
 EXPECTED_CONTAINERS=(
-    "ganado_backend"
-    "ganado_frontend"
-    "ganado_redis"
-    "ganado_chirpstack"
-    "ganado_mosquitto"
+    # Reverse proxy
+    "nginx-proxy"
+    "acme-companion"
+    # Farm Management
+    "api-farm"
+    "db-farm"
+    "redis-farm"
+    # Vetlab Platform
+    "vetlab-api"
+    "vetlab-web"
+    "vetlab-postgres"
+    "redis-vetlab"
+    # Accounting (Odoo)
+    "app-accounting"
+    "db-accounting"
+    # FreePBX
+    "freepbx"
+    "freepbx-db"
 )
 
 # Load from config if present
@@ -102,56 +115,53 @@ if [ -n "$RESTARTING" ]; then
 fi
 
 # ============================================================
-# 2. HTTP Endpoint Checks
+# 2. HTTP Endpoint Checks (via nginx-proxy virtual hosts)
 # ============================================================
 log "Checking HTTP endpoints..."
 
-# Ganado backend health
-BACKEND_URL="http://localhost:${GANADO_BACKEND_PORT:-3100}/api/v1/health"
-BACKEND_HTTP=$(curl -s -o /dev/null -w "%{http_code}" --max-time "$HTTP_TIMEOUT" "$BACKEND_URL" 2>/dev/null || echo "000")
+# All apps are behind nginx-proxy with VIRTUAL_HOST auto-discovery.
+# Check via Host header against localhost:80 (nginx-proxy).
+check_http() {
+    local LABEL="$1"
+    local DOMAIN="$2"
+    local EXPECT="${3:-200}"
 
-if [ "$BACKEND_HTTP" = "200" ]; then
-    check_pass "Ganado backend HTTP $BACKEND_HTTP"
-else
-    check_fail "GANADO BACKEND DOWN: HTTP $BACKEND_HTTP ($BACKEND_URL)"
-fi
+    local CODE
+    CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time "$HTTP_TIMEOUT" \
+        -H "Host: $DOMAIN" "http://localhost/" 2>/dev/null || echo "000")
 
-# Ganado frontend
-FRONTEND_URL="http://localhost:${GANADO_FRONTEND_PORT:-8180}/"
-FRONTEND_HTTP=$(curl -s -o /dev/null -w "%{http_code}" --max-time "$HTTP_TIMEOUT" "$FRONTEND_URL" 2>/dev/null || echo "000")
+    # Accept expected code, 301/302 redirects (HTTPS), or 200
+    if [ "$CODE" = "$EXPECT" ] || [ "$CODE" = "200" ] || [ "$CODE" = "301" ] || [ "$CODE" = "302" ]; then
+        check_pass "$LABEL HTTP $CODE ($DOMAIN)"
+    else
+        check_fail "$LABEL DOWN: HTTP $CODE ($DOMAIN)"
+    fi
+}
 
-if [ "$FRONTEND_HTTP" = "200" ] || [ "$FRONTEND_HTTP" = "304" ]; then
-    check_pass "Ganado frontend HTTP $FRONTEND_HTTP"
-else
-    check_fail "GANADO FRONTEND DOWN: HTTP $FRONTEND_HTTP ($FRONTEND_URL)"
-fi
-
-# ChirpStack
-CS_URL="http://localhost:${GANADO_CS_PORT:-8180}/"
-CS_HTTP=$(curl -s -o /dev/null -w "%{http_code}" --max-time "$HTTP_TIMEOUT" "$CS_URL" 2>/dev/null || echo "000")
-
-if [ "$CS_HTTP" = "200" ] || [ "$CS_HTTP" = "302" ]; then
-    check_pass "ChirpStack HTTP $CS_HTTP"
-else
-    check_warn "ChirpStack HTTP $CS_HTTP ($CS_URL) — may be proxied"
-fi
+check_http "Farm API"     "finca.gpcb.com.co"
+check_http "Vetlab"       "lacasadelpeludo.com.co"
+check_http "Vetlab API"   "api.lacasadelpeludo.com.co"
+check_http "Accounting"   "contable.gpcb.com.co"
+check_http "FreePBX"      "pbx.gpcb.com.co"
 
 # ============================================================
-# 3. Asterisk/FreePBX Status
+# 3. Asterisk/FreePBX Status (Dockerized)
 # ============================================================
 log "Checking Asterisk status..."
 
-if command -v asterisk &>/dev/null; then
-    # Check if Asterisk is running
-    if asterisk -rx "core show version" &>/dev/null; then
+PBX_CONTAINER="freepbx"
+if docker ps --format "{{.Names}}" 2>/dev/null | grep -q "^${PBX_CONTAINER}$"; then
+    if docker exec "$PBX_CONTAINER" asterisk -rx "core show version" &>/dev/null; then
         check_pass "Asterisk is running"
 
         # Check active channels
-        CHANNELS=$(asterisk -rx "core show channels count" 2>/dev/null | grep "active channel" | awk '{print $1}' || echo "0")
+        CHANNELS=$(docker exec "$PBX_CONTAINER" asterisk -rx "core show channels count" 2>/dev/null | grep "active channel" | awk '{print $1}' || echo "0")
         log "  Active channels: $CHANNELS"
 
         # Check SIP/PJSIP registration status
-        UNREG=$(asterisk -rx "pjsip show registrations" 2>/dev/null | grep -c "Unregistered" || echo "0")
+        UNREG=$(docker exec "$PBX_CONTAINER" asterisk -rx "pjsip show registrations" 2>/dev/null | grep -c "Unregistered" | head -1 || echo "0")
+        UNREG="${UNREG//[^0-9]/}"
+        UNREG="${UNREG:-0}"
         if [ "$UNREG" -gt 0 ]; then
             check_warn "Asterisk: $UNREG unregistered SIP trunk(s)"
         else
@@ -159,17 +169,17 @@ if command -v asterisk &>/dev/null; then
         fi
 
         # Check for any failed peers
-        FAILED_PEERS=$(asterisk -rx "pjsip show endpoints" 2>/dev/null | grep -c "Unavail" || echo "0")
+        FAILED_PEERS=$(docker exec "$PBX_CONTAINER" asterisk -rx "pjsip show endpoints" 2>/dev/null | grep -c "Unavail" | head -1 || echo "0")
+        FAILED_PEERS="${FAILED_PEERS//[^0-9]/}"
+        FAILED_PEERS="${FAILED_PEERS:-0}"
         if [ "$FAILED_PEERS" -gt 0 ]; then
             check_warn "Asterisk: $FAILED_PEERS unavailable endpoint(s)"
         fi
     else
-        check_fail "ASTERISK DOWN: Cannot connect to Asterisk CLI"
+        check_fail "ASTERISK DOWN: Cannot connect to Asterisk CLI in container"
     fi
-elif pgrep -x asterisk &>/dev/null; then
-    check_pass "Asterisk process is running (CLI not accessible)"
 else
-    log "  Asterisk not installed on this host (skipping)"
+    check_fail "FREEPBX CONTAINER DOWN: $PBX_CONTAINER not running"
 fi
 
 # ============================================================
@@ -238,86 +248,118 @@ if [ "$OOM_COUNT" -gt 0 ]; then
 fi
 
 # ============================================================
-# 6. PostgreSQL
+# 6. PostgreSQL (Docker containers)
 # ============================================================
-log "Checking PostgreSQL..."
+log "Checking PostgreSQL databases..."
 
-if command -v pg_isready &>/dev/null; then
-    if pg_isready -q 2>/dev/null; then
-        check_pass "PostgreSQL is accepting connections"
+PG_CONTAINERS=(
+    "db-farm:postgres:gpcb_farm_management"
+    "vetlab-postgres:postgres:vetlab_db"
+    "db-accounting:gpcb:gpcb_accounting"
+)
 
-        # Connection count
-        if command -v psql &>/dev/null; then
-            PG_MAX=$(sudo -u postgres psql -t -c "SHOW max_connections;" 2>/dev/null | tr -d ' ' || echo "0")
-            PG_CUR=$(sudo -u postgres psql -t -c "SELECT count(*) FROM pg_stat_activity;" 2>/dev/null | tr -d ' ' || echo "0")
+for PG_ENTRY in "${PG_CONTAINERS[@]}"; do
+    IFS=':' read -r PG_CTR PG_USER PG_DB <<< "$PG_ENTRY"
 
-            if [ "$PG_MAX" -gt 0 ] && [ "$PG_CUR" -gt 0 ]; then
+    if docker ps --format "{{.Names}}" 2>/dev/null | grep -q "^${PG_CTR}$"; then
+        # Check if PostgreSQL accepts connections
+        if docker exec "$PG_CTR" pg_isready -U "$PG_USER" -q 2>/dev/null; then
+            # Connection count
+            PG_MAX=$(docker exec "$PG_CTR" psql -U "$PG_USER" -d "$PG_DB" -t -c "SHOW max_connections;" 2>/dev/null | tr -d ' ' || echo "0")
+            PG_CUR=$(docker exec "$PG_CTR" psql -U "$PG_USER" -d "$PG_DB" -t -c "SELECT count(*) FROM pg_stat_activity;" 2>/dev/null | tr -d ' ' || echo "0")
+
+            if [ "$PG_MAX" -gt 0 ] 2>/dev/null && [ "$PG_CUR" -gt 0 ] 2>/dev/null; then
                 PG_PCT=$(( PG_CUR * 100 / PG_MAX ))
                 if [ "$PG_PCT" -gt 80 ]; then
-                    check_fail "PG CONNECTIONS HIGH: ${PG_CUR}/${PG_MAX} (${PG_PCT}%)"
+                    check_fail "PG HIGH: $PG_CTR ${PG_CUR}/${PG_MAX} (${PG_PCT}%)"
                 else
-                    check_pass "PostgreSQL connections: ${PG_CUR}/${PG_MAX} (${PG_PCT}%)"
+                    check_pass "$PG_CTR: ${PG_CUR}/${PG_MAX} connections (${PG_PCT}%)"
                 fi
+            else
+                check_pass "$PG_CTR: accepting connections"
             fi
-
-            # Check for long-running queries (> 5 min)
-            LONG_QUERIES=$(sudo -u postgres psql -t -c "SELECT count(*) FROM pg_stat_activity WHERE state='active' AND now()-query_start > interval '5 minutes';" 2>/dev/null | tr -d ' ' || echo "0")
-            if [ "$LONG_QUERIES" -gt 0 ]; then
-                check_warn "PostgreSQL: $LONG_QUERIES long-running queries (>5 min)"
-            fi
+        else
+            check_fail "PG DOWN: $PG_CTR not accepting connections"
         fi
-    else
-        check_fail "POSTGRESQL DOWN: Not accepting connections"
     fi
-else
-    log "  pg_isready not found (skipping)"
-fi
+done
 
 # ============================================================
 # 7. Redis
 # ============================================================
 log "Checking Redis..."
 
-REDIS_CONTAINER=$(docker ps --filter "name=ganado_redis" --format "{{.Names}}" 2>/dev/null || true)
+REDIS_CONTAINERS=(
+    "redis-farm"
+    "redis-vetlab"
+)
 
-if [ -n "$REDIS_CONTAINER" ]; then
-    REDIS_PING=$(docker exec "$REDIS_CONTAINER" redis-cli -a "${GANADO_REDIS_PASSWORD:-}" PING 2>/dev/null | tr -d '\r' || echo "FAIL")
+for REDIS_CTR in "${REDIS_CONTAINERS[@]}"; do
+    if docker ps --format "{{.Names}}" 2>/dev/null | grep -q "^${REDIS_CTR}$"; then
+        # Extract password from container args (--requirepass <pass>)
+        REDIS_PASS=$(docker inspect "$REDIS_CTR" --format='{{json .Args}}' 2>/dev/null | grep -oP '(?<=--requirepass",")[^"]+' || echo "")
+        REDIS_AUTH=""
+        if [ -n "$REDIS_PASS" ]; then
+            REDIS_AUTH="-a $REDIS_PASS --no-auth-warning"
+        fi
 
-    if [ "$REDIS_PING" = "PONG" ]; then
-        REDIS_MEM=$(docker exec "$REDIS_CONTAINER" redis-cli -a "${GANADO_REDIS_PASSWORD:-}" INFO memory 2>/dev/null | grep "used_memory_human" | cut -d':' -f2 | tr -d '\r' || echo "N/A")
-        REDIS_KEYS=$(docker exec "$REDIS_CONTAINER" redis-cli -a "${GANADO_REDIS_PASSWORD:-}" DBSIZE 2>/dev/null | tr -d '\r' || echo "N/A")
-        check_pass "Redis: PONG (mem=$REDIS_MEM, $REDIS_KEYS)"
+        REDIS_PING=$(docker exec "$REDIS_CTR" redis-cli $REDIS_AUTH PING 2>/dev/null | tr -d '\r' || echo "FAIL")
+
+        if [ "$REDIS_PING" = "PONG" ]; then
+            REDIS_MEM=$(docker exec "$REDIS_CTR" redis-cli $REDIS_AUTH INFO memory 2>/dev/null | grep "used_memory_human" | cut -d':' -f2 | tr -d '\r' || echo "N/A")
+            REDIS_KEYS=$(docker exec "$REDIS_CTR" redis-cli $REDIS_AUTH DBSIZE 2>/dev/null | tr -d '\r' || echo "N/A")
+            check_pass "$REDIS_CTR: PONG (mem=$REDIS_MEM, $REDIS_KEYS)"
+        else
+            check_fail "REDIS DOWN: $REDIS_CTR PING returned '$REDIS_PING'"
+        fi
     else
-        check_fail "REDIS DOWN: PING returned '$REDIS_PING'"
+        check_fail "MISSING: Redis container $REDIS_CTR not running"
     fi
-else
-    check_warn "Redis container not found"
-fi
+done
 
 # ============================================================
-# 8. SSL Certificate Expiry
+# 8. SSL Certificate Expiry (acme-companion managed)
 # ============================================================
 log "Checking SSL certificates..."
 
-DOMAIN="${GANADO_DOMAIN:-ganado.yourdomain.com}"
-CERT_FILE="/etc/letsencrypt/live/$DOMAIN/fullchain.pem"
+# acme-companion stores certs in /etc/nginx/certs/ on the host via volume
+SSL_DOMAINS=(
+    "finca.gpcb.com.co"
+    "lacasadelpeludo.com.co"
+    "api.lacasadelpeludo.com.co"
+    "contable.gpcb.com.co"
+    "pbx.gpcb.com.co"
+)
 
-if [ -f "$CERT_FILE" ]; then
-    EXPIRY_DATE=$(openssl x509 -enddate -noout -in "$CERT_FILE" 2>/dev/null | cut -d'=' -f2)
-    EXPIRY_EPOCH=$(date -d "$EXPIRY_DATE" +%s 2>/dev/null || echo "0")
-    NOW_EPOCH=$(date +%s)
-    DAYS_LEFT=$(( (EXPIRY_EPOCH - NOW_EPOCH) / 86400 ))
+# Find cert volume path from acme-companion container
+CERT_VOL=$(docker inspect acme-companion --format='{{range .Mounts}}{{if eq .Destination "/etc/nginx/certs"}}{{.Source}}{{end}}{{end}}' 2>/dev/null || echo "")
 
-    if [ "$DAYS_LEFT" -lt 7 ]; then
-        check_fail "SSL CERT EXPIRING: $DOMAIN expires in $DAYS_LEFT days"
-    elif [ "$DAYS_LEFT" -lt 30 ]; then
-        check_warn "SSL cert for $DOMAIN expires in $DAYS_LEFT days"
-    else
-        check_pass "SSL cert: $DOMAIN expires in $DAYS_LEFT days"
+for DOMAIN in "${SSL_DOMAINS[@]}"; do
+    CERT_FILE=""
+    # Check acme-companion volume path
+    if [ -n "$CERT_VOL" ] && [ -f "$CERT_VOL/$DOMAIN/fullchain.pem" ]; then
+        CERT_FILE="$CERT_VOL/$DOMAIN/fullchain.pem"
+    elif [ -f "/etc/nginx/certs/$DOMAIN/fullchain.pem" ]; then
+        CERT_FILE="/etc/nginx/certs/$DOMAIN/fullchain.pem"
     fi
-else
-    log "  SSL cert not found for $DOMAIN (skipping)"
-fi
+
+    if [ -n "$CERT_FILE" ]; then
+        EXPIRY_DATE=$(openssl x509 -enddate -noout -in "$CERT_FILE" 2>/dev/null | cut -d'=' -f2)
+        EXPIRY_EPOCH=$(date -d "$EXPIRY_DATE" +%s 2>/dev/null || echo "0")
+        NOW_EPOCH=$(date +%s)
+        DAYS_LEFT=$(( (EXPIRY_EPOCH - NOW_EPOCH) / 86400 ))
+
+        if [ "$DAYS_LEFT" -lt 7 ]; then
+            check_fail "SSL CERT EXPIRING: $DOMAIN expires in $DAYS_LEFT days"
+        elif [ "$DAYS_LEFT" -lt 30 ]; then
+            check_warn "SSL cert for $DOMAIN expires in $DAYS_LEFT days"
+        else
+            check_pass "SSL cert: $DOMAIN expires in $DAYS_LEFT days"
+        fi
+    else
+        log "  SSL cert not found for $DOMAIN (skipping)"
+    fi
+done
 
 # ============================================================
 # 9. Backup Freshness
