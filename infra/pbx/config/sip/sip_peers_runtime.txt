@@ -1,0 +1,1 @@
+No such command 'sip show peers' (type 'core show help sip show' for other possible commands)

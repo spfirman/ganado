@@ -1,0 +1,157 @@
++--------------------------------------+------------------------------------------------+-----------------------------------+
+| Name                                 | Value                                          | Default Value                     |
++--------------------------------------+------------------------------------------------+-----------------------------------+
+| AS_DISPLAY_FRIENDLY_NAME             | 1                                              | 1                                 |
+| AS_DISPLAY_READONLY_SETTINGS         | 0                                              | 0                                 |
+| AS_OVERRIDE_READONLY                 | 0                                              | 0                                 |
+| HTTPENABLESTATIC                     | 0                                              | 0                                 |
+| HTTPENABLESTATUS                     | 0                                              | 0                                 |
+| HTTPENABLED                          | 0                                              | 0                                 |
+| HTTPTLSENABLE                        | 1                                              | 0                                 |
+| HTTPBINDADDRESS                      | 127.0.0.1                                      | 127.0.0.1                         |
+| HTTPBINDPORT                         | 8088                                           | 8088                              |
+| HTTPPREFIX                           |                                                |                                   |
+| HTTPTLSBINDADDRESS                   | 127.0.0.1                                      | ::                                |
+| HTTPTLSBINDPORT                      | 8089                                           | 8089                              |
+| TLSDISABLEV1                         | 1                                              | 1                                 |
+| TLSDISABLEV11                        | 0                                              | 0                                 |
+| TLSDISABLEV12                        | 0                                              | 0                                 |
+| HTTPTLSCERTFILE                      | /etc/asterisk/keys/integration/certificate.pem |                                   |
+| HTTPTLSPRIVATEKEY                    | /etc/asterisk/keys/integration/webserver.key   |                                   |
+| HTTPSESSIONINACTIVITY                | 30000                                          | 30000                             |
+| HTTPSESSIONKEEPALIVE                 | 15000                                          | 15000                             |
+| HTTPSESSIONLIMIT                     | 100                                            | 100                               |
+| AMPMGRPASS                           | c44b9f50f5e16b35477f162830ab19ee               | amp111                            |
+| AMPMGRUSER                           | e856fd7aa99430c5e51cccf3209e09c8               | admin                             |
+| CALLREC_BEEP_PERIOD                  |                                                |                                   |
+| CALL_REC_OPTION                      | 1                                              | 1                                 |
+| CDR_BATCH_ENABLE                     | 1                                              | 1                                 |
+| CDR_BATCH                            | 0                                              | 0                                 |
+| CDR_BATCH_SIZE                       | 200                                            | 200                               |
+| CDR_BATCH_TIME                       | 300                                            | 300                               |
+| CDR_BATCH_SCHEDULE_ONLY              | 0                                              | 0                                 |
+| CDR_BATCH_SAFE_SHUT_DOWN             | 1                                              | 1                                 |
+| TRANSIENTCDRDATA                     | 60                                             | 60                                |
+| CANCELDISPOSITION                    | 0                                              | 0                                 |
+| CERT_DAYS_EXPIRATION_ALERT           | 30                                             | 30                                |
+| CERT_DAYS_VAL                        | 730                                            | 730                               |
+| FORCEALLOWCONFRECORDING              | 0                                              | 0                                 |
+| JOBSRANDOMSLEEP                      | 0                                              | 0                                 |
+| FWJOBS_LOGS                          | 0                                              | 0                                 |
+| SYS_STATS_DISABLE                    | 0                                              | 0                                 |
+| VIEW_FW_STATUS                       | 1                                              | 1                                 |
+| SYS_STATS_MAXAGE                     | 50                                             | 50                                |
+| FORCE_JS_CSS_IMG_DOWNLOAD            | 0                                              | 0                                 |
+| FPBXDBUGFILE                         | /var/log/asterisk/freepbx_dbug                 | /var/log/asterisk/freepbx_dbug    |
+| DEVEL                                | 0                                              | 0                                 |
+| FPBXDBUGDISABLE                      | 1                                              | 1                                 |
+| DISABLE_CSS_AUTOGEN                  | 0                                              | 0                                 |
+| DISPLAY_MONITOR_TRUNK_FAILURES_FIELD | 0                                              | 0                                 |
+| JQMIGRATE                            | 1                                              | 1                                 |
+| FPBXPERFLOGGING                      | 0                                              | 0                                 |
+| DEVELRELOAD                          | 0                                              | 0                                 |
+| POST_RELOAD_DEBUG                    | 0                                              | 0                                 |
+| DIE_FREEPBX_VERBOSE                  | 0                                              | 0                                 |
+| USE_PACKAGED_JS                      | 1                                              | 1                                 |
+| DEVICE_STRONG_SECRETS                | 1                                              | 1                                 |
+| DEVICE_REMOVE_MAILBOX                | 0                                              | 0                                 |
+| DEVICE_SIP_CANREINVITE               | no                                             | no                                |
+| DEVICE_SIP_DTMF                      | rfc2833                                        | rfc2833                           |
+| DEVICE_SIP_TRUSTRPID                 | yes                                            | yes                               |
+| DEVICE_SIP_SENDRPID                  | pai                                            | pai                               |
+| DEVICE_SIP_NAT                       | yes                                            | yes                               |
+| DEVICE_SIP_ENCRYPTION                | no                                             | no                                |
+| DEVICE_SIP_QUALIFYFREQ               | 60                                             | 60                                |
+| DEVICE_QUALIFY                       | yes                                            | yes                               |
+| DEVICE_ALLOW                         |                                                |                                   |
+| DEVICE_DISALLOW                      |                                                |                                   |
+| DEVICE_CALLGROUP                     |                                                |                                   |
+| DEVICE_PICKUPGROUP                   |                                                |                                   |
+| DIAL_OPTIONS                         | HhTtr                                          | HhTtr                             |
+| TRUNK_OPTIONS                        | T                                              | T                                 |
+| ATTTRANSALERTINFO                    | inherit                                        | inherit                           |
+| BLINDTRANSALERTINFO                  | inherit                                        | inherit                           |
+| BLOCK_OUTBOUND_TRUNK_CNAM            | 0                                              | 0                                 |
+| CFRINGTIMERDEFAULT                   | 0                                              | 0                                 |
+| REC_POLICY                           | caller                                         | caller                            |
+| CLEARGLOBALVARS                      | 0                                              | 0                                 |
+| ASTCONFAPP                           | app_confbridge                                 | app_confbridge                    |
+| TONEZONE                             | us                                             | us                                |
+| ENABLECW                             | 1                                              | 1                                 |
+| DISABLECUSTOMCONTEXTS                | 0                                              | 0                                 |
+| INBOUND_NOTRANS                      | 1                                              | 1                                 |
+| OUTBOUND_CID_UPDATE                  | 1                                              | 1                                 |
+| OUTBOUND_DIAL_UPDATE                 | 1                                              | 1                                 |
+| CONNECTEDLINE_PRESENCESTATE          | 1                                              | 1                                 |
+| DITECH_VQA_INBOUND                   | 7                                              | 7                                 |
+| DITECH_VQA_OUTBOUND                  | 7                                              | 7                                 |
+| RFC7462                              | 1                                              | 1                                 |
+| CONCURRENCYLIMITDEFAULT              | 3                                              | 3                                 |
+| FCBEEPONLY                           | 0                                              | 0                                 |
+| FORCE_INTERNAL_AUTO_ANSWER_ALL       | 0                                              | 0                                 |
+| DIVERSIONHEADER                      | 0                                              | 0                                 |
+| INTERNALALERTINFO                    | inherit                                        | inherit                           |
+| DEFAULT_INTERNAL_AUTO_ANSWER         | disabled                                       | disabled                          |
+| LAUNCH_AGI_AS_FASTAGI                | 1                                              | 1                                 |
+| NOOPTRACE                            | 0                                              | 0                                 |
+| CWINUSEBUSY                          | 1                                              | 1                                 |
+| CID_PREPEND_REPLACE                  | 1                                              | 1                                 |
+| ASTSTOPPOLLINT                       | 2                                              | 2                                 |
+| RINGTIMER                            | 15                                             | 15                                |
+| TIMEFORMAT                           | 12 Hour Format                                 | 12 Hour Format                    |
+| AMPBADNUMBER                         | 1                                              | 1                                 |
+| DIALPARTIESDIALPLAN                  | 0                                              | 0                                 |
+| USEGOOGLEDNSFORENUM                  | 0                                              | 0                                 |
+| ASTSTOPTIMEOUT                       | 120                                            | 120                               |
+| BADDESTABORT                         | 0                                              | 0                                 |
+| XTNCONFLICTABORT                     | 0                                              | 0                                 |
+| CHECKREFERER                         | 1                                              | 1                                 |
+| ENABLEOLDDIALPATTERNS                | 0                                              | 0                                 |
+| SERVERINTITLE                        | 0                                              | 0                                 |
+| CUSTOMASERROR                        | 1                                              | 1                                 |
+| RELOADCONFIRM                        | 1                                              | 1                                 |
+| MODULEADMINEDGE                      | 0                                              | 0                                 |
+| SHOWLANGUAGE                         | 1                                              | 0                                 |
+| USE_FREEPBX_MENU_CONF                | 0                                              | 0                                 |
+| MODULEADMINWGET                      | 0                                              | 0                                 |
+| CACHE_CLEANUP_DAYS                   | 30                                             | 30                                |
+| SESSION_TIMEOUT                      | 2592000                                        | 2592000                           |
+| ALLOW_MODULE_HOOK_IN                 | 0                                              | 0                                 |
+| PROXY_ENABLED                        | 0                                              | 0                                 |
+| PROXY_ADDRESS                        |                                                |                                   |
+| PROXY_USERNAME                       |                                                |                                   |
+| PROXY_PASSWORD                       | REDACTED|                                   |
+| AMPSYSLOGLEVEL                       | FILE                                           | FILE                              |
+| AMPDISABLELOG                        | 0                                              | 0                                 |
+| LOG_OUT_MESSAGES                     | 1                                              | 1                                 |
+| AUTOMODULEUPDATESANDRELOAD           | 0                                              | 0                                 |
+| AMPSHOWUPDATESONSSH                  | 0                                              | 0                                 |
+| LOG_NOTIFICATIONS                    | 1                                              | 1                                 |
+| MDATETIMEFORMAT                      | llll                                           | llll                              |
+| MDATEFORMAT                          | l                                              | l                                 |
+| FPBX_LOG_FILE                        | /var/log/asterisk/freepbx.log                  | /var/log/asterisk/freepbx.log     |
+| MTIMEFORMAT                          | LT                                             | LT                                |
+| PHP_CONSOLE                          | 0                                              | 0                                 |
+| PHP_CONSOLE_PASSWORD                 | REDACTED                             | REDACTED                |
+| PHP_ERROR_HANDLER_OUTPUT             | freepbxlog                                     | freepbxlog                        |
+| PHP_ERROR_LEVEL                      | ALL_NOSTRICTNOTICE                             | ALL_NOSTRICTNOTICE                |
+| AGGRESSIVE_DUPLICATE_CHECK           | 0                                              | 0                                 |
+| AMPEXTENSIONS                        | extensions                                     | extensions                        |
+| EXPOSE_ALL_FEATURE_CODES             | 0                                              | 0                                 |
+| AMP_ACCESS_DB_CREDS                  | 0                                              | 0                                 |
+| AMPVMUMASK                           | 007                                            | 007                               |
+| BROWSER_STATS                        | 1                                              | 1                                 |
+| CACHERTCLASSES                       | 1                                              | 1                                 |
+| MIXMON_FORMAT                        | wav                                            | wav                               |
+| UIDEFAULTLANG                        | en_US                                          | en_US                             |
+| AMPTRACKENABLE                       | 1                                              | 1                                 |
+| AMPWEBADDRESS                        |                                                |                                   |
+| PHPTIMEZONE                          | Etc/UTC                                        | UTC                               |
+| RSSFEEDS                             | https://www.freepbx.org/rss.xml                | https://www.freepbx.org/rss.xml   |
+|                                      | https://www.asterisk.org/blog/rss              | https://www.asterisk.org/blog/rss |
+| FREEPBX_SYSTEM_IDENT                 | GPCB VoIP                                      | VoIP Server                       |
+| USE_GOOGLE_CDN_JS                    | 0                                              | 0                                 |
+| USERESMWIBLF                         | 1                                              | 1                                 |
+| VM_SHOW_IMAP                         | 0                                              | 0                                 |
+| UCP_MESSAGE_LIMIT                    | 3000                                           | 3000                              |
++--------------------------------------+------------------------------------------------+-----------------------------------+

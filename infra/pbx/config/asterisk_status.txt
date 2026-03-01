@@ -1,0 +1,417 @@
+# Asterisk Status — captured 2026-03-01 20:25:39
+# Container: freepbx
+# ============================================
+
+## Version
+Asterisk 21.10.2 built by root @ buildkitsandbox on a x86_64 running Linux on 2025-10-15 20:23:32 UTC
+
+## Uptime
+System uptime: 1 day, 22 hours, 24 minutes, 20 seconds
+Last reload: 1 day, 22 hours, 24 minutes, 20 seconds
+
+## Channels
+Channel                                                          Location                         State   Application(Data)             
+0 active channels
+0 active calls
+0 calls processed
+
+## Codecs
+Disclaimer: this command is for informational purposes only.
+	It does not indicate anything about your configuration.
+      ID TYPE  NAME         FORMAT           QUALITY DESCRIPTION
+------------------------------------------------------------------------------------------------
+      30 image png          png                    0 (PNG Image)
+       6 audio g726         g726                  85 (G.726 RFC3551)
+       4 audio alaw         alaw                 100 (G.711 a-law)
+       2 audio g723         g723                  20 (G.723.1)
+      20 audio speex        speex                 40 (SpeeX)
+      21 audio speex        speex16               40 (SpeeX 16khz)
+      22 audio speex        speex32               40 (SpeeX 32khz)
+      24 audio g722         g722                 110 (G722)
+      25 audio siren7       siren7                85 (ITU G.722.1 (Siren7, licensed from Polycom))
+      31 video h261         h261                   0 (H.261 video)
+      32 video h263         h263                   0 (H.263 video)
+       8 audio adpcm        adpcm                 80 (Dialogic ADPCM)
+      35 video h265         h265                   0 (H.265 video)
+      43 audio silk         silk8                  0 (SILK Codec (8 KHz))
+      44 audio silk         silk12                 0 (SILK Codec (12 KHz))
+      45 audio silk         silk16                 0 (SILK Codec (16 KHz))
+      46 audio silk         silk24                 0 (SILK Codec (24 KHz))
+      27 audio g719         g719                  95 (ITU G.719)
+      33 video h263p        h263p                  0 (H.263+ video)
+      34 video h264         h264                   0 (H.264 video)
+      19 audio g729         g729                  20 (G.729A)
+       9 audio slin         slin                 115 (16 bit Signed Linear PCM)
+      10 audio slin         slin12               116 (16 bit Signed Linear PCM (12kHz))
+      11 audio slin         slin16               117 (16 bit Signed Linear PCM (16kHz))
+      12 audio slin         slin24               118 (16 bit Signed Linear PCM (24kHz))
+      13 audio slin         slin32               119 (16 bit Signed Linear PCM (32kHz))
+      14 audio slin         slin44               120 (16 bit Signed Linear PCM (44kHz))
+      15 audio slin         slin48               121 (16 bit Signed Linear PCM (48kHz))
+      16 audio slin         slin96               122 (16 bit Signed Linear PCM (96kHz))
+      17 audio slin         slin192              123 (16 bit Signed Linear PCM (192kHz))
+       3 audio ulaw         ulaw                 100 (G.711 u-law)
+      18 audio lpc10        lpc10                 25 (LPC10)
+      42 audio none         none                   0 (<Null> codec)
+      41 image t38          t38                    0 (T.38 UDPTL Fax)
+      38 video vp9          vp9                    0 (VP9 video)
+      37 video vp8          vp8                    0 (VP8 video)
+       5 audio gsm          gsm                   60 (GSM)
+      36 video mpeg4        mpeg4                  0 (MPEG4 video)
+      23 audio ilbc         ilbc                  45 (iLBC)
+      39 text  red          red                    0 (T.140 Realtime Text with redundancy)
+      40 text  t140         t140                   0 (Passthrough T.140 Realtime Text)
+      28 audio opus         opus                  50 (Opus Codec)
+      29 image jpeg         jpeg                   0 (JPEG image)
+       7 audio g726aal2     g726aal2              85 (G.726 AAL2)
+       1 audio codec2       codec2                 0 (Codec 2)
+      26 audio siren14      siren14               90 (ITU G.722.1 Annex C, (Siren14, licensed from Polycom))
+
+## Modules
+Module                         Description                              Use Count  Status      Support Level
+acl                            Named ACL system                         2          Running              core
+app_adsiprog.so                Asterisk ADSI Programming Application    0          Running        deprecated
+app_agent_pool.so              Call center agent pool applications      0          Running              core
+app_alarmreceiver.so           Alarm Receiver for Asterisk              0          Running          extended
+app_amd.so                     Answering Machine Detection Application  0          Running          extended
+app_attended_transfer.so       Attended transfer to the given extension 0          Running          extended
+app_audiosocket.so             AudioSocket Application                  0          Running          extended
+app_authenticate.so            Authentication Application               0          Running              core
+app_blind_transfer.so          Blind transfer channel to the given dest 0          Running          extended
+app_bridgeaddchan.so           Bridge Add Channel Application           0          Running              core
+app_bridgewait.so              Place the channel into a holding bridge  0          Running              core
+app_broadcast.so               Channel Audio Broadcasting               0          Running          extended
+app_cdr.so                     Tell Asterisk to not maintain a CDR for  0          Running              core
+app_celgenuserevent.so         Generate an User-Defined CEL event       0          Running              core
+app_chanisavail.so             Check channel availability               0          Running          extended
+app_channelredirect.so         Redirects a given channel to a dialplan  0          Running              core
+app_chanspy.so                 Listen to the audio of an active channel 1          Running              core
+app_confbridge.so              Conference Bridge Application            1          Running              core
+app_controlplayback.so         Control Playback Application             0          Running              core
+app_db.so                      Database Access Functions                0          Running              core
+app_dial.so                    Dialing Application                      0          Running              core
+app_dictate.so                 Virtual Dictation Machine                0          Running          extended
+app_directed_pickup.so         Directed Call Pickup Application         0          Running              core
+app_directory.so               Extension Directory                      0          Running              core
+app_disa.so                    DISA (Direct Inward System Access) Appli 0          Running              core
+app_dtmfstore.so               Technology independent async DTMF storag 0          Running          extended
+app_dumpchan.so                Dump Info About The Calling Channel      0          Running              core
+app_echo.so                    Simple Echo Application                  0          Running              core
+app_exec.so                    Executes dialplan applications           0          Running              core
+app_externalivr.so             External IVR Interface Application       0          Running          extended
+app_festival.so                Simple Festival Interface                0          Running          extended
+app_followme.so                Find-Me/Follow-Me Application            0          Running              core
+app_forkcdr.so                 Fork The CDR into 2 separate entities    0          Running              core
+app_getcpeid.so                Get ADSI CPE ID                          0          Running        deprecated
+app_if.so                      If Branch and Conditional Execution      0          Running          extended
+app_jack.so                    JACK Interface                           0          Running          extended
+app_mf.so                      MF Sender and Receiver Applications      0          Running          extended
+app_milliwatt.so               Digital Milliwatt (mu-law) Test Applicat 0          Running              core
+app_mixmonitor.so              Mixed Audio Monitoring Application       0          Running              core
+app_morsecode.so               Morse code                               0          Running          extended
+app_mp3.so                     Silly MP3 Application                    0          Running          extended
+app_originate.so               Originate call                           0          Running              core
+app_page.so                    Page Multiple Phones                     0          Running              core
+app_playback.so                Sound File Playback Application          0          Running              core
+app_playtones.so               Playtones Application                    0          Running              core
+app_privacy.so                 Require phone number to be entered, if n 0          Running              core
+app_queue.so                   True Call Queueing                       0          Running              core
+app_read.so                    Read Variable Application                0          Running              core
+app_readexten.so               Read and evaluate extension validity     0          Running              core
+app_record.so                  Trivial Record Application               0          Running              core
+app_reload.so                  Reload module(s)                         0          Running          extended
+app_sayunixtime.so             Say time                                 0          Running              core
+app_senddtmf.so                Send DTMF digits Application             0          Running              core
+app_sendtext.so                Send and Receive Text Applications       0          Running              core
+app_sf.so                      SF Sender and Receiver Applications      0          Running          extended
+app_signal.so                  Channel Signaling Applications           0          Running          extended
+app_sla.so                     Shared Line Appearances                  0          Running          extended
+app_sms.so                     SMS/PSTN handler                         0          Running          extended
+app_softhangup.so              Hangs up the requested channel           0          Running              core
+app_speech_utils.so            Dialplan Speech Applications             0          Running              core
+app_stack.so                   Dialplan subroutines (Gosub, Return, etc 0          Running              core
+app_stasis.so                  Stasis dialplan application              0          Running              core
+app_stream_echo.so             Stream Echo Application                  0          Running              core
+app_system.so                  Generic System() application             0          Running              core
+app_talkdetect.so              Playback with Talk Detection             0          Running              core
+app_test.so                    Interface Test Application               0          Running          extended
+app_transfer.so                Transfers a caller to another extension  0          Running              core
+app_userevent.so               Custom User Event Application            0          Running              core
+app_verbose.so                 Send verbose output                      0          Running              core
+app_voicemail.so               Comedian Mail (Voicemail System)         0          Running              core
+app_waitforcond.so             Wait until condition is true             0          Running          extended
+app_waitforring.so             Waits until first ring after time        0          Running          extended
+app_waitforsilence.so          Wait For Silence/Noise                   0          Running          extended
+app_waituntil.so               Wait until specified time                0          Running              core
+app_while.so                   While Loops and Conditional Execution    0          Running              core
+app_zapateller.so              Block Telemarketers with Special Informa 0          Running          extended
+bridge_builtin_features.so     Built in bridging features               1          Running              core
+bridge_builtin_interval_features.so Built in bridging interval features      0          Running              core
+bridge_holding.so              Holding bridge module                    0          Running              core
+bridge_native_rtp.so           Native RTP bridging module               0          Running              core
+bridge_simple.so               Simple two channel bridging module       0          Running              core
+bridge_softmix.so              Multi-party software based channel mixin 0          Running              core
+ccss                           Call Completion Supplementary Services   3          Running              core
+cdr                            CDR Engine                               10         Running              core
+cdr_adaptive_odbc.so           Adaptive ODBC CDR backend                0          Running              core
+cdr_csv.so                     Comma Separated Values CDR Backend       0          Running          extended
+cdr_manager.so                 Asterisk Manager Interface CDR Backend   0          Running              core
+cdr_odbc.so                    ODBC CDR Backend                         0          Running          extended
+cdr_pgsql.so                   PostgreSQL CDR Backend                   0          Not Running      extended
+cdr_sqlite3_custom.so          SQLite3 Custom CDR Module                0          Not Running      extended
+cdr_tds.so                     FreeTDS CDR Backend                      0          Not Running      extended
+cel                            CEL Engine                               7          Running              core
+cel_manager.so                 Asterisk Manager Interface CEL Backend   0          Running              core
+cel_odbc.so                    ODBC CEL backend                         0          Running              core
+cel_pgsql.so                   PostgreSQL CEL Backend                   0          Running          extended
+cel_sqlite3_custom.so          SQLite3 Custom CEL Module                0          Not Running      extended
+cel_tds.so                     FreeTDS CEL Backend                      0          Not Running      extended
+chan_audiosocket.so            AudioSocket Channel                      0          Running          extended
+chan_bridge_media.so           Bridge Media Channel Driver              0          Running              core
+chan_console.so                Console Channel Driver                   0          Running          extended
+chan_iax2.so                   Inter Asterisk eXchange (Ver 2)          0          Running              core
+chan_motif.so                  Motif Jingle Channel Driver              0          Running              core
+chan_pjsip.so                  PJSIP Channel Driver                     1          Running              core
+chan_rtp.so                    RTP Media Channel                        0          Running              core
+chan_unistim.so                UNISTIM Protocol (USTM)                  0          Running          extended
+codec_a_mu.so                  A-law and Mulaw direct Coder/Decoder     0          Running              core
+codec_adpcm.so                 Adaptive Differential PCM Coder/Decoder  0          Running              core
+codec_alaw.so                  A-law Coder/Decoder                      0          Running              core
+codec_codec2.so                Codec 2 Coder/Decoder                    0          Running              core
+codec_g722.so                  ITU G.722-64kbps G722 Transcoder         0          Running              core
+codec_g726.so                  ITU G.726-32kbps G726 Transcoder         0          Running              core
+codec_gsm.so                   GSM Coder/Decoder                        0          Running              core
+codec_ilbc.so                  iLBC Coder/Decoder                       0          Running              core
+codec_lpc10.so                 LPC10 2.4kbps Coder/Decoder              0          Running              core
+codec_resample.so              SLIN Resampling Codec                    0          Running              core
+codec_speex.so                 Speex Coder/Decoder                      1          Running              core
+codec_ulaw.so                  mu-Law Coder/Decoder                     0          Running              core
+dnsmgr                         DNS Manager                              3          Running              core
+dsp                            DSP                                      1          Running              core
+enum                           ENUM Support                             2          Running              core
+extconfig                      Configuration                            16         Running              core
+features                       Call Features                            1          Running              core
+format_g719.so                 ITU G.719                                0          Running              core
+format_g723.so                 G.723.1 Simple Timestamp File Format     0          Running              core
+format_g726.so                 Raw G.726 (16/24/32/40kbps) data         0          Running              core
+format_g729.so                 Raw G.729 data                           0          Running              core
+format_gsm.so                  Raw GSM data                             0          Running              core
+format_h263.so                 Raw H.263 data                           0          Running              core
+format_h264.so                 Raw H.264 data                           0          Running              core
+format_ilbc.so                 Raw iLBC data                            0          Running              core
+format_mp3.so                  MP3 format [Any rate but 8000hz mono is  0          Running          extended
+format_ogg_speex.so            OGG/Speex audio                          0          Running          extended
+format_ogg_vorbis.so           OGG/Vorbis audio                         0          Running              core
+format_pcm.so                  Raw/Sun uLaw/ALaw 8KHz (PCM,PCMA,AU), G. 0          Running              core
+format_siren14.so              ITU G.722.1 Annex C (Siren14, licensed f 0          Running              core
+format_siren7.so               ITU G.722.1 (Siren7, licensed from Polyc 0          Running              core
+format_sln.so                  Raw Signed Linear Audio support (SLN) 8k 0          Running              core
+format_vox.so                  Dialogic VOX (ADPCM) File Format         0          Running          extended
+format_wav.so                  Microsoft WAV/WAV16 format (8kHz/16kHz S 0          Running              core
+format_wav_gsm.so              Microsoft WAV format (Proprietary GSM)   0          Running              core
+func_aes.so                    AES dialplan functions                   0          Running              core
+func_base64.so                 base64 encode/decode dialplan functions  0          Running              core
+func_blacklist.so              Look up Caller*ID name/number from black 0          Running              core
+func_callcompletion.so         Call Control Configuration Function      0          Running              core
+func_callerid.so               Party ID related dialplan functions (Cal 0          Running              core
+func_cdr.so                    Call Detail Record (CDR) dialplan functi 1          Running              core
+func_channel.so                Channel information dialplan functions   0          Running              core
+func_config.so                 Asterisk configuration file variable acc 0          Running              core
+func_curl.so                   Load external URL                        1          Running              core
+func_cut.so                    Cut out information from a string        1          Running              core
+func_db.so                     Database (astdb) related dialplan functi 0          Running              core
+func_devstate.so               Gets or sets a device state in the dialp 0          Running              core
+func_dialgroup.so              Dialgroup dialplan function              0          Running              core
+func_dialplan.so               Dialplan Context/Extension/Priority Chec 0          Running              core
+func_enum.so                   ENUM related dialplan functions          0          Running              core
+func_env.so                    Environment/filesystem dialplan function 0          Running              core
+func_evalexten.so              Extension evaluation function            0          Running          extended
+func_export.so                 Set variables and functions on other cha 0          Running          extended
+func_extstate.so               Gets an extension's state in the dialpla 0          Running              core
+func_frame_drop.so             Function to drop frames on a channel.    0          Running          extended
+func_frame_trace.so            Frame Trace for internal ast_frame debug 0          Running          extended
+func_global.so                 Variable dialplan functions              0          Running              core
+func_groupcount.so             Channel group dialplan functions         1          Running              core
+func_hangupcause.so            HANGUPCAUSE related functions and applic 0          Running              core
+func_holdintercept.so          Hold interception dialplan function      0          Running              core
+func_iconv.so                  Charset conversions                      0          Running              core
+func_jitterbuffer.so           Jitter buffer for read side of channel.  1          Running              core
+func_json.so                   JSON decoding function                   0          Running          extended
+func_lock.so                   Dialplan mutexes                         0          Running              core
+func_logic.so                  Logical dialplan functions               0          Running              core
+func_math.so                   Mathematical dialplan function           0          Running              core
+func_md5.so                    MD5 digest dialplan functions            0          Running              core
+func_module.so                 Checks if Asterisk module is loaded in m 0          Running              core
+func_odbc.so                   ODBC lookups                             0          Running              core
+func_periodic_hook.so          Periodic dialplan hooks.                 1          Running              core
+func_pitchshift.so             Audio Effects Dialplan Functions         0          Running          extended
+func_pjsip_aor.so              Get information about a PJSIP AOR        0          Running              core
+func_pjsip_contact.so          Get information about a PJSIP contact    0          Running              core
+func_pjsip_endpoint.so         Get information about a PJSIP endpoint   0          Running              core
+func_presencestate.so          Gets or sets a presence state in the dia 0          Running              core
+func_rand.so                   Random number dialplan function          0          Running              core
+func_realtime.so               Read/Write/Store/Destroy values from a R 0          Running              core
+func_sayfiles.so               Say application files                    0          Running              core
+func_scramble.so               Frequency inverting voice scrambler      0          Running              core
+func_sha1.so                   SHA-1 computation dialplan function      0          Running              core
+func_shell.so                  Collects the output generated by a comma 0          Running              core
+func_sorcery.so                Get a field from a sorcery object        0          Running              core
+func_speex.so                  Noise reduction and Automatic Gain Contr 0          Running              core
+func_sprintf.so                SPRINTF dialplan function                0          Running              core
+func_srv.so                    SRV related dialplan functions           0          Running              core
+func_strings.so                String handling dialplan functions       0          Running              core
+func_sysinfo.so                System information related functions     0          Running              core
+func_talkdetect.so             Talk detection dialplan function         0          Running              core
+func_timeout.so                Channel timeout dialplan functions       0          Running              core
+func_uri.so                    URI encode/decode dialplan functions     1          Running              core
+func_uuid.so                   UUID generation dialplan function        0          Running          extended
+func_version.so                Get Asterisk Version/Build Info          0          Running              core
+func_vmcount.so                Indicator for whether a voice mailbox ha 0          Running              core
+func_volume.so                 Technology independent volume control    0          Running              core
+http                           Built-in HTTP Server                     5          Running              core
+indications                    Indication Tone Handling                 1          Running              core
+logger                         Logger                                   1          Running              core
+manager                        Asterisk Manager Interface               1          Running              core
+pbx_ael.so                     Asterisk Extension Language Compiler     0          Running          extended
+pbx_config.so                  Text Extension Configuration             0          Running              core
+pbx_dundi.so                   Distributed Universal Number Discovery ( 0          Running          extended
+pbx_loopback.so                Loopback Switch                          0          Running              core
+pbx_lua.so                     Lua PBX Switch                           0          Running          extended
+pbx_realtime.so                Realtime Switch                          0          Running          extended
+pbx_spool.so                   Outgoing Spool Support                   0          Running              core
+plc                            PLC                                      1          Running              core
+res_adsi.so                    ADSI Resource                            3          Running        deprecated
+res_aeap.so                    Asterisk External Application Protocol M 1          Running              core
+res_ael_share.so               share-able code for AEL                  1          Running          extended
+res_agi.so                     Asterisk Gateway Interface (AGI)         1          Running              core
+res_ari.so                     Asterisk RESTful Interface               11         Running              core
+res_ari_applications.so        RESTful API module - Stasis application  0          Running              core
+res_ari_asterisk.so            RESTful API module - Asterisk resources  0          Running              core
+res_ari_bridges.so             RESTful API module - Bridge resources    0          Running              core
+res_ari_channels.so            RESTful API module - Channel resources   0          Running              core
+res_ari_device_states.so       RESTful API module - Device state resour 0          Running              core
+res_ari_endpoints.so           RESTful API module - Endpoint resources  0          Running              core
+res_ari_events.so              RESTful API module - WebSocket resource  0          Running              core
+res_ari_model.so               ARI Model validators                     10         Running              core
+res_ari_playbacks.so           RESTful API module - Playback control re 0          Running              core
+res_ari_recordings.so          RESTful API module - Recording resources 0          Running              core
+res_ari_sounds.so              RESTful API module - Sound resources     0          Running              core
+res_audiosocket.so             AudioSocket support                      2          Running          extended
+res_calendar.so                Asterisk Calendar integration            8          Running          extended
+res_calendar_caldav.so         Asterisk CalDAV Calendar Integration     0          Running          extended
+res_calendar_ews.so            Asterisk MS Exchange Web Service Calenda 0          Running          extended
+res_calendar_exchange.so       Asterisk MS Exchange Calendar Integratio 0          Running          extended
+res_calendar_icalendar.so      Asterisk iCalendar .ics file integration 0          Running          extended
+res_clioriginate.so            Call origination and redirection from th 0          Running              core
+res_config_curl.so             Realtime Curl configuration              0          Running              core
+res_config_odbc.so             Realtime ODBC configuration              0          Running              core
+res_config_pgsql.so            PostgreSQL RealTime Configuration Driver 0          Running          extended
+res_convert.so                 File format conversion CLI command       0          Running              core
+res_crypto.so                  Cryptographic Digital Signatures         3          Running              core
+res_curl.so                    cURL Resource Module                     3          Running              core
+res_fax.so                     Generic FAX Applications                 1          Running              core
+res_fax_spandsp.so             Spandsp G.711 and T.38 FAX Technologies  0          Running          extended
+res_format_attr_celt.so        CELT Format Attribute Module             1          Running              core
+res_format_attr_g729.so        G.729 Format Attribute Module            1          Running              core
+res_format_attr_h263.so        H.263 Format Attribute Module            1          Running              core
+res_format_attr_h264.so        H.264 Format Attribute Module            1          Running              core
+res_format_attr_ilbc.so        iLBC Format Attribute Module             1          Running              core
+res_format_attr_opus.so        Opus Format Attribute Module             1          Running              core
+res_format_attr_silk.so        SILK Format Attribute Module             1          Running              core
+res_format_attr_siren14.so     Siren14 Format Attribute Module          1          Running              core
+res_format_attr_siren7.so      Siren7 Format Attribute Module           1          Running              core
+res_format_attr_vp8.so         VP8 Format Attribute Module              1          Running              core
+res_geolocation.so             res_geolocation Module for Asterisk      2          Running              core
+res_hep.so                     HEPv3 API                                2          Running          extended
+res_hep_pjsip.so               PJSIP HEPv3 Logger                       0          Not Running      extended
+res_hep_rtcp.so                RTCP HEPv3 Logger                        0          Not Running      extended
+res_http_media_cache.so        HTTP Media Cache Backend                 1          Running              core
+res_http_post.so               HTTP POST support                        0          Running              core
+res_http_websocket.so          HTTP WebSocket Support                   5          Running              core
+res_limit.so                   Resource limits                          0          Running              core
+res_manager_devicestate.so     Manager Device State Topic Forwarder     0          Running              core
+res_manager_presencestate.so   Manager Presence State Topic Forwarder   0          Running              core
+res_musiconhold.so             Music On Hold Resource                   0          Running              core
+res_mutestream.so              Mute audio stream resources              0          Running              core
+res_mwi_devstate.so            MWI Device State Subscriptions           0          Running              core
+res_odbc.so                    ODBC resource                            6          Running              core
+res_odbc_transaction.so        ODBC transaction resource                1          Running              core
+res_parking.so                 Call Parking Resource                    0          Running              core
+res_pjproject.so               PJPROJECT Log and Utility Support        4          Running              core
+res_pjsip.so                   Basic SIP resource                       49         Running              core
+res_pjsip_acl.so               PJSIP ACL Resource                       0          Running              core
+res_pjsip_aoc.so               PJSIP AOC Support                        0          Running          extended
+res_pjsip_authenticator_digest.so PJSIP authentication resource            0          Running              core
+res_pjsip_caller_id.so         PJSIP Caller ID Support                  1          Running              core
+res_pjsip_config_wizard.so     PJSIP Config Wizard                      1          Running              core
+res_pjsip_dialog_info_body_generator.so PJSIP Extension State Dialog Info+XML Pr 0          Running              core
+res_pjsip_diversion.so         PJSIP Add Diversion Header Support       1          Running              core
+res_pjsip_dlg_options.so       SIP OPTIONS in dialog handler            0          Running              core
+res_pjsip_dtmf_info.so         PJSIP DTMF INFO Support                  0          Running              core
+res_pjsip_empty_info.so        PJSIP Empty INFO Support                 0          Running              core
+res_pjsip_endpoint_identifier_anonymous.so PJSIP Anonymous endpoint identifier      0          Running              core
+res_pjsip_endpoint_identifier_ip.so PJSIP IP endpoint identifier             0          Running              core
+res_pjsip_endpoint_identifier_user.so PJSIP username endpoint identifier       0          Running              core
+res_pjsip_exten_state.so       PJSIP Extension State Notifications      0          Running              core
+res_pjsip_geolocation.so       res_pjsip_geolocation Module for Asteris 0          Running              core
+res_pjsip_header_funcs.so      PJSIP Header Functions                   0          Running              core
+res_pjsip_history.so           PJSIP History                            0          Running          extended
+res_pjsip_logger.so            PJSIP Packet Logger                      0          Running              core
+res_pjsip_messaging.so         PJSIP Messaging Support                  0          Running              core
+res_pjsip_mwi.so               PJSIP MWI resource                       0          Running              core
+res_pjsip_mwi_body_generator.so PJSIP MWI resource                       0          Running              core
+res_pjsip_nat.so               PJSIP NAT Support                        0          Running              core
+res_pjsip_notify.so            CLI/AMI PJSIP NOTIFY Support             0          Running              core
+res_pjsip_one_touch_record_info.so PJSIP INFO One Touch Recording Support   0          Running              core
+res_pjsip_outbound_authenticator_digest.so PJSIP authentication resource            0          Running              core
+res_pjsip_outbound_publish.so  PJSIP Outbound Publish Support           2          Running              core
+res_pjsip_outbound_registration.so PJSIP Outbound Registration Support      1          Running              core
+res_pjsip_path.so              PJSIP Path Header Support                0          Running              core
+res_pjsip_pidf_body_generator.so PJSIP Extension State PIDF Provider      0          Running              core
+res_pjsip_pidf_digium_body_supplement.so PJSIP PIDF Sangoma presence supplement   0          Running              core
+res_pjsip_pidf_eyebeam_body_supplement.so PJSIP PIDF Eyebeam supplement            0          Running              core
+res_pjsip_publish_asterisk.so  PJSIP Asterisk Event PUBLISH Support     0          Running              core
+res_pjsip_pubsub.so            PJSIP event resource                     12         Running              core
+res_pjsip_refer.so             PJSIP Blind and Attended Transfer Suppor 1          Running              core
+res_pjsip_registrar.so         PJSIP Registrar Support                  0          Running              core
+res_pjsip_rfc3326.so           PJSIP RFC3326 Support                    0          Running              core
+res_pjsip_rfc3329.so           PJSIP RFC3329 Support (partial)          0          Running              core
+res_pjsip_sdp_rtp.so           PJSIP SDP RTP/AVP stream handler         0          Running              core
+res_pjsip_send_to_voicemail.so PJSIP REFER Send to Voicemail Support    0          Running              core
+res_pjsip_session.so           PJSIP Session resource                   20         Running              core
+res_pjsip_sips_contact.so      UAC SIPS Contact support                 0          Running              core
+res_pjsip_t38.so               PJSIP T.38 UDPTL Support                 0          Running              core
+res_pjsip_transport_websocket.so PJSIP WebSocket Transport Support        0          Running              core
+res_pjsip_xpidf_body_generator.so PJSIP Extension State PIDF Provider      0          Running              core
+res_prometheus.so              Asterisk Prometheus Module               0          Running          extended
+res_realtime.so                Realtime Data Lookup/Rewrite             0          Running              core
+res_resolver_unbound.so        Unbound DNS Resolver Support             1          Running              core
+res_rtp_asterisk.so            Asterisk RTP Stack                       0          Running              core
+res_rtp_multicast.so           Multicast RTP Engine                     1          Running              core
+res_security_log.so            Security Event Logging                   0          Running              core
+res_smdi.so                    Simplified Message Desk Interface (SMDI) 1          Running          extended
+res_snmp.so                    SNMP [Sub]Agent for Asterisk             0          Running          extended
+res_sorcery_astdb.so           Sorcery Astdb Object Wizard              3          Running              core
+res_sorcery_config.so          Sorcery Configuration File Object Wizard 24         Running              core
+res_sorcery_memory.so          Sorcery In-Memory Object Wizard          8          Running              core
+res_sorcery_memory_cache.so    Sorcery Memory Cache Object Wizard       0          Running              core
+res_sorcery_realtime.so        Sorcery Realtime Object Wizard           0          Running              core
+res_speech.so                  Generic Speech Recognition API           3          Running              core
+res_speech_aeap.so             Asterisk External Application Speech Eng 0          Running              core
+res_srtp.so                    Secure RTP (SRTP)                        0          Running              core
+res_stasis.so                  Stasis application support               17         Running              core
+res_stasis_answer.so           Stasis application answer support        1          Running              core
+res_stasis_device_state.so     Stasis application device state support  1          Running              core
+res_stasis_playback.so         Stasis application playback support      3          Running              core
+res_stasis_recording.so        Stasis application recording support     4          Running              core
+res_stasis_snoop.so            Stasis application snoop support         1          Running              core
+res_statsd.so                  StatsD client support                    2          Running          extended
+res_stun_monitor.so            STUN Network Monitor                     0          Running              core
+res_timing_pthread.so          pthread Timing Interface                 0          Running          extended
+res_timing_timerfd.so          Timerfd Timing Interface                 1          Running              core
+res_tonedetect.so              Tone detection module                    0          Running          extended
+res_websocket_client.so        WebSocket Client Support                 1          Running              core
+res_xmpp.so                    Asterisk XMPP Interface                  1          Running              core
+sounds                         Sounds Index                             1          Running              core
+udptl                          UDPTL                                    2          Running              core
+345 modules loaded

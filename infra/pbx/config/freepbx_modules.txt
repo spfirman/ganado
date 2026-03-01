@@ -1,0 +1,26 @@
+No repos specified, using: [standard] from last GUI settings
+
++------------------+------------+---------+---------+-----------+
+| Module           | Version    | Status  | License | Signature |
++------------------+------------+---------+---------+-----------+
+| backup           | 17.0.5.71  | Enabled | GPLv3+  | Sangoma   |
+| builtin          |            | Enabled |         | Unsigned  |
+| callrecording    | 17.0.3.8   | Enabled | AGPLv3+ | Sangoma   |
+| cdr              | 17.0.4.43  | Enabled | GPLv3+  | Sangoma   |
+| certman          | 17.0.3.13  | Enabled | AGPLv3+ | Sangoma   |
+| conferences      | 17.0.3.2   | Enabled | GPLv3+  | Sangoma   |
+| core             | 17.0.18.40 | Enabled | GPLv3+  | Sangoma   |
+| customappsreg    | 17.0.1     | Enabled | GPLv3+  | Sangoma   |
+| dashboard        | 17.0.4.7   | Enabled | AGPLv3+ | Sangoma   |
+| featurecodeadmin | 17.0.2     | Enabled | GPLv3+  | Sangoma   |
+| filestore        | 17.0.3     | Enabled | AGPLv3  | Sangoma   |
+| framework        | 17.0.28    | Enabled | GPLv2+  | Sangoma   |
+| infoservices     | 17.0.1.1   | Enabled | GPLv2+  | Sangoma   |
+| logfiles         | 17.0.3.5   | Enabled | GPLv3+  | Sangoma   |
+| music            | 17.0.5     | Enabled | GPLv3+  | Sangoma   |
+| pm2              | 17.0.3.4   | Enabled | AGPLv3+ | Sangoma   |
+| recordings       | 17.0.2.19  | Enabled | GPLv3+  | Sangoma   |
+| sipsettings      | 17.0.6.10  | Enabled | AGPLv3+ | Sangoma   |
+| soundlang        | 17.0.4.1   | Enabled | GPLv3+  | Sangoma   |
+| voicemail        | 17.0.5.34  | Enabled | GPLv3+  | Sangoma   |
++------------------+------------+---------+---------+-----------+

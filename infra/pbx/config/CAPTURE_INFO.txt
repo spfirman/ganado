@@ -1,0 +1,19 @@
+# PBX Configuration Capture (Docker)
+# ============================================
+# Captured:   2026-03-01 20:25:39
+# Host:       ip-172-31-17-98.ec2.internal
+# Container:  freepbx (escomputers/freepbx:17)
+# DB:         freepbx-db (mariadb:10.11)
+# Files:      39
+#
+# IMPORTANT: Secrets have been automatically redacted.
+# Patterns redacted:
+#   - SIP/PJSIP passwords and secrets
+#   - Registration credentials
+#   - External IP addresses and hostnames
+#   - Manager interface passwords
+#   - Trunk authentication credentials
+#   - FreePBX/MySQL database credentials
+#
+# To update, re-run:
+#   sudo bash /home/ubuntu/apps/ganado/infra/pbx/capture-pbx-config.sh

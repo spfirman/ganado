@@ -1,0 +1,31 @@
+# FreePBX Docker Info — captured 2026-03-01 20:25:39
+# ============================================
+
+## Container: freepbx
+Image:    escomputers/freepbx:17
+Created:  2026-02-27T15:47:17.970644183Z
+Status:   running
+Pid:      1659
+Memory:   1610612736
+Restart:  always
+
+
+## Ports
+5060/udp -> 0.0.0.0:5060
+5060/udp -> [::]:5060
+
+## Volumes
+volume: /var/lib/docker/volumes/freepbx_etc_data/_data → /etc
+bind: REDACTED_PATH → /run/secrets/postfix_sasl_passwd
+volume: /var/lib/docker/volumes/freepbx_var_data/_data → /var
+
+
+## Networks
+freepbx_freepbx-net: 172.21.0.20
+proxy-net: 172.20.0.9
+
+
+## DB Container: freepbx-db
+Image:    mariadb:10.11
+Status:   running
+
