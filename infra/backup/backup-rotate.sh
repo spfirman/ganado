@@ -144,7 +144,17 @@ rotate_backups() {
 # Process each backup category
 # ============================================================
 
-# Odoo instances
+# App instances (farm, vetlab, accounting, etc.)
+if [ -d "$BACKUP_DIR/apps" ]; then
+    for APP_DIR in "$BACKUP_DIR/apps"/*/; do
+        if [ -d "$APP_DIR" ]; then
+            APP_NAME=$(basename "$APP_DIR")
+            rotate_backups "$APP_DIR" "apps/$APP_NAME"
+        fi
+    done
+fi
+
+# Legacy Odoo instances (if any remain)
 if [ -d "$BACKUP_DIR/odoo" ]; then
     for ODOO_DIR in "$BACKUP_DIR/odoo"/*/; do
         if [ -d "$ODOO_DIR" ]; then

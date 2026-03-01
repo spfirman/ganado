@@ -2,7 +2,13 @@
 # ============================================================
 # GPCB — Nightly Master Backup Script
 # ============================================================
-# Backs up all 3 Odoo apps + FreePBX, then rotates old backups.
+# Backs up all 3 GPCB apps + FreePBX, then rotates old backups.
+#
+# Apps on this server:
+#   - Farm Management  (db-farm / PostgreSQL+PostGIS)
+#   - Vetlab Platform  (vetlab-postgres / PostgreSQL)
+#   - Accounting       (db-accounting / PostgreSQL)
+#   - FreePBX          (freepbx-db / MariaDB)
 #
 # Usage:
 #   sudo bash /opt/ganado-app/infra/backup/backup-all.sh
@@ -44,13 +50,13 @@ echo $$ > "$LOCK_FILE"
 trap 'rm -f "$LOCK_FILE"' EXIT
 
 # ============================================================
-# Configuration — Odoo instances
+# Configuration — Docker-based apps
 # ============================================================
-# Each Odoo app: NAME DB_NAME DB_USER DB_HOST DB_PORT CONTAINER_NAME FILESTORE_PATH
-ODOO_APPS=(
-    "odoo1:odoo_db1:odoo:localhost:5432:odoo1_web:/srv/odoo1/filestore"
-    "odoo2:odoo_db2:odoo:localhost:5432:odoo2_web:/srv/odoo2/filestore"
-    "odoo3:odoo_db3:odoo:localhost:5432:odoo3_web:/srv/odoo3/filestore"
+# Format: APP_NAME:DB_CONTAINER:DB_NAME:DB_USER:APP_CONTAINER:DATA_VOLUMES
+APPS=(
+    "farm:db-farm:gpcb_farm_management:postgres:api-farm:"
+    "vetlab:vetlab-postgres:vetlab_db:postgres:vetlab-api:vetlab-web"
+    "accounting:db-accounting:gpcb_accounting:gpcb:app-accounting:"
 )
 
 # Override from config file if present
@@ -73,25 +79,22 @@ ERRORS=0
 TOTAL=0
 
 # ============================================================
-# Step 1: Backup each Odoo instance
+# Step 1: Backup each app (Docker PostgreSQL)
 # ============================================================
-log "--- Odoo Backups ---"
+log "--- App Backups ---"
 
-for APP_ENTRY in "${ODOO_APPS[@]}"; do
-    IFS=':' read -r APP_NAME DB_NAME DB_USER DB_HOST DB_PORT CONTAINER FILESTORE <<< "$APP_ENTRY"
+for APP_ENTRY in "${APPS[@]}"; do
+    IFS=':' read -r APP_NAME DB_CONTAINER DB_NAME DB_USER APP_CONTAINER EXTRA_CONTAINERS <<< "$APP_ENTRY"
 
     TOTAL=$((TOTAL + 1))
-    log "Backing up Odoo app: $APP_NAME"
+    log "Backing up app: $APP_NAME"
 
-    if "$SCRIPT_DIR/backup-odoo.sh" \
+    if "$SCRIPT_DIR/backup-app.sh" \
         --name "$APP_NAME" \
+        --db-container "$DB_CONTAINER" \
         --db-name "$DB_NAME" \
         --db-user "$DB_USER" \
-        --db-host "$DB_HOST" \
-        --db-port "$DB_PORT" \
-        --container "$CONTAINER" \
-        --filestore "$FILESTORE" \
-        --backup-dir "$BACKUP_ROOT/odoo/$APP_NAME" \
+        --backup-dir "$BACKUP_ROOT/apps/$APP_NAME" \
         --date "$DATE"; then
         log "  ✓ $APP_NAME backup complete"
     else
@@ -101,7 +104,7 @@ for APP_ENTRY in "${ODOO_APPS[@]}"; do
 done
 
 # ============================================================
-# Step 2: Backup FreePBX
+# Step 2: Backup FreePBX (Docker)
 # ============================================================
 log "--- FreePBX Backup ---"
 
