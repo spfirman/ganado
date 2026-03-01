@@ -1,0 +1,58 @@
+# ============================================================
+# GPCB — Cron Schedule
+# ============================================================
+# All scheduled tasks for the GPCB production server.
+#
+# Install:
+#   sudo crontab < /opt/ganado-app/infra/cron/gpcb-crontab
+#
+# Verify:
+#   sudo crontab -l
+# ============================================================
+
+# Environment
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+MAILTO=""
+
+# ============================================================
+# Nightly Backup — 2:00 AM
+# ============================================================
+# Full backup: all 3 Odoo instances + FreePBX + rotation
+0 2 * * * /opt/ganado-app/infra/backup/backup-all.sh >> /var/log/gpcb-backup.log 2>&1
+
+# ============================================================
+# SSL Certificate Renewal — 3:00 AM
+# ============================================================
+# Certbot checks if renewal is needed (runs twice daily per best practice)
+0 3 * * * certbot renew --quiet --deploy-hook "systemctl reload nginx" >> /var/log/gpcb-certbot.log 2>&1
+0 15 * * * certbot renew --quiet --deploy-hook "systemctl reload nginx" >> /var/log/gpcb-certbot.log 2>&1
+
+# ============================================================
+# Health Checks — Every 5 minutes
+# ============================================================
+# Monitors: Docker containers, HTTP endpoints, Asterisk, disk/memory
+*/5 * * * * /opt/ganado-app/infra/monitoring/healthcheck.sh >> /var/log/gpcb-healthcheck.log 2>&1
+
+# ============================================================
+# Docker Cleanup — Weekly (Sunday 4:00 AM)
+# ============================================================
+# Remove dangling images, stopped containers, unused networks
+0 4 * * 0 docker system prune -f >> /var/log/gpcb-docker-cleanup.log 2>&1
+
+# ============================================================
+# Log Rotation Check — Daily 5:00 AM
+# ============================================================
+# Ensure GPCB logs don't grow unbounded
+0 5 * * * for f in /var/log/gpcb-*.log; do [ -f "$f" ] && [ $(stat -c%s "$f" 2>/dev/null || echo 0) -gt 10485760 ] && mv "$f" "${f}.old"; done
+
+# ============================================================
+# PostgreSQL Vacuum — Weekly (Sunday 3:30 AM)
+# ============================================================
+30 3 * * 0 sudo -u postgres psql -c "VACUUM ANALYZE;" >> /var/log/gpcb-pg-vacuum.log 2>&1
+
+# ============================================================
+# System Updates Check — Weekly (Monday 6:00 AM)
+# ============================================================
+# Only checks, does not install (unattended-upgrades handles security)
+0 6 * * 1 apt update -qq && apt list --upgradable 2>/dev/null >> /var/log/gpcb-updates.log 2>&1

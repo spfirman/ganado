@@ -1,0 +1,99 @@
+# ============================================================
+# GPCB — Recommended SSH Server Configuration
+# ============================================================
+# Hardened SSH configuration for production server.
+#
+# Install:
+#   sudo cp sshd_config.recommended /etc/ssh/sshd_config
+#   sudo sshd -t  # Test config
+#   sudo systemctl restart sshd
+#
+# IMPORTANT: Ensure you have SSH key access before applying!
+#            Password auth is disabled in this config.
+# ============================================================
+
+# --- Network ---
+Port 22
+AddressFamily any
+ListenAddress 0.0.0.0
+ListenAddress ::
+
+# --- Protocol ---
+Protocol 2
+
+# --- Host Keys ---
+HostKey /etc/ssh/ssh_host_ed25519_key
+HostKey /etc/ssh/ssh_host_rsa_key
+
+# --- Authentication ---
+# Key-only authentication (no passwords)
+PubkeyAuthentication yes
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+KbdInteractiveAuthentication no
+
+# Disable root login (use sudo instead)
+PermitRootLogin no
+
+# Strict mode: require correct permissions on key files
+StrictModes yes
+
+# Maximum authentication attempts
+MaxAuthTries 3
+MaxSessions 5
+
+# --- Login ---
+LoginGraceTime 30s
+AuthenticationMethods publickey
+
+# --- Disable unused features ---
+PermitEmptyPasswords no
+X11Forwarding no
+AllowTcpForwarding no
+AllowAgentForwarding no
+GatewayPorts no
+PermitTunnel no
+
+# --- Logging ---
+SyslogFacility AUTH
+LogLevel VERBOSE
+
+# --- Banner ---
+Banner none
+PrintMotd no
+PrintLastLog yes
+
+# --- Keep-alive ---
+ClientAliveInterval 300
+ClientAliveCountMax 2
+TCPKeepAlive yes
+
+# --- Subsystems ---
+Subsystem sftp /usr/lib/openssh/sftp-server
+
+# --- Security ---
+# Use strong key exchange algorithms
+KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512
+
+# Use strong ciphers
+Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com
+
+# Use strong MACs
+MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com
+
+# --- Restrict to specific group (optional) ---
+# Uncomment and create group to restrict SSH access:
+# AllowGroups ssh-users
+# sudo groupadd ssh-users
+# sudo usermod -aG ssh-users your_username
+
+# --- Deny specific users ---
+DenyUsers root
+
+# --- SFTP chroot (optional) ---
+# Uncomment for chrooted SFTP users:
+# Match Group sftp-only
+#     ChrootDirectory /home/%u
+#     ForceCommand internal-sftp
+#     AllowTcpForwarding no
+#     X11Forwarding no

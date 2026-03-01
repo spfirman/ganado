@@ -1,0 +1,3 @@
+# This directory holds captured PBX configurations.
+# Run: sudo bash infra/pbx/capture-pbx-config.sh
+# Secrets are automatically redacted during capture.
