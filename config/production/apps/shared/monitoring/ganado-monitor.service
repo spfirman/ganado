@@ -1,0 +1,12 @@
+[Unit]
+Description=Ganado App Server Monitor
+After=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/opt/ganado-monitoring/monitor.sh
+Environment="GANADO_REDIS_PASSWORD="
+EnvironmentFile=-/opt/ganado-app/config/production/apps/shared/.env
+
+[Install]
+WantedBy=multi-user.target
