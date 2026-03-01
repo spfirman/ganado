@@ -1,0 +1,40 @@
+# Ganado App — Shared Infrastructure
+# This compose file manages shared services used by both the Ganado backend and ChirpStack.
+# The existing host PostgreSQL 17 is reused (not managed here).
+
+services:
+  # Shared Redis — used by Ganado backend (db 0) and ChirpStack (db 1)
+  redis:
+    container_name: ganado_redis
+    image: redis:7.4-alpine
+    restart: unless-stopped
+    command: >
+      redis-server
+      --requirepass ${GANADO_REDIS_PASSWORD}
+      --appendonly yes
+      --appendfsync everysec
+      --maxmemory 100mb
+      --maxmemory-policy allkeys-lru
+    ports:
+      - '${GANADO_REDIS_PORT_EXTERNAL:-6380}:6379'
+    volumes:
+      - ${BASE_PATH}/${ENVIRONMENT}-srv/docker-data/ganado-redis:/data
+    networks:
+      - ganado_infra_net
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${GANADO_REDIS_PASSWORD}", "ping"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+        reservations:
+          memory: 64M
+
+networks:
+  ganado_infra_net:
+    name: ganado_infra_net
+    driver: bridge

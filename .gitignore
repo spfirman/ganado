@@ -2,3 +2,9 @@ node_modules/
 .env
 *.rdb
 docker-data/
+
+# Server captures (generated at runtime)
+infra/server/captured/
+
+# Backup data
+/srv/backups/

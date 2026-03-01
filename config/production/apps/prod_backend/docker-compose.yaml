@@ -1,106 +1,67 @@
+# Ganado Backend — Docker Compose
+# PostgreSQL and Redis removed — uses shared infrastructure.
+# See: shared/docker-compose.infra.yml (Redis)
+# See: shared/init-databases.sql (PostgreSQL databases in host instance)
+
 services:
-  # Database
-  postgres:
-    container_name: ${ENVIRONMENT}_finca_app_postgres
-    image: postgis/postgis:17-3.4
-    restart: unless-stopped
-    ports:
-      - '${FA_DB_PORT_EXTERNAL}:5432'
-    environment:
-      POSTGRES_DB: ${FA_DB_NAME}
-      POSTGRES_USER: ${FA_DB_USER}
-      POSTGRES_PASSWORD: ${FA_DB_PASSWORD}
-    volumes:
-      - ${BASE_PATH}/${ENVIRONMENT}-srv/docker-data/fa-database:/var/lib/postgresql/data
-      - ./initdb:/docker-entrypoint-initdb.d
-    networks:
-      - finca_app_net
-    healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U ${FA_DB_USER} -d ${FA_DB_NAME}']
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
-
-  # Redis
-  redis:
-    image: redis:7.4-alpine
-    container_name: ${ENVIRONMENT}_fa_redis_server
-    restart: unless-stopped
-    command: >
-      redis-server
-      --requirepass ${FA_REDIS_PASSWORD}
-      --appendonly yes
-      --appendfsync everysec
-    ports:
-      - '${FA_REDIS_PORT_EXTERNAL}:6379'
-    volumes:
-      - ${BASE_PATH}/${ENVIRONMENT}-srv/docker-data/fa-redis:/data
-    networks:
-      - finca_app_net
-    environment:
-      - REDIS_PASSWORD=${FA_REDIS_PASSWORD}
-
   # Backend API
   backend:
-    container_name: ${ENVIRONMENT}_finca_app_backend
+    container_name: ganado_backend
     image: finca_app_backend:latest
     restart: unless-stopped
     ports:
-      - '${APP_PORT_EXTERNAL}:3000'
+      - '${GANADO_BACKEND_PORT:-3100}:3000'
     environment:
       # Application
       NODE_ENV: ${NODE_ENV:-production}
       APP_PORT: 3000
-      CORS_ORIGINS: ${CORS_ORIGINS}
-      CORS_ALLOWED_LOCAL: ${CORS_ALLOWED_LOCAL}
-      # Database
-      FA_DB_HOST: postgres
-      FA_DB_PORT: 5432
-      FA_DB_NAME: ${FA_DB_NAME}
-      FA_DB_USER: ${FA_DB_USER}
-      FA_DB_PASSWORD: ${FA_DB_PASSWORD}
-      DB_SCHEMA: ${DB_SCHEMA:-public}
-      DB_MAX_CONNECTIONS: ${DB_MAX_CONNECTIONS:-100}
-      DB_IDLE_TIMEOUT: ${DB_IDLE_TIMEOUT:-10000}
-
-      # Redis
-      FA_REDIS_HOST: redis
+      CORS_ORIGINS: ${GANADO_CORS_ORIGINS}
+      CORS_ALLOWED_LOCAL: ${GANADO_CORS_ALLOWED_LOCAL:-}
+      # Database — points to host PostgreSQL
+      FA_DB_HOST: ${PG_HOST:-host.docker.internal}
+      FA_DB_PORT: ${PG_PORT:-5432}
+      FA_DB_NAME: ${GANADO_DB_NAME:-ganado_app}
+      FA_DB_USER: ${GANADO_DB_USER:-ganado_app_user}
+      FA_DB_PASSWORD: ${GANADO_DB_PASSWORD}
+      DB_SCHEMA: ${GANADO_DB_SCHEMA:-public}
+      DB_MAX_CONNECTIONS: ${GANADO_DB_MAX_CONNECTIONS:-50}
+      DB_IDLE_TIMEOUT: ${GANADO_DB_IDLE_TIMEOUT:-10000}
+      # Redis — points to shared ganado_redis (db 0)
+      FA_REDIS_HOST: ganado_redis
       FA_REDIS_PORT: 6379
-      FA_REDIS_PASSWORD: ${FA_REDIS_PASSWORD}
-
+      FA_REDIS_PASSWORD: ${GANADO_REDIS_PASSWORD}
       # JWT
-      JWT_SECRET: ${JWT_SECRET}
-      JWT_EXPIRATION: ${JWT_EXPIRATION:-24h}
-      JWT_REFRESH_EXPIRATION: ${JWT_REFRESH_EXPIRATION:-7d}
-
+      JWT_SECRET: ${GANADO_JWT_SECRET}
+      JWT_EXPIRATION: ${GANADO_JWT_EXPIRATION:-24h}
+      JWT_REFRESH_EXPIRATION: ${GANADO_JWT_REFRESH_EXPIRATION:-7d}
       # ChirpStack
-      CHIRPSTACK_API_URL: ${CHIRPSTACK_API_URL}
-      CHIRPSTACK_API_KEY: ${CHIRPSTACK_API_KEY}
-
-      # MQTT
-      MQTT_BROKER_URL: ${MQTT_BROKER_URL}
-      MQTT_BROKER_HOST: ${MQTT_BROKER_HOST}
-      MQTT_BROKER_PORT: ${MQTT_BROKER_PORT}
-      MQTT_BROKER_PROTOCOL: ${MQTT_BROKER_PROTOCOL:-mqtt}
+      CHIRPSTACK_API_URL: ${GANADO_CS_API_URL:-http://ganado_chirpstack:8080}
+      CHIRPSTACK_API_KEY: ${GANADO_CS_API_KEY}
+      # MQTT — points to ganado_mosquitto
+      MQTT_BROKER_URL: ${GANADO_MQTT_BROKER_URL:-mqtt://ganado_mosquitto:1883}
+      MQTT_BROKER_HOST: ${GANADO_MQTT_BROKER_HOST:-ganado_mosquitto}
+      MQTT_BROKER_PORT: ${GANADO_MQTT_BROKER_PORT:-1883}
+      MQTT_BROKER_PROTOCOL: ${GANADO_MQTT_BROKER_PROTOCOL:-mqtt}
     volumes:
-      - ${BASE_PATH}/${ENVIRONMENT}-srv/docker-data/fa-uploads:/app/uploads
+      - ${BASE_PATH:-/srv}/${ENVIRONMENT:-production}-srv/docker-data/ganado-uploads:/app/uploads
     networks:
-      - finca_app_net
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_started
+      - ganado_infra_net
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     healthcheck:
       test: [ "CMD", "node", "-e", "require('http').get('http://localhost:3000/api/v1/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})" ]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
+    deploy:
+      resources:
+        limits:
+          memory: 384M
+        reservations:
+          memory: 192M
 
 networks:
-  finca_app_net:
-    name: '${ENVIRONMENT}_finca_app_net'
-    driver: bridge
+  ganado_infra_net:
+    name: ganado_infra_net
     external: true

@@ -39,8 +39,10 @@
   # Server address or addresses.
   #
   # Set multiple addresses when connecting to a cluster.
+  # Uses shared Redis on database 1 (db 0 is used by Ganado backend).
+  # Password is passed via REDIS_PASSWORD environment variable.
   servers=[
-    "redis://$REDIS_HOST/",
+    "redis://:$REDIS_PASSWORD@$REDIS_HOST/1",
   ]
 
   # TLS enabled.
