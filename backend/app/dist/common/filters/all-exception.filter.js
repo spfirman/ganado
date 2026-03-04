@@ -22,7 +22,19 @@ let AllExceptionFilter = AllExceptionFilter_1 = class AllExceptionFilter {
         let message;
         if (exception instanceof common_1.HttpException) {
             statusCode = exception.getStatus();
-            message = exception.message;
+            const exceptionResponse = exception.getResponse();
+            if (typeof exceptionResponse === 'object' && exceptionResponse !== null && 'message' in exceptionResponse) {
+                const responseMessage = exceptionResponse.message;
+                if (Array.isArray(responseMessage)) {
+                    message = responseMessage.join(', ');
+                } else {
+                    message = responseMessage;
+                }
+            } else if (typeof exceptionResponse === 'string') {
+                message = exceptionResponse;
+            } else {
+                message = exception.message;
+            }
             this.logger.debug("LOG 1", exception);
         }
         else if (exception instanceof Error &&

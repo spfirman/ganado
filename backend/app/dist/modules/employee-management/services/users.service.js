@@ -170,13 +170,12 @@ let UsersService = UsersService_1 = class UsersService {
         try {
             const user_db = await this.userCustomRepository.findByUsernameAndCompanyUsername(username, company_username);
             if (!user_db) {
-                throw new common_1.UnauthorizedException('Credenciales inválidas');
-                return null;
+                throw new common_1.UnauthorizedException('No account found with that email');
             }
             var user = null;
             const isPasswordValid = await bcrypt.compare(password, user_db.password);
             if (!isPasswordValid) {
-                throw new common_1.UnauthorizedException('Credenciales inválidas');
+                throw new common_1.UnauthorizedException('Incorrect password');
             }
             user = (0, class_transformer_1.plainToInstance)(user_entity_1.User, user_db);
             return user;

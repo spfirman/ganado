@@ -108,7 +108,7 @@ let AuthService = AuthService_1 = class AuthService {
         const user = await this.usersService.findByUsernameAndPasswordAndCompanyUsername(username, password, company_username);
         this.logger.debug('User:', user);
         if (!user) {
-            throw new common_1.UnauthorizedException('Credenciales inválidas');
+            throw new common_1.UnauthorizedException('No account found with that email');
         }
         return user;
     }

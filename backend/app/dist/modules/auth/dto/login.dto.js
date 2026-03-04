@@ -23,8 +23,8 @@ __decorate([
         example: 'admin.finca_alamos',
         description: 'El nombre de usuario',
     }),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)({ message: 'Please provide a valid email address' }),
+    (0, class_validator_1.IsNotEmpty)({ message: 'Please provide a valid email address' }),
     __metadata("design:type", String)
 ], LoginDto.prototype, "username", void 0);
 __decorate([
@@ -32,8 +32,8 @@ __decorate([
         example: 'Contraseña123!',
         description: 'La contraseña del usuario',
     }),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)({ message: 'Password is required' }),
+    (0, class_validator_1.IsNotEmpty)({ message: 'Password is required' }),
     __metadata("design:type", String)
 ], LoginDto.prototype, "password", void 0);
 __decorate([
@@ -41,8 +41,8 @@ __decorate([
         example: 'finca_alamos',
         description: 'El nombre de usuario de la compañía',
     }),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)({ message: 'Company username is required' }),
+    (0, class_validator_1.IsNotEmpty)({ message: 'Company username is required' }),
     __metadata("design:type", String)
 ], LoginDto.prototype, "company_username", void 0);
 //# sourceMappingURL=login.dto.js.map
