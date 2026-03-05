@@ -25,12 +25,78 @@ let MetaController = class MetaController {
             hostname: os.hostname(),
             environment: process.env.NODE_ENV || process.env.ENVIRONMENT || 'development',
             version: process.env.APP_VERSION || '0.1.0',
-            git: { commit: process.env.GIT_COMMIT || 'unknown', branch: process.env.GIT_BRANCH || 'unknown', tag: process.env.GIT_TAG || '' },
-            docker: { image: process.env.DOCKER_IMAGE || '', containerId: os.hostname() },
-            runtime: { node: process.version, platform: process.platform, arch: process.arch, pid: process.pid },
-            uptime: { seconds: Math.floor(uptime), formatted: `${hours}h ${minutes}m ${seconds}s`, startedAt: startedAt.toISOString() },
-            features: { mqtt: process.env.MQTT_ENABLED === 'true', massEvents: process.env.MASS_EVENTS_ENABLED !== 'false' },
+            git: {
+                commit: process.env.GIT_COMMIT || 'unknown',
+                branch: process.env.GIT_BRANCH || 'unknown',
+                tag: process.env.GIT_TAG || '',
+            },
+            docker: {
+                image: process.env.DOCKER_IMAGE || '',
+                containerId: os.hostname(),
+            },
+            runtime: {
+                node: process.version,
+                platform: process.platform,
+                arch: process.arch,
+                pid: process.pid,
+            },
+            uptime: {
+                seconds: Math.floor(uptime),
+                formatted: `${hours}h ${minutes}m ${seconds}s`,
+                startedAt: startedAt.toISOString(),
+            },
+            features: {
+                mqtt: process.env.MQTT_ENABLED === 'true',
+                massEvents: process.env.MASS_EVENTS_ENABLED !== 'false',
+            },
             timestamp: new Date().toISOString(),
+        };
+    }
+    getMetrics() {
+        const totalMem = os.totalmem();
+        const freeMem = os.freemem();
+        const cpus = os.cpus();
+        const memUsage = process.memoryUsage();
+        const uptimeSec = process.uptime();
+        const d = Math.floor(uptimeSec / 86400);
+        const h = Math.floor((uptimeSec % 86400) / 3600);
+        const m = Math.floor((uptimeSec % 3600) / 60);
+        const uptimeHuman = d > 0 ? `${d}d ${h}h ${m}m` : h > 0 ? `${h}h ${m}m` : `${m}m`;
+        return {
+            success: true,
+            data: {
+                timestamp: new Date().toISOString(),
+                system: {
+                    hostname: os.hostname(),
+                    platform: os.platform(),
+                    arch: os.arch(),
+                    cpuCount: cpus.length,
+                    cpuModel: cpus[0]?.model,
+                    loadAverage: os.loadavg(),
+                    memoryTotal: totalMem,
+                    memoryFree: freeMem,
+                    memoryUsedPercent: ((totalMem - freeMem) / totalMem * 100).toFixed(1),
+                    osUptime: os.uptime(),
+                    osUptimeHuman: uptimeHuman,
+                },
+                process: {
+                    pid: process.pid,
+                    nodeVersion: process.version,
+                    uptime: uptimeSec,
+                    uptimeHuman,
+                    memoryRss: memUsage.rss,
+                    memoryHeapUsed: memUsage.heapUsed,
+                    memoryHeapTotal: memUsage.heapTotal,
+                    memoryExternal: memUsage.external,
+                },
+                environment: {
+                    nodeEnv: process.env.NODE_ENV || 'development',
+                    appVersion: process.env.APP_VERSION || '0.0.1',
+                    gitCommit: process.env.GIT_COMMIT || 'dev',
+                    gitBranch: process.env.GIT_BRANCH || 'unknown',
+                    buildTime: process.env.BUILD_TIME || 'unknown',
+                },
+            },
         };
     }
 };
@@ -44,6 +110,15 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], MetaController.prototype, "getMeta", null);
+__decorate([
+    (0, common_1.Get)('api/v1/admin/metrics'),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
+    (0, swagger_1.ApiBearerAuth)('access-token'),
+    (0, swagger_1.ApiOperation)({ summary: 'Admin system metrics' }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], MetaController.prototype, "getMetrics", null);
 exports.MetaController = MetaController = __decorate([
     (0, swagger_1.ApiTags)('System'),
     (0, common_1.Controller)()

@@ -1,0 +1,18 @@
+{
+  "_todo": "TODO: Replace with native Iñupiaq translations. These are English placeholders.",
+  "common.save": "Save",
+  "common.cancel": "Cancel",
+  "common.delete": "Delete",
+  "common.edit": "Edit",
+  "common.create": "Create",
+  "common.search": "Search",
+  "common.loading": "Loading...",
+  "common.error": "Error",
+  "common.success": "Success",
+  "nav.dashboard": "Dashboard",
+  "nav.livestock": "Livestock",
+  "nav.settings": "Settings",
+  "auth.login": "Sign In",
+  "auth.welcome": "Welcome to Ganado",
+  "settings.language": "Language"
+}

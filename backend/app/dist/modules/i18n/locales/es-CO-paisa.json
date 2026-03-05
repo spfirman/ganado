@@ -1,0 +1,18 @@
+{
+  "common.save": "Guardá pues",
+  "common.cancel": "Cancelá pues",
+  "common.delete": "Borrá pues",
+  "common.edit": "Editá pues",
+  "common.create": "Creá pues",
+  "common.search": "Buscá pues",
+  "common.loading": "Cargando pues...",
+  "common.success": "¡Bien hecho pues!",
+  "nav.dashboard": "Panel pues",
+  "nav.livestock": "El ganado pues",
+  "nav.settings": "Configuración pues",
+  "nav.logout": "Salí pues",
+  "auth.login": "Entrá pues",
+  "auth.welcome": "¡Quiubo pues! Bienvenido a Ganado",
+  "livestock.cattle": "El ganado pues",
+  "settings.language": "Idioma pues"
+}
