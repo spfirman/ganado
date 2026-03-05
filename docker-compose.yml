@@ -1,0 +1,138 @@
+services:
+  ganado-postgres:
+    image: ghcr.io/baosystems/postgis:15-3.5
+    container_name: ganado-postgres
+    env_file: .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - ganado-pgdata:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/01-extensions.sql:ro
+    networks:
+      - proxy-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  ganado-redis:
+    image: redis:7-alpine
+    container_name: ganado-redis
+    command: >
+      redis-server
+      --requirepass ${FA_REDIS_PASSWORD}
+      --appendonly yes
+      --appendfsync everysec
+      --maxmemory 128mb
+      --maxmemory-policy allkeys-lru
+    volumes:
+      - ganado-redisdata:/data
+    networks:
+      - proxy-net
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${FA_REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  ganado-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ganado-backend
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      ENVIRONMENT: production
+      APP_PORT: "3000"
+      APP_PORT_EXTERNAL: "3000"
+      BASE_URL: ${BASE_URL}
+      CORS_ORIGINS: ${CORS_ORIGINS}
+      CORS_ALLOWED_LOCAL: "${CORS_ALLOWED_LOCAL:-}"
+      FA_DB_HOST: ganado-postgres
+      FA_DB_PORT: "5432"
+      FA_DB_PORT_EXTERNAL: "5432"
+      FA_DB_NAME: ${FA_DB_NAME}
+      FA_DB_USER: ${FA_DB_USER}
+      FA_DB_PASSWORD: ${FA_DB_PASSWORD}
+      DB_SCHEMA: ${DB_SCHEMA:-public}
+      DB_MAX_CONNECTIONS: "${DB_MAX_CONNECTIONS:-50}"
+      DB_IDLE_TIMEOUT: "${DB_IDLE_TIMEOUT:-10000}"
+      FA_REDIS_HOST: ganado-redis
+      FA_REDIS_PORT: "6379"
+      FA_REDIS_PORT_EXTERNAL: "6379"
+      FA_REDIS_PASSWORD: ${FA_REDIS_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-24h}
+      CHIRPSTACK_API_URL: ${CHIRPSTACK_API_URL:-http://localhost:8080}
+      CHIRPSTACK_API_KEY: ${CHIRPSTACK_API_KEY:-placeholder}
+      MQTT_BROKER_URL: ${MQTT_BROKER_URL:-mqtt://localhost:1883}
+      MQTT_BROKER_HOST: ${MQTT_BROKER_HOST:-localhost}
+      MQTT_BROKER_PORT: "${MQTT_BROKER_PORT:-1883}"
+      MQTT_BROKER_PROTOCOL: ${MQTT_BROKER_PROTOCOL:-mqtt}
+      AI_TEST_TOKENS: "${AI_TEST_TOKENS:-}"
+    volumes:
+      - ganado-uploads:/app/uploads
+    networks:
+      - proxy-net
+    depends_on:
+      ganado-postgres:
+        condition: service_healthy
+      ganado-redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/api/v1/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 384M
+        reservations:
+          memory: 192M
+
+  ganado-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ganado-frontend
+    environment:
+      API_BASE_URL: ${API_BASE_URL}
+      VIRTUAL_HOST: ganado.gpcb.com.co
+      LETSENCRYPT_HOST: ganado.gpcb.com.co
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL:-steve@gpcb.com.co}
+    networks:
+      - proxy-net
+    depends_on:
+      ganado-backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 96M
+        reservations:
+          memory: 48M
+
+volumes:
+  ganado-pgdata:
+  ganado-redisdata:
+  ganado-uploads:
+
+networks:
+  proxy-net:
+    external: true

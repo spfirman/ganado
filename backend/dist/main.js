@@ -5,8 +5,10 @@ const swagger_1 = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const app_module_1 = require("./app.module");
 const config_1 = require("@nestjs/config");
+const all_exception_filter_1 = require("./common/filters/all-exception.filter");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule, { bufferLogs: true });
+    app.useGlobalFilters(new all_exception_filter_1.AllExceptionFilter());
     const configService = app.get(config_1.ConfigService);
     const logLevels = configService.get('ENVIRONMENT') === 'production'
         ? ['error', 'warn', 'log']
@@ -54,6 +56,27 @@ async function bootstrap() {
         allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Origin', 'X-Requested-With'],
     });
     const port = configService.get('APP_PORT') ?? 3000;
+    // AI discovery file
+    const expressApp = app.getHttpAdapter().getInstance();
+    expressApp.get('/.well-known/ai.txt', (req, res) => {
+        res.type('text/plain').send([
+            '# Finca Ganadera (Ganado) - AI Agent Access Policy',
+            'Name: Finca Ganadera',
+            'Description: Livestock and cattle ranch management platform',
+            'Version: 0.1.0',
+            'Contact: steve@gpcb.com.co',
+            '',
+            '# AI Testing Access',
+            'AI-Testing-Enabled: true',
+            'AI-Testing-Base-URL: https://ganado.gpcb.com.co',
+            'AI-Testing-Endpoint: /api/v1/ai-testing/verify',
+            'AI-Testing-Auth-Header: x-ai-test-token',
+            'AI-Testing-Docs: /api/v1/ai-testing/capabilities',
+            '',
+            'AI-Rate-Limit: 200 requests per 15 minutes',
+            'AI-Sitemap: /api/v1/ai-testing/sitemap',
+        ].join('\n'));
+    });
     await app.listen(port, '0.0.0.0');
     console.log(`🚀 API escuchando en http://localhost:${port} (env=${configService.get('ENVIRONMENT')})`);
 }

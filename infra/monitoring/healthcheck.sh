@@ -82,6 +82,21 @@ EXPECTED_CONTAINERS=(
     # FreePBX
     "freepbx"
     "freepbx-db"
+    # Rocket.Chat
+    "rocketchat"
+    "mongo-rocketchat"
+    # Keycloak (SSO)
+    "keycloak"
+    "db-keycloak"
+    # Jitsi Meet (Video Conferencing)
+    "jitsi-web"
+    "jitsi-prosody"
+    "jitsi-jicofo"
+    "jitsi-jvb"
+    # PBX Integration Service
+    "pbx-integration"
+    # coturn (TURN/STUN) — runs on host network
+    "coturn"
 )
 
 # Load from config if present
@@ -143,6 +158,9 @@ check_http "Vetlab"       "lacasadelpeludo.com.co"
 check_http "Vetlab API"   "api.lacasadelpeludo.com.co"
 check_http "Accounting"   "contable.gpcb.com.co"
 check_http "FreePBX"      "pbx.gpcb.com.co"
+check_http "Rocket.Chat"  "chat.gpcb.com.co"
+check_http "Keycloak"     "auth.gpcb.com.co"
+check_http "Jitsi Meet"   "meet.gpcb.com.co"
 
 # ============================================================
 # 3. Asterisk/FreePBX Status (Dockerized)

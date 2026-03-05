@@ -85,6 +85,6 @@ let AllExceptionFilter = AllExceptionFilter_1 = class AllExceptionFilter {
 };
 exports.AllExceptionFilter = AllExceptionFilter;
 exports.AllExceptionFilter = AllExceptionFilter = AllExceptionFilter_1 = __decorate([
-    (0, common_1.Catch)(common_1.HttpException, typeorm_1.TypeORMError, common_1.BadRequestException, common_1.NotFoundException, common_1.UnauthorizedException, common_1.ForbiddenException, common_1.InternalServerErrorException, QueryFailedError_1.QueryFailedError, class_validator_1.ValidationError, common_1.ConflictException)
+    (0, common_1.Catch)()
 ], AllExceptionFilter);
 //# sourceMappingURL=all-exception.filter.js.map

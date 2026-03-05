@@ -72,6 +72,10 @@ echo "  RTP (10000-20000/udp)     — allow (Asterisk media)"
 echo "  IAX2 (4569/udp)           — allow (Asterisk inter-PBX)"
 echo "  ChirpStack GW (1700/udp)  — allow (LoRaWAN gateway)"
 echo "  MQTT (1884/tcp)           — allow (ChirpStack MQTT)"
+echo "  STUN (3478/tcp,udp)       — allow (coturn STUN)"
+echo "  TURNS (5349/tcp,udp)      — allow (coturn TURNS/TLS)"
+echo "  TURN relay (49152-65535)  — allow (coturn media relay)"
+echo "  Jitsi JVB (10000/udp)    — allow (Jitsi video bridge)"
 echo ""
 echo "  Internal only (not exposed):"
 echo "  PostgreSQL (5432)         — localhost only (via pg_hba.conf)"
@@ -122,6 +126,16 @@ ufw allow 1700/udp comment "ChirpStack GW (LoRaWAN)"
 
 # --- MQTT for ChirpStack ---
 ufw allow 1884/tcp comment "ChirpStack MQTT"
+
+# --- TURN/STUN (coturn for WebRTC NAT traversal) ---
+ufw allow 3478/tcp comment "STUN TCP (coturn)"
+ufw allow 3478/udp comment "STUN UDP (coturn)"
+ufw allow 5349/tcp comment "TURNS TLS (coturn)"
+ufw allow 5349/udp comment "TURNS TLS (coturn)"
+ufw allow 49152:65535/udp comment "TURN relay (coturn)"
+
+# --- Jitsi JVB media ---
+ufw allow 10000/udp comment "Jitsi JVB media"
 
 # ============================================================
 # Docker compatibility

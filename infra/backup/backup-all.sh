@@ -57,6 +57,7 @@ APPS=(
     "farm:db-farm:gpcb_farm_management:postgres:api-farm:"
     "vetlab:vetlab-postgres:vetlab_db:postgres:vetlab-api:vetlab-web"
     "accounting:db-accounting:gpcb_accounting:gpcb:app-accounting:"
+    "keycloak:db-keycloak:keycloak:keycloak:keycloak:"
 )
 
 # Override from config file if present
@@ -121,7 +122,24 @@ else
 fi
 
 # ============================================================
-# Step 3: Rotate old backups
+# Step 3: Backup Rocket.Chat (MongoDB + uploads)
+# ============================================================
+log "--- Rocket.Chat Backup ---"
+
+TOTAL=$((TOTAL + 1))
+log "Backing up Rocket.Chat..."
+
+if "$SCRIPT_DIR/backup-rocketchat.sh" \
+    --backup-dir "$BACKUP_ROOT/rocketchat" \
+    --date "$DATE"; then
+    log "  ✓ Rocket.Chat backup complete"
+else
+    error "  ✗ Rocket.Chat backup FAILED"
+    ERRORS=$((ERRORS + 1))
+fi
+
+# ============================================================
+# Step 4: Rotate old backups
 # ============================================================
 log "--- Backup Rotation ---"
 
