@@ -9,9 +9,7 @@ const startedAt = new Date();
 @Controller()
 export class MetaController {
   @Get('/__meta')
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'Runtime metadata (admin only)' })
+  @ApiOperation({ summary: 'Runtime metadata (public for monitoring)' })
   getMeta() {
     const uptime = process.uptime();
     const hours = Math.floor(uptime / 3600);
