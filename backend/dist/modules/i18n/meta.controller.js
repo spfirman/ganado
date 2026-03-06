@@ -142,7 +142,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], MetaController.prototype, "getMeta", null);
 __decorate([
-    (0, common_1.Get)('api/v1/admin/metrics'),
+    (0, common_1.Get)('admin/metrics'),
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
     (0, swagger_1.ApiBearerAuth)('access-token'),
     (0, swagger_1.ApiOperation)({ summary: 'Admin system metrics' }),

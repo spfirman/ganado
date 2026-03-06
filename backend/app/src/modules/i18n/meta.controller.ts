@@ -48,7 +48,7 @@ export class MetaController {
     };
   }
 
-  @Get('api/v1/admin/metrics')
+  @Get('admin/metrics')
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Admin system metrics' })
