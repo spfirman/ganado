@@ -48,3 +48,4 @@ exports.I18nController = I18nController = __decorate([
     (0, common_1.Controller)('i18n'),
     __metadata("design:paramtypes", [i18n_service_1.I18nService])
 ], I18nController);
+//# sourceMappingURL=i18n.controller.js.map

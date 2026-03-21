@@ -5,7 +5,7 @@ export declare class Location {
     idCattle: string;
     latitude: number;
     longitude: number;
-    altitude?: number;
+    altitude: number;
     time: Date;
     createdAt: Date;
 }

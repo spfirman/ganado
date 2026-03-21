@@ -11,13 +11,13 @@ export declare class AuthController {
         refresh_token: string;
         expires_in: number;
         user: {
-            id: string;
-            username: string;
-            first_name: string;
-            last_name: string;
-            email: string;
-            tenant_id: string;
-            roles: import("../employee-management/entities/role.entity").Role[];
+            id: any;
+            username: any;
+            first_name: any;
+            last_name: any;
+            email: any;
+            tenant_id: any;
+            roles: any;
         };
         permissions: Record<string, Record<string, string>>;
     }>;

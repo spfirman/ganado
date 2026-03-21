@@ -1,11 +1,10 @@
-import { Role } from '../entities/role.entity';
-export interface User {
+export interface IUser {
     id: string;
-    id_tenant: string;
     username: string;
-    roles: Role[];
-    first_name: string;
-    last_name: string;
-    pass_word: string;
+    password: string;
+    active: boolean;
+    firstName: string;
+    lastName: string;
     email: string;
+    tenantId: string;
 }

@@ -25,13 +25,6 @@ const role_repository_1 = require("../repositories/role.repository");
 const role_read_dto_1 = require("../dto/role-read.dto");
 const role_module_permission_services_1 = require("./role-module-permission.services");
 let RoleService = RoleService_1 = class RoleService {
-    roleRepository_2;
-    roleRepository;
-    permissionRepository;
-    roleModulePermissionService;
-    moduleRepository;
-    userRepository;
-    logger = new common_1.Logger(RoleService_1.name);
     constructor(roleRepository_2, roleRepository, permissionRepository, roleModulePermissionService, moduleRepository, userRepository) {
         this.roleRepository_2 = roleRepository_2;
         this.roleRepository = roleRepository;
@@ -39,11 +32,12 @@ let RoleService = RoleService_1 = class RoleService {
         this.roleModulePermissionService = roleModulePermissionService;
         this.moduleRepository = moduleRepository;
         this.userRepository = userRepository;
+        this.logger = new common_1.Logger(RoleService_1.name);
     }
     async findAll(idTenant, manager) {
         const roles = await this.roleRepository.findAllByTenantID(idTenant, manager);
         if (roles.length > 0) {
-            const rolesDto = roles.map(role => role_read_dto_1.RoleReadDto.transformToDto(role));
+            const rolesDto = roles.map((role) => role_read_dto_1.RoleReadDto.transformToDto(role));
             return rolesDto;
         }
         else {

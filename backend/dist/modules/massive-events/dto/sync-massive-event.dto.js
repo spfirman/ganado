@@ -14,10 +14,6 @@ const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const simple_event_type_enum_1 = require("../enums/simple-event-type.enum");
 class SyncSimpleEventInputDto {
-    id;
-    type;
-    dataJson;
-    createdAt;
 }
 exports.SyncSimpleEventInputDto = SyncSimpleEventInputDto;
 __decorate([
@@ -51,14 +47,6 @@ __decorate([
     __metadata("design:type", String)
 ], SyncSimpleEventInputDto.prototype, "createdAt", void 0);
 class SyncMassiveEventDto {
-    id;
-    idTenant;
-    eventDate;
-    status;
-    createdBy;
-    createdAt;
-    updatedAt;
-    simpleEvents;
 }
 exports.SyncMassiveEventDto = SyncMassiveEventDto;
 __decorate([
@@ -118,7 +106,6 @@ __decorate([
     __metadata("design:type", Array)
 ], SyncMassiveEventDto.prototype, "simpleEvents", void 0);
 class SyncMassiveEventsRequestDto {
-    massiveEvents;
 }
 exports.SyncMassiveEventsRequestDto = SyncMassiveEventsRequestDto;
 __decorate([
@@ -126,9 +113,6 @@ __decorate([
     __metadata("design:type", Array)
 ], SyncMassiveEventsRequestDto.prototype, "massiveEvents", void 0);
 class SyncMassiveEventResultDto {
-    id;
-    status;
-    message;
 }
 exports.SyncMassiveEventResultDto = SyncMassiveEventResultDto;
 __decorate([
@@ -144,7 +128,6 @@ __decorate([
     __metadata("design:type", String)
 ], SyncMassiveEventResultDto.prototype, "message", void 0);
 class SyncMassiveEventsResponseDto {
-    results;
 }
 exports.SyncMassiveEventsResponseDto = SyncMassiveEventsResponseDto;
 __decorate([

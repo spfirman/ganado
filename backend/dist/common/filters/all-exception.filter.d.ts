@@ -1,7 +1,7 @@
-import { ArgumentsHost, ExceptionFilter, HttpException } from '@nestjs/common';
-import { TypeORMError } from 'typeorm';
+import { ExceptionFilter, ArgumentsHost } from '@nestjs/common';
+import { Response } from 'express';
 export declare class AllExceptionFilter implements ExceptionFilter {
     private readonly logger;
-    catch(exception: HttpException | TypeORMError, host: ArgumentsHost): any;
+    catch(exception: unknown, host: ArgumentsHost): Response<any, Record<string, any>>;
     private getErrorType;
 }

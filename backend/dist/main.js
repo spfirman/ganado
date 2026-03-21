@@ -19,6 +19,21 @@ async function bootstrap() {
         transform: true,
         whitelist: true,
         forbidNonWhitelisted: true,
+        exceptionFactory: (errors) => {
+            const fields = errors.map((err) => ({
+                field: err.property,
+                errors: err.constraints
+                    ? Object.values(err.constraints)
+                    : ['Validation failed'],
+                value: err.value,
+            }));
+            return new (require('@nestjs/common').HttpException)({
+                statusCode: 400,
+                error: 'Bad Request',
+                message: 'Validation failed',
+                details: fields,
+            }, 400);
+        },
     }));
     app.setGlobalPrefix('api/v1');
     const swaggerCfg = new swagger_1.DocumentBuilder()
@@ -36,14 +51,19 @@ async function bootstrap() {
         .build();
     const document = swagger_1.SwaggerModule.createDocument(app, swaggerCfg);
     swagger_1.SwaggerModule.setup('api', app, document);
-    const corsOrigins = configService.get('CORS_ORIGINS')?.split(',').map(origin => origin.trim()) || [
+    const corsOrigins = configService
+        .get('CORS_ORIGINS')
+        ?.split(',')
+        .map((origin) => origin.trim()) || [
         'http://localhost',
-        'http://127.0.0.1'
+        'http://127.0.0.1',
     ];
     const corsAllowedLocal = configService.get('CORS_ALLOWED_LOCAL')?.trim();
     app.enableCors({
         origin: (origin, callback) => {
-            const allowed = !origin || corsOrigins.includes(origin) || (corsAllowedLocal && origin.startsWith(corsAllowedLocal));
+            const allowed = !origin ||
+                corsOrigins.includes(origin) ||
+                (corsAllowedLocal && origin.startsWith(corsAllowedLocal));
             if (allowed) {
                 callback(null, true);
             }
@@ -53,11 +73,50 @@ async function bootstrap() {
         },
         credentials: true,
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-        allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Origin', 'X-Requested-With'],
+        allowedHeaders: [
+            'Content-Type',
+            'Authorization',
+            'Accept',
+            'Origin',
+            'X-Requested-With',
+        ],
+    });
+    const expressApp = app.getHttpAdapter().getInstance();
+    expressApp.disable('x-powered-by');
+    const authRateLimitMap = new Map();
+    const AUTH_RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
+    const AUTH_RATE_LIMIT_MAX = 10;
+    expressApp.use('/api/v1/auth/login', (req, res, next) => {
+        if (req.method !== 'POST')
+            return next();
+        const ip = req.ip || req.connection?.remoteAddress || 'unknown';
+        const now = Date.now();
+        let entry = authRateLimitMap.get(ip);
+        if (authRateLimitMap.size > 10000) {
+            for (const [key, val] of authRateLimitMap) {
+                if (val.resetAt < now)
+                    authRateLimitMap.delete(key);
+            }
+        }
+        if (!entry || entry.resetAt < now) {
+            entry = { count: 0, resetAt: now + AUTH_RATE_LIMIT_WINDOW_MS };
+            authRateLimitMap.set(ip, entry);
+        }
+        entry.count++;
+        res.setHeader('X-RateLimit-Limit', AUTH_RATE_LIMIT_MAX);
+        res.setHeader('X-RateLimit-Remaining', Math.max(0, AUTH_RATE_LIMIT_MAX - entry.count));
+        res.setHeader('X-RateLimit-Reset', Math.ceil(entry.resetAt / 1000));
+        if (entry.count > AUTH_RATE_LIMIT_MAX) {
+            return res.status(429).json({
+                success: false,
+                message: 'Too many login attempts. Please try again later.',
+                error: 'RATE_LIMIT_EXCEEDED',
+                retryAfter: Math.ceil((entry.resetAt - now) / 1000),
+            });
+        }
+        next();
     });
     const port = configService.get('APP_PORT') ?? 3000;
-    // AI discovery file
-    const expressApp = app.getHttpAdapter().getInstance();
     expressApp.get('/.well-known/ai.txt', (req, res) => {
         res.type('text/plain').send([
             '# Finca Ganadera (Ganado) - AI Agent Access Policy',

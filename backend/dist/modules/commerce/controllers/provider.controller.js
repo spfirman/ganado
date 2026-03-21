@@ -21,14 +21,10 @@ const session_user_decorator_1 = require("../../../common/decorators/session-use
 const session_user_dto_1 = require("../../auth/dto/session-user.dto");
 const application_permissions_decorator_1 = require("../../../common/application-permissions/application-permissions.decorator");
 const jwt_auth_guard_1 = require("../../auth/guards/jwt-auth.guard");
-const common_2 = require("@nestjs/common");
 const create_provider_dto_1 = require("../dto/create-provider.dto");
 const update_provider_dto_1 = require("../dto/update-provider.dto");
 const provider_response_dto_1 = require("../dto/provider-response.dto");
-const common_3 = require("@nestjs/common");
-const common_4 = require("@nestjs/common");
 let ProviderController = class ProviderController {
-    providerService;
     constructor(providerService) {
         this.providerService = providerService;
     }
@@ -41,7 +37,7 @@ let ProviderController = class ProviderController {
     }
     async searchByName(user, name, type) {
         const providers = await this.providerService.searchByName(name, user.tenant_id);
-        const filtered = type ? providers.filter(p => p.type === type) : providers;
+        const filtered = type ? providers.filter((p) => p.type === type) : providers;
         return filtered.map(provider_response_dto_1.ProviderResponseDto.toProviderResponse);
     }
     async searchByNit(query, session) {
@@ -56,7 +52,7 @@ let ProviderController = class ProviderController {
     }
     async findAll(user, type) {
         const providers = await this.providerService.findAll(user.tenant_id);
-        const filtered = type ? providers.filter(p => p.type === type) : providers;
+        const filtered = type ? providers.filter((p) => p.type === type) : providers;
         return filtered.map(provider_response_dto_1.ProviderResponseDto.toProviderResponse);
     }
     async updateById(id, data, user) {
@@ -64,7 +60,7 @@ let ProviderController = class ProviderController {
     }
     async updateByNit(nit, data, user) {
         if ('nit' in data && data.nit !== undefined && data.nit !== null) {
-            throw new common_3.BadRequestException('NIT update not allowed in this endpoint');
+            throw new common_1.BadRequestException('NIT update not allowed in this endpoint');
         }
         await this.providerService.updateByNit(nit, user.tenant_id, data);
     }
@@ -81,23 +77,30 @@ __decorate([
     (0, application_permissions_decorator_1.RequireAction)('create'),
     (0, swagger_1.ApiOperation)({ summary: 'Create a new provider' }),
     (0, common_1.HttpCode)(common_1.HttpStatus.CREATED),
-    (0, swagger_1.ApiResponse)({ status: 201, description: 'Provider created successfully', type: provider_response_dto_1.ProviderResponseDto }),
+    (0, swagger_1.ApiResponse)({
+        status: 201,
+        description: 'Provider created successfully',
+        type: provider_response_dto_1.ProviderResponseDto,
+    }),
     (0, swagger_1.ApiResponse)({ status: 409, description: 'NIT already exists for this tenant' }),
     (0, swagger_1.ApiBody)({
-        type: create_provider_dto_1.CreateProviderDto, required: true, examples: {
+        type: create_provider_dto_1.CreateProviderDto,
+        required: true,
+        examples: {
             example1: {
                 summary: 'Mandatory fields',
                 value: {
                     nit: '1234567890',
                     name: 'Provider 1',
                 },
-            }
-        }
+            },
+        },
     }),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, session_user_decorator_1.SessionUser)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_provider_dto_1.CreateProviderDto, session_user_dto_1.SessionUserDto]),
+    __metadata("design:paramtypes", [create_provider_dto_1.CreateProviderDto,
+        session_user_dto_1.SessionUserDto]),
     __metadata("design:returntype", Promise)
 ], ProviderController.prototype, "create", null);
 __decorate([
@@ -105,11 +108,19 @@ __decorate([
     (0, application_permissions_decorator_1.RequireAction)('read'),
     (0, swagger_1.ApiOperation)({ summary: 'Search providers by name' }),
     (0, swagger_1.ApiQuery)({ name: 'name', required: true, description: 'Search term for provider name' }),
-    (0, swagger_1.ApiQuery)({ name: 'type', required: false, description: 'Filter by provider type (BUYER, TRANSPORTER, VET, OTHER)' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'List of matching providers with contact info', type: [provider_response_dto_1.ProviderResponseDto] }),
+    (0, swagger_1.ApiQuery)({
+        name: 'type',
+        required: false,
+        description: 'Filter by provider type (BUYER, TRANSPORTER, VET, OTHER)',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'List of matching providers with contact info',
+        type: [provider_response_dto_1.ProviderResponseDto],
+    }),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
-    __param(1, (0, common_4.Query)('name')),
-    __param(2, (0, common_4.Query)('type')),
+    __param(1, (0, common_1.Query)('name')),
+    __param(2, (0, common_1.Query)('type')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto, String, String]),
     __metadata("design:returntype", Promise)
@@ -118,8 +129,12 @@ __decorate([
     (0, common_1.Get)('search/by-nit'),
     (0, application_permissions_decorator_1.RequireAction)('read'),
     (0, swagger_1.ApiQuery)({ name: 'query', required: true, description: 'Fragmento parcial del NIT' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Proveedores coincidentes con fragmento del NIT', type: [provider_response_dto_1.ProviderResponseDto] }),
-    __param(0, (0, common_4.Query)('query')),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Proveedores coincidentes con fragmento del NIT',
+        type: [provider_response_dto_1.ProviderResponseDto],
+    }),
+    __param(0, (0, common_1.Query)('query')),
     __param(1, (0, session_user_decorator_1.SessionUser)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, session_user_dto_1.SessionUserDto]),
@@ -153,10 +168,14 @@ __decorate([
     (0, common_1.Get)(),
     (0, application_permissions_decorator_1.RequireAction)('read'),
     (0, swagger_1.ApiOperation)({ summary: 'Get all providers by tenant' }),
-    (0, swagger_1.ApiQuery)({ name: 'type', required: false, description: 'Filter by provider type (BUYER, TRANSPORTER, VET, OTHER, PROVIDER)' }),
+    (0, swagger_1.ApiQuery)({
+        name: 'type',
+        required: false,
+        description: 'Filter by provider type (BUYER, TRANSPORTER, VET, OTHER, PROVIDER)',
+    }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'List of providers', type: [provider_response_dto_1.ProviderResponseDto] }),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
-    __param(1, (0, common_4.Query)('type')),
+    __param(1, (0, common_1.Query)('type')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto, String]),
     __metadata("design:returntype", Promise)
@@ -170,18 +189,20 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Provider not found by ID' }),
     (0, swagger_1.ApiResponse)({ status: 409, description: 'NIT already exists for this tenant' }),
     (0, swagger_1.ApiBody)({
-        type: update_provider_dto_1.UpdateProviderDto, required: true, examples: {
+        type: update_provider_dto_1.UpdateProviderDto,
+        required: true,
+        examples: {
             example1: {
                 summary: 'Nit only',
                 value: {
-                    nit: '1234567890'
+                    nit: '1234567890',
                 },
             },
             example2: {
                 summary: 'Name only',
                 value: {
                     name: 'Provider 1',
-                }
+                },
             },
             example3: {
                 summary: 'All fields',
@@ -189,14 +210,15 @@ __decorate([
                     nit: '1234567890',
                     name: 'Provider 1',
                 },
-            }
-        }
+            },
+        },
     }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __param(2, (0, session_user_decorator_1.SessionUser)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_provider_dto_1.UpdateProviderDto, session_user_dto_1.SessionUserDto]),
+    __metadata("design:paramtypes", [String, update_provider_dto_1.UpdateProviderDto,
+        session_user_dto_1.SessionUserDto]),
     __metadata("design:returntype", Promise)
 ], ProviderController.prototype, "updateById", null);
 __decorate([
@@ -208,20 +230,23 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 400, description: 'NIT update not allowed in this endpoint' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Provider not found by NIT' }),
     (0, swagger_1.ApiBody)({
-        type: update_provider_dto_1.UpdateProviderDto, required: true, examples: {
+        type: update_provider_dto_1.UpdateProviderDto,
+        required: true,
+        examples: {
             example1: {
                 summary: 'Name only',
                 value: {
                     name: 'Provider 1',
-                }
-            }
-        }
+                },
+            },
+        },
     }),
     __param(0, (0, common_1.Param)('nit')),
     __param(1, (0, common_1.Body)()),
     __param(2, (0, session_user_decorator_1.SessionUser)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_provider_dto_1.UpdateProviderDto, session_user_dto_1.SessionUserDto]),
+    __metadata("design:paramtypes", [String, update_provider_dto_1.UpdateProviderDto,
+        session_user_dto_1.SessionUserDto]),
     __metadata("design:returntype", Promise)
 ], ProviderController.prototype, "updateByNit", null);
 __decorate([
@@ -254,7 +279,7 @@ exports.ProviderController = ProviderController = __decorate([
     (0, common_1.Controller)('providers'),
     (0, application_permissions_decorator_1.RequireEntity)('providers'),
     (0, application_permissions_decorator_1.RequireModule)('COMMERCE'),
-    (0, common_2.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, application_permissions_guard_1.ApplicationPermissionsGuard),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, application_permissions_guard_1.ApplicationPermissionsGuard),
     __metadata("design:paramtypes", [provider_service_1.ProviderService])
 ], ProviderController);
 //# sourceMappingURL=provider.controller.js.map

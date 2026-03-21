@@ -13,7 +13,6 @@ exports.ConfigurationsService = void 0;
 const configurations_repository_1 = require("../repositories/configurations.repository");
 const common_1 = require("@nestjs/common");
 let ConfigurationsService = class ConfigurationsService {
-    configurationsRepository;
     constructor(configurationsRepository) {
         this.configurationsRepository = configurationsRepository;
     }

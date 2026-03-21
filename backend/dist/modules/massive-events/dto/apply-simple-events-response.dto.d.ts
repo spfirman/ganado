@@ -1,10 +1,9 @@
-import { SimpleEventType } from '../enums/simple-event-type.enum';
 export declare class ApplySimpleEventsResponseDto {
     id: string;
     idTenant: string;
     idAnimal: string;
     animalNumber: string;
-    type: SimpleEventType;
+    type: string;
     data: any;
     appliedBy?: string;
     appliedAt: Date;

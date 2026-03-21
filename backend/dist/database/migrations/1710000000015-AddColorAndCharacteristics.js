@@ -2,7 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AddColorAndCharacteristics1710000000015 = void 0;
 class AddColorAndCharacteristics1710000000015 {
-    name = 'AddColorAndCharacteristics1710000000015';
+    constructor() {
+        this.name = 'AddColorAndCharacteristics1710000000015';
+    }
     async up(queryRunner) {
         await queryRunner.query(`CREATE EXTENSION IF NOT EXISTS pgcrypto;`);
         await queryRunner.query(`

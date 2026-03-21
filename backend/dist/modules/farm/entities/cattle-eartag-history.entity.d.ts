@@ -2,8 +2,8 @@ export declare class CattleEartagHistory {
     id: string;
     idTenant: string;
     idCattle: string;
-    data: Record<string, any>;
+    data: any;
     assignedAt: Date;
-    assignedBy?: string;
-    idMassiveEvent?: string;
+    assignedBy: string;
+    idMassiveEvent: string;
 }

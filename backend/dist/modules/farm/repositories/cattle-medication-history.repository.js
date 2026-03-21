@@ -18,7 +18,6 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const cattle_medication_history_entity_1 = require("../entities/cattle-medication-history.entity");
 let CattleMedicationHistoryRepository = class CattleMedicationHistoryRepository {
-    repo;
     constructor(repo) {
         this.repo = repo;
     }

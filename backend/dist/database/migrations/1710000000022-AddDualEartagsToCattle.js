@@ -2,7 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AddDualEartagsToCattle1710000000022 = void 0;
 class AddDualEartagsToCattle1710000000022 {
-    name = 'AddDualEartagsToCattle1710000000022';
+    constructor() {
+        this.name = 'AddDualEartagsToCattle1710000000022';
+    }
     async up(queryRunner) {
         await queryRunner.query(`
       DO $$

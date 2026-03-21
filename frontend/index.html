@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="und">
 
 <head>
   <!--
@@ -13,19 +13,19 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-  <meta name="description" content="Application to manage a farm">
+  <meta name="description" content="GPCB Ganado - Cattle Management System">
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="finca_app_frontend">
+  <meta name="apple-mobile-web-app-title" content="GPCB Ganado">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png" />
 
-  <title>finca_app_frontend</title>
+  <title>GPCB Ganado</title>
 
   <!-- Web app manifest -->
   <link rel="manifest" href="manifest.json">
@@ -42,7 +42,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: #ffffff;
+      background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 50%, #388e3c 100%);
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -54,19 +54,41 @@
       opacity: 0;
       pointer-events: none;
     }
+    .loading-logo {
+      width: 96px;
+      height: 96px;
+      margin-bottom: 24px;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    .loading-brand {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    .loading-subtitle {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.8);
+      letter-spacing: 0.5px;
+      margin-bottom: 32px;
+    }
     .loading-spinner {
-      width: 48px;
-      height: 48px;
-      border: 4px solid #e0e0e0;
-      border-top: 4px solid #2e7d32;
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top: 3px solid #ffffff;
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
     }
     .loading-text {
       margin-top: 16px;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      font-size: 14px;
-      color: #666;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.7);
       letter-spacing: 0.5px;
     }
     @keyframes spin {
@@ -77,9 +99,12 @@
 </head>
 
 <body>
-  <!-- Loading spinner visible until Flutter renders -->
-  <div id="loading-overlay" class="loading-overlay">
-    <div class="loading-spinner"></div>
+  <!-- Loading splash with GPCB branding, visible until Flutter renders -->
+  <div id="loading-overlay" class="loading-overlay" role="status" aria-label="GPCB Ganado is loading">
+    <img src="icons/Icon-192.png" alt="GPCB Ganado logo" class="loading-logo">
+    <div class="loading-brand">GPCB Ganado</div>
+    <div class="loading-subtitle">Cattle Management System</div>
+    <div class="loading-spinner" aria-hidden="true"></div>
     <div class="loading-text">Loading...</div>
   </div>
 
@@ -157,6 +182,9 @@
       }
     })();
   </script>
+
+  <!-- i18n language overlay for multi-language support -->
+  <script src="i18n-overlay.js" defer></script>
 </body>
 
 </html>

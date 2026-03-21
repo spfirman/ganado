@@ -20,14 +20,6 @@ var WeightContext;
     WeightContext["RECEIVED"] = "RECEIVED";
 })(WeightContext || (exports.WeightContext = WeightContext = {}));
 let CattleWeightHistory = class CattleWeightHistory {
-    id;
-    idTenant;
-    idCattle;
-    weight;
-    date;
-    context;
-    idMassiveEvent;
-    recordedBy;
 };
 exports.CattleWeightHistory = CattleWeightHistory;
 __decorate([
@@ -54,7 +46,7 @@ __decorate([
     (0, typeorm_1.Column)({
         type: 'enum',
         enum: WeightContext,
-        default: WeightContext.MANUAL
+        default: WeightContext.MANUAL,
     }),
     __metadata("design:type", String)
 ], CattleWeightHistory.prototype, "context", void 0);

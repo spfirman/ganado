@@ -2,7 +2,7 @@ export declare class Brand {
     id: string;
     idTenant: string;
     name: string;
-    imageUrl?: string;
+    imageUrl: string;
     image: Buffer;
     imageMimeType: string;
     createdAt: Date;

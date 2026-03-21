@@ -14,18 +14,10 @@ const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
 const provider_entity_1 = require("../entities/provider.entity");
 class CreateProviderDto {
-    name;
-    nit;
-    type;
-    address;
-    contactPersonName;
-    phone1;
-    phone2;
-    email;
 }
 exports.CreateProviderDto = CreateProviderDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: 'Ganadería La Ponderosa', description: 'Provider name' }),
+    (0, swagger_1.ApiProperty)({ example: 'Ganaderia La Ponderosa', description: 'Provider name' }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.Length)(3, 150),
@@ -51,7 +43,7 @@ __decorate([
     __metadata("design:type", String)
 ], CreateProviderDto.prototype, "address", void 0);
 __decorate([
-    (0, swagger_1.ApiPropertyOptional)({ example: 'Juan Pérez', description: 'Contact person name' }),
+    (0, swagger_1.ApiPropertyOptional)({ example: 'Juan Perez', description: 'Contact person name' }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)

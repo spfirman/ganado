@@ -4,7 +4,7 @@ export declare class CattleDeviceHistory {
     idCattle: string;
     idDevice: string;
     assignedAt: Date;
-    unassignedAt?: Date;
-    assignedBy?: string;
-    idMassiveEvent?: string;
+    unassignedAt: Date;
+    assignedBy: string;
+    idMassiveEvent: string;
 }

@@ -1,7 +1,7 @@
 export declare class PurchaseListItemDto {
     id: string;
     purchaseDate: string;
-    providerName?: string | null;
+    providerName: string | null;
     totalWeight: number;
     totalCattle: number;
     receivedCattle: number;

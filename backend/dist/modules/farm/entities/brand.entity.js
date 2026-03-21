@@ -12,14 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Brand = void 0;
 const typeorm_1 = require("typeorm");
 let Brand = class Brand {
-    id;
-    idTenant;
-    name;
-    imageUrl;
-    image;
-    imageMimeType;
-    createdAt;
-    updatedAt;
 };
 exports.Brand = Brand;
 __decorate([

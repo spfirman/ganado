@@ -13,59 +13,76 @@ const typeorm_1 = require("typeorm");
 const QueryFailedError_1 = require("typeorm/error/QueryFailedError");
 const class_validator_1 = require("class-validator");
 let AllExceptionFilter = AllExceptionFilter_1 = class AllExceptionFilter {
-    logger = new common_1.Logger(AllExceptionFilter_1.name);
+    constructor() {
+        this.logger = new common_1.Logger(AllExceptionFilter_1.name);
+    }
     catch(exception, host) {
         const ctx = host.switchToHttp();
         const response = ctx.getResponse();
         const request = ctx.getRequest();
         let statusCode;
         let message;
+        let details;
         if (exception instanceof common_1.HttpException) {
             statusCode = exception.getStatus();
-            message = exception.message;
-            this.logger.debug("LOG 1", exception);
+            const resp = exception.getResponse();
+            if (typeof resp === 'object' && resp !== null) {
+                message = resp.message || exception.message;
+                details = resp.details;
+            }
+            else {
+                message = exception.message;
+            }
+            this.logger.debug('LOG 1', exception);
         }
         else if (exception instanceof Error &&
             exception.message.includes('no result was found')) {
-            this.logger.debug("LOG 2");
+            this.logger.debug('LOG 2');
             statusCode = common_1.HttpStatus.BAD_REQUEST;
             message = 'Credenciales inválidas';
         }
         else if (exception instanceof QueryFailedError_1.QueryFailedError) {
-            this.logger.debug("LOG 3");
+            this.logger.debug('LOG 3');
             statusCode = common_1.HttpStatus.INTERNAL_SERVER_ERROR;
             message = 'Error en la consulta de base de datos';
         }
         else if (exception instanceof class_validator_1.ValidationError) {
-            this.logger.debug("LOG 4");
+            this.logger.debug('LOG 4');
             statusCode = common_1.HttpStatus.BAD_REQUEST;
             message = 'Validación fallida';
         }
         else if (exception instanceof common_1.ConflictException) {
-            this.logger.debug("LOG 5");
+            this.logger.debug('LOG 5');
             statusCode = common_1.HttpStatus.CONFLICT;
             message = 'Conflicto';
         }
         else if (exception instanceof Error) {
-            this.logger.debug("LOG 6");
+            this.logger.debug('LOG 6');
             statusCode = common_1.HttpStatus.INTERNAL_SERVER_ERROR;
             message = 'Error interno del servidor';
         }
         else {
-            this.logger.debug("LOG 7");
+            this.logger.debug('LOG 7');
             statusCode = common_1.HttpStatus.INTERNAL_SERVER_ERROR;
             message = 'Error desconocido';
         }
-        if (!(exception instanceof common_1.UnauthorizedException) && !(exception instanceof common_1.ForbiddenException)) {
-            this.logger.error({ type: this.getErrorType(exception), error: exception });
+        if (!(exception instanceof common_1.UnauthorizedException) &&
+            !(exception instanceof common_1.ForbiddenException)) {
+            this.logger.error({
+                type: this.getErrorType(exception),
+                error: exception,
+            });
         }
-        return response.status(statusCode).json({
+        const body = {
             success: false,
             message,
             error: this.getErrorType(exception),
             path: request.url,
             timestamp: new Date().toISOString(),
-        });
+        };
+        if (details)
+            body.details = details;
+        return response.status(statusCode).json(body);
     }
     getErrorType(exception) {
         if (exception instanceof common_1.HttpException) {

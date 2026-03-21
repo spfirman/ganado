@@ -17,9 +17,6 @@ const config_1 = require("@nestjs/config");
 const users_service_1 = require("../../employee-management/services/users.service");
 const application_permissions_service_1 = require("../../../common/application-permissions/application-permissions.service");
 let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy) {
-    configService;
-    usersService;
-    permissionsService;
     constructor(configService, usersService, permissionsService) {
         const jwtSecret = configService.get('JWT_SECRET');
         if (!jwtSecret) {
@@ -35,18 +32,14 @@ let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(pas
         this.permissionsService = permissionsService;
     }
     async validate(payload) {
-        console.log('JwtStrategy validating payload:', payload);
         if (!payload || !payload.sub) {
-            console.log('JwtStrategy: Payload missing or no sub');
             throw new common_1.UnauthorizedException();
         }
         const sessionData = await this.permissionsService.getSessionFromRedis(payload.sub, payload.sessionId);
         if (!sessionData) {
-            console.log('JwtStrategy: No session data found in Redis for sub:', payload.sub);
             throw new common_1.UnauthorizedException('Session expired or invalid.');
         }
         if (sessionData.permissionsHash !== payload.permissionsHash) {
-            console.log('JwtStrategy: Permissions hash mismatch.', sessionData.permissionsHash, payload.permissionsHash);
             throw new common_1.UnauthorizedException('Permissions outdated. Please refresh your session.');
         }
         return sessionData;

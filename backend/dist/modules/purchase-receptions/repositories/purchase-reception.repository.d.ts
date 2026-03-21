@@ -6,5 +6,5 @@ export declare class PurchaseReceptionRepository extends Repository<PurchaseRece
     constructor(ds: DataSource);
     findByPurchase(idTenant: string, idPurchase: string, manager?: EntityManager): Promise<PurchaseReception | null>;
     createInstance(data: Partial<PurchaseReception>, manager?: EntityManager): Promise<PurchaseReception>;
-    insertUnique(pr: Partial<PurchaseReception>, m: EntityManager): Promise<import("typeorm").InsertResult>;
+    insertUnique(pr: Partial<PurchaseReception>, m: EntityManager): Promise<any>;
 }

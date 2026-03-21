@@ -11,7 +11,7 @@ export declare class CattleWeightHistory {
     idCattle: string;
     weight: number;
     date: Date;
-    context: WeightContext;
-    idMassiveEvent?: string;
-    recordedBy?: string;
+    context: string;
+    idMassiveEvent: string;
+    recordedBy: string;
 }

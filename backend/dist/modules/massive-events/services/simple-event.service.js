@@ -17,9 +17,6 @@ const simple_event_entity_1 = require("../entities/simple-event.entity");
 const uuid_1 = require("uuid");
 const massive_event_service_1 = require("./massive-event.service");
 let SimpleEventService = class SimpleEventService {
-    dataSource;
-    simpleEventRepo;
-    massiveEventSevice;
     constructor(dataSource, simpleEventRepo, massiveEventSevice) {
         this.dataSource = dataSource;
         this.simpleEventRepo = simpleEventRepo;
@@ -65,7 +62,7 @@ let SimpleEventService = class SimpleEventService {
     }
     async createSimpleEvent(idTenant, dto) {
         await this.massiveEventSevice.findByIdOrFail(idTenant, dto.idMassiveEvent);
-        return this.dataSource.transaction(manager => this.saveNewSimpleEvent(manager, {
+        return this.dataSource.transaction((manager) => this.saveNewSimpleEvent(manager, {
             id: (0, uuid_1.v4)(),
             idMassiveEvent: dto.idMassiveEvent,
             idTenant,

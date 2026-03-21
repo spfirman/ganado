@@ -13,15 +13,6 @@ exports.AnimalSimpleEvent = void 0;
 const typeorm_1 = require("typeorm");
 const swagger_1 = require("@nestjs/swagger");
 let AnimalSimpleEvent = class AnimalSimpleEvent {
-    id;
-    idTenant;
-    idSimpleEvent;
-    idMassiveEvent;
-    idAnimal;
-    provisionalNumber;
-    data;
-    appliedAt;
-    appliedBy;
 };
 exports.AnimalSimpleEvent = AnimalSimpleEvent;
 __decorate([

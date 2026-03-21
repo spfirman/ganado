@@ -20,13 +20,11 @@ const create_device_profile_dto_1 = require("../dto/create-device-profile.dto");
 const update_device_profile_dto_1 = require("../dto/update-device-profile.dto");
 const device_profile_response_dto_1 = require("../dto/device-profile-response.dto");
 const jwt_auth_guard_1 = require("../../auth/guards/jwt-auth.guard");
-const swagger_2 = require("@nestjs/swagger");
 const application_permissions_guard_1 = require("../../../common/application-permissions/application-permissions.guard");
 const application_permissions_decorator_1 = require("../../../common/application-permissions/application-permissions.decorator");
 const session_user_decorator_1 = require("../../../common/decorators/session-user.decorator");
 const session_user_dto_1 = require("../../auth/dto/session-user.dto");
 let DeviceProfilesController = class DeviceProfilesController {
-    deviceProfilesService;
     constructor(deviceProfilesService) {
         this.deviceProfilesService = deviceProfilesService;
     }
@@ -60,7 +58,8 @@ __decorate([
     __param(0, (0, session_user_decorator_1.SessionUser)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto, create_device_profile_dto_1.CreateDeviceProfileDto]),
+    __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto,
+        create_device_profile_dto_1.CreateDeviceProfileDto]),
     __metadata("design:returntype", Promise)
 ], DeviceProfilesController.prototype, "create", null);
 __decorate([
@@ -110,7 +109,7 @@ __decorate([
 ], DeviceProfilesController.prototype, "remove", null);
 exports.DeviceProfilesController = DeviceProfilesController = __decorate([
     (0, swagger_1.ApiTags)('Device Profiles'),
-    (0, swagger_2.ApiBearerAuth)('access-token'),
+    (0, swagger_1.ApiBearerAuth)('access-token'),
     (0, common_1.Controller)('device-profiles'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, application_permissions_guard_1.ApplicationPermissionsGuard),
     (0, application_permissions_decorator_1.RequireModule)('PROD_CENTER'),

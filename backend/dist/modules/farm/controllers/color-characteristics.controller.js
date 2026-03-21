@@ -15,18 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ColorCharacteristicsController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
-const common_2 = require("@nestjs/common");
 const application_permissions_decorator_1 = require("../../../common/application-permissions/application-permissions.decorator");
-const common_3 = require("@nestjs/common");
-const application_permissions_decorator_2 = require("../../../common/application-permissions/application-permissions.decorator");
 const jwt_auth_guard_1 = require("../../auth/guards/jwt-auth.guard");
 const application_permissions_guard_1 = require("../../../common/application-permissions/application-permissions.guard");
 const session_user_decorator_1 = require("../../../common/decorators/session-user.decorator");
 const session_user_dto_1 = require("../../auth/dto/session-user.dto");
-const application_permissions_decorator_3 = require("../../../common/application-permissions/application-permissions.decorator");
 const color_characteristics_service_1 = require("../services/color-characteristics.service");
 let ColorCharacteristicsController = class ColorCharacteristicsController {
-    colorCharacteristicsService;
     constructor(colorCharacteristicsService) {
         this.colorCharacteristicsService = colorCharacteristicsService;
     }
@@ -41,10 +36,13 @@ exports.ColorCharacteristicsController = ColorCharacteristicsController;
 __decorate([
     (0, common_1.Get)('color'),
     (0, swagger_1.ApiOperation)({ summary: 'Get all colors' }),
-    (0, common_2.HttpCode)(common_2.HttpStatus.OK),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Colors retrieved successfully' }),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Colors retrieved successfully',
+    }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Invalid request body' }),
-    (0, application_permissions_decorator_3.RequireAction)('read'),
+    (0, application_permissions_decorator_1.RequireAction)('read'),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto]),
@@ -53,10 +51,13 @@ __decorate([
 __decorate([
     (0, common_1.Get)('characteristic'),
     (0, swagger_1.ApiOperation)({ summary: 'Get all characteristics' }),
-    (0, common_2.HttpCode)(common_2.HttpStatus.OK),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Characteristics retrieved successfully' }),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Characteristics retrieved successfully',
+    }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Invalid request body' }),
-    (0, application_permissions_decorator_3.RequireAction)('read'),
+    (0, application_permissions_decorator_1.RequireAction)('read'),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto]),
@@ -65,10 +66,10 @@ __decorate([
 exports.ColorCharacteristicsController = ColorCharacteristicsController = __decorate([
     (0, swagger_1.ApiTags)('Color-Characteristics'),
     (0, swagger_1.ApiBearerAuth)('access-token'),
-    (0, common_3.Controller)('color-characteristics'),
-    (0, application_permissions_decorator_2.RequireEntity)('cattle'),
+    (0, common_1.Controller)('color-characteristics'),
+    (0, application_permissions_decorator_1.RequireEntity)('cattle'),
     (0, application_permissions_decorator_1.RequireModule)('FARM'),
-    (0, common_2.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, application_permissions_guard_1.ApplicationPermissionsGuard),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, application_permissions_guard_1.ApplicationPermissionsGuard),
     __metadata("design:paramtypes", [color_characteristics_service_1.ColorCharacteristicsService])
 ], ColorCharacteristicsController);
 //# sourceMappingURL=color-characteristics.controller.js.map

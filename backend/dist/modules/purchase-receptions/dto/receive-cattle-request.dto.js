@@ -12,25 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateLotCattleRequestDto = exports.ReceiveCattleRequestDto = void 0;
 const class_validator_1 = require("class-validator");
 class ReceiveCattleRequestDto {
-    idPurchase;
-    number;
-    receivedWeight;
-    purchaseWeight;
-    purchasePrice;
-    hasHorn;
-    castrated;
-    idLot;
-    idBrand;
-    color;
-    characteristics;
-    eartagLeft;
-    eartagRight;
-    idDevice;
-    comments;
-    idProvider;
-    idSimpleEvents;
-    gender;
-    birthDateAprx;
 }
 exports.ReceiveCattleRequestDto = ReceiveCattleRequestDto;
 __decorate([
@@ -127,8 +108,6 @@ __decorate([
     __metadata("design:type", String)
 ], ReceiveCattleRequestDto.prototype, "birthDateAprx", void 0);
 class UpdateLotCattleRequestDto {
-    idLot;
-    idCattle;
 }
 exports.UpdateLotCattleRequestDto = UpdateLotCattleRequestDto;
 __decorate([

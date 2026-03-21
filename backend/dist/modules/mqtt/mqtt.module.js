@@ -8,19 +8,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MqttModule = void 0;
 const common_1 = require("@nestjs/common");
+const config_1 = require("@nestjs/config");
 const mqtt_controller_1 = require("./mqtt.controller");
 const mqtt_service_1 = require("./mqtt.service");
 const farm_module_1 = require("../farm/farm.module");
-const config_1 = require("@nestjs/config");
 let MqttModule = class MqttModule {
 };
 exports.MqttModule = MqttModule;
 exports.MqttModule = MqttModule = __decorate([
     (0, common_1.Module)({
-        imports: [
-            config_1.ConfigModule,
-            farm_module_1.FarmModule
-        ],
+        imports: [config_1.ConfigModule, farm_module_1.FarmModule],
         controllers: [mqtt_controller_1.MqttController],
         providers: [mqtt_service_1.MqttService],
         exports: [mqtt_service_1.MqttService],

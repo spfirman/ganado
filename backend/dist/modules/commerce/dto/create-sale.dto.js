@@ -14,18 +14,6 @@ const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 const create_sale_detail_dto_1 = require("./create-sale-detail.dto");
 class CreateSaleDto {
-    transactionDate;
-    buyerId;
-    transporterId;
-    minWeightConfig;
-    valuePerKgConfig;
-    totalAnimalCount;
-    totalWeightKg;
-    totalAmount;
-    notes;
-    idTenant;
-    createdBy;
-    details;
 }
 exports.CreateSaleDto = CreateSaleDto;
 __decorate([

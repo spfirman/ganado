@@ -15,12 +15,6 @@ const tenant_entity_1 = require("../../employee-management/entities/tenant.entit
 const cattle_entity_1 = require("./cattle.entity");
 const cattle_characteristic_enum_1 = require("../enums/cattle-characteristic.enum");
 let CattleCharacteristic = class CattleCharacteristic {
-    id;
-    idTenant;
-    idCattle;
-    cattle;
-    characteristic;
-    createdAt;
 };
 exports.CattleCharacteristic = CattleCharacteristic;
 __decorate([

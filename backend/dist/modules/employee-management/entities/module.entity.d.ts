@@ -4,6 +4,6 @@ export declare class ModuleEntity {
     code: string;
     name: string;
     description: string;
-    access_details: Record<string, string>;
+    access_details: any;
     permissions: RoleModulePermission[];
 }

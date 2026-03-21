@@ -15,8 +15,6 @@ const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
 const simple_event_type_enum_1 = require("../enums/simple-event-type.enum");
 class SimpleEventInputDto {
-    type;
-    data;
 }
 __decorate([
     (0, swagger_1.ApiProperty)({
@@ -30,15 +28,13 @@ __decorate([
 ], SimpleEventInputDto.prototype, "type", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({
-        description: 'Datos específicos del evento simple (solo para brand o medication)',
+        description: 'Datos especificos del evento simple (solo para brand o medication)',
         example: { medicationName: 'med123', dosage: '1ml/50kg', lot: '123' },
     }),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Object)
 ], SimpleEventInputDto.prototype, "data", void 0);
 class CreateMassiveEventDto {
-    eventDate;
-    simpleEvents;
 }
 exports.CreateMassiveEventDto = CreateMassiveEventDto;
 __decorate([
@@ -52,7 +48,7 @@ __decorate([
 ], CreateMassiveEventDto.prototype, "eventDate", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({
-        description: 'Lista inicial de simpleEvents (puede ir vacía)',
+        description: 'Lista inicial de simpleEvents (puede ir vacia)',
         type: [SimpleEventInputDto],
     }),
     (0, class_validator_1.IsOptional)(),

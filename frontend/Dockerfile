@@ -17,6 +17,7 @@ COPY assets/ /usr/share/nginx/html/assets/
 COPY canvaskit/ /usr/share/nginx/html/canvaskit/
 COPY icons/ /usr/share/nginx/html/icons/
 COPY main.dart.js /usr/share/nginx/html/
+COPY i18n-overlay.js /usr/share/nginx/html/
 
 # Copy entrypoint script
 COPY docker-entrypoint.sh /

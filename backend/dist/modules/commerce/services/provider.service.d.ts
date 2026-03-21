@@ -2,15 +2,22 @@ import { Repository, DataSource } from 'typeorm';
 import { ProviderRepository } from '../repositories/provider.repository';
 import { Provider } from '../entities/provider.entity';
 import { Contact } from '../entities/contact.entity';
-import { CreateProviderDto } from '../dto/create-provider.dto';
 export declare class ProviderService {
     private readonly providerRepository;
     private readonly contactRepository;
-    private dataSource;
+    private readonly dataSource;
     private readonly logger;
     constructor(providerRepository: ProviderRepository, contactRepository: Repository<Contact>, dataSource: DataSource);
-    createProvider(data: Partial<Provider> & CreateProviderDto & {
+    createProvider(data: {
+        name: string;
+        nit: string;
+        type: string;
         idTenant: string;
+        address?: string;
+        contactPersonName?: string;
+        phone1?: string;
+        phone2?: string;
+        email?: string;
     }): Promise<Provider>;
     private isValidEmail;
     findByNit(nit: string, idTenant: string): Promise<Provider>;

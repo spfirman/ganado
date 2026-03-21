@@ -13,10 +13,6 @@ exports.CattleBasicPageDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const cattle_basic_response_dto_1 = require("./cattle-basic-response.dto");
 class CattleBasicPageDto {
-    items;
-    nextCursor;
-    hasMore;
-    total;
 }
 exports.CattleBasicPageDto = CattleBasicPageDto;
 __decorate([
@@ -25,7 +21,7 @@ __decorate([
 ], CattleBasicPageDto.prototype, "items", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({ description: 'Cursor para la siguiente página (null si no hay más)' }),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], CattleBasicPageDto.prototype, "nextCursor", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Indica si hay más páginas' }),
@@ -33,6 +29,6 @@ __decorate([
 ], CattleBasicPageDto.prototype, "hasMore", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({ description: 'Total de elementos (puede ser null si no se calcula)' }),
-    __metadata("design:type", Object)
+    __metadata("design:type", Number)
 ], CattleBasicPageDto.prototype, "total", void 0);
 //# sourceMappingURL=cattle-basic-page.dto.js.map

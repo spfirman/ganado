@@ -14,13 +14,10 @@ exports.LotRepository = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
 const lot_entity_1 = require("../entities/lot.entity");
-const common_2 = require("@nestjs/common");
 let LotRepository = LotRepository_1 = class LotRepository {
-    dataSource;
-    logger = new common_2.Logger(LotRepository_1.name);
-    repository;
     constructor(dataSource) {
         this.dataSource = dataSource;
+        this.logger = new common_1.Logger(LotRepository_1.name);
         this.repository = this.dataSource.getRepository(lot_entity_1.Lot);
     }
     createInstance(data) {

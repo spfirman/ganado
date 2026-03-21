@@ -13,8 +13,6 @@ exports.UpdateRoleResponseDto = exports.UpdateRoleDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class UpdateRoleDto {
-    name;
-    description;
 }
 exports.UpdateRoleDto = UpdateRoleDto;
 __decorate([
@@ -29,7 +27,7 @@ __decorate([
 ], UpdateRoleDto.prototype, "name", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Descripción del rol',
+        description: 'Descripcion del rol',
         example: 'Rol con acceso total al sistema',
         required: false,
     }),
@@ -38,10 +36,6 @@ __decorate([
     __metadata("design:type", String)
 ], UpdateRoleDto.prototype, "description", void 0);
 class UpdateRoleResponseDto {
-    id;
-    name;
-    description;
-    permissions;
 }
 exports.UpdateRoleResponseDto = UpdateRoleResponseDto;
 __decorate([
@@ -60,7 +54,7 @@ __decorate([
 ], UpdateRoleResponseDto.prototype, "name", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Descripción del rol',
+        description: 'Descripcion del rol',
         example: 'Rol con acceso total al sistema',
     }),
     __metadata("design:type", String)
@@ -78,10 +72,10 @@ __decorate([
                 module: {
                     id: '123e4567-e89b-12d3-a456-426614174002',
                     name: 'Employee Management',
-                    description: 'Gestión de empleados y roles'
-                }
-            }
-        ]
+                    description: 'Gestion de empleados y roles',
+                },
+            },
+        ],
     }),
     __metadata("design:type", Array)
 ], UpdateRoleResponseDto.prototype, "permissions", void 0);

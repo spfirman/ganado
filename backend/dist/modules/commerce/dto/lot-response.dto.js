@@ -11,17 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LotResponseDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
-const cattle_gender_enum_1 = require("../../farm/enums/cattle-gender.enum");
 class LotResponseDto {
-    id;
-    lotNumber;
-    idPurchase;
-    originPlace;
-    purchasedCattleCount;
-    totalWeight;
-    pricePerKg;
-    totalValue;
-    gender;
     static toLotResponse(lot) {
         return {
             id: lot.id,
@@ -32,7 +22,7 @@ class LotResponseDto {
             totalWeight: lot.totalWeight,
             pricePerKg: lot.pricePerKg,
             totalValue: lot.totalValue,
-            gender: lot.gender
+            gender: lot.gender,
         };
     }
 }

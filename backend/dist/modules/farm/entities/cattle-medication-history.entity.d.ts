@@ -5,8 +5,8 @@ export declare class CattleMedicationHistory {
     medicationName: string;
     route: string;
     dosage: string;
-    lot?: string;
+    lot: string;
     appliedAt: Date;
-    idMassiveEvent?: string;
-    recordedBy?: string;
+    idMassiveEvent: string;
+    recordedBy: string;
 }

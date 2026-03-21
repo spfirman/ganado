@@ -15,13 +15,6 @@ const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
 const simple_event_type_enum_1 = require("../enums/simple-event-type.enum");
 class SingleEventDto {
-    cattleNumber;
-    type;
-    data;
-    appliedBy;
-    appliedAt;
-    idMassiveEvent;
-    idSimpleEvent;
 }
 __decorate([
     (0, swagger_1.ApiProperty)({ example: 'C-001', description: 'Cattle number to apply the event' }),
@@ -61,7 +54,6 @@ __decorate([
     __metadata("design:type", String)
 ], SingleEventDto.prototype, "idSimpleEvent", void 0);
 class ApplySimpleEventsDto {
-    events;
 }
 exports.ApplySimpleEventsDto = ApplySimpleEventsDto;
 __decorate([

@@ -13,12 +13,10 @@ exports.UpdateProviderDto = void 0;
 const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
 class UpdateProviderDto {
-    name;
-    nit;
 }
 exports.UpdateProviderDto = UpdateProviderDto;
 __decorate([
-    (0, swagger_1.ApiPropertyOptional)({ example: 'Ganadería El Porvenir', description: 'Provider name' }),
+    (0, swagger_1.ApiPropertyOptional)({ example: 'Ganaderia El Porvenir', description: 'Provider name' }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.Length)(3, 150),

@@ -1,4 +1,4 @@
-import { DataSource, DeleteResult, EntityManager, Repository } from 'typeorm';
+import { Repository, DataSource, DeleteResult, EntityManager } from 'typeorm';
 import { RoleModulePermission } from '../entities/role-module-permission.entity';
 import { CreatePermissionDto } from '../dto/create-permission.dto';
 import { UpdatePermissionDto } from '../dto/update-permission.dto';

@@ -4,5 +4,5 @@ export declare class PurchaseListQueryDto {
     from?: string;
     to?: string;
     provider?: string;
-    status: 'all' | 'open' | 'received';
+    status: string;
 }

@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AiTestingController = void 0;
 const common_1 = require("@nestjs/common");
 const crypto_1 = require("crypto");
-
 const AI_AGENT_PATTERNS = [
     { name: 'ChatGPT', pattern: /ChatGPT-User/i },
     { name: 'GPTBot', pattern: /GPTBot/i },
@@ -28,19 +27,20 @@ const AI_AGENT_PATTERNS = [
     { name: 'Applebot-AI', pattern: /Applebot/i },
     { name: 'Meta-AI', pattern: /Meta-ExternalAgent/i },
 ];
-
 function detectAiAgent(userAgent) {
-    if (!userAgent) return { isAiAgent: false, agentName: null };
+    if (!userAgent)
+        return { isAiAgent: false, agentName: null };
     for (const { name, pattern } of AI_AGENT_PATTERNS) {
-        if (pattern.test(userAgent)) return { isAiAgent: true, agentName: name };
+        if (pattern.test(userAgent))
+            return { isAiAgent: true, agentName: name };
     }
     return { isAiAgent: false, agentName: null };
 }
-
 function getConfiguredTokens() {
     const tokenMap = new Map();
     const tokensEnv = process.env.AI_TEST_TOKENS || '';
-    if (!tokensEnv) return tokenMap;
+    if (!tokensEnv)
+        return tokenMap;
     for (const entry of tokensEnv.split(',')) {
         const parts = entry.trim().split(':');
         if (parts.length >= 1 && parts[0]) {
@@ -52,23 +52,23 @@ function getConfiguredTokens() {
     }
     return tokenMap;
 }
-
 function validateToken(token) {
     const tokens = getConfiguredTokens();
     const tokenHash = (0, crypto_1.createHash)('sha256').update(token).digest('hex');
     const match = tokens.get(tokenHash);
-    if (match) return { valid: true, label: match.label, permissions: match.permissions };
+    if (match)
+        return { valid: true, label: match.label, permissions: match.permissions };
     return { valid: false, label: '', permissions: [] };
 }
-
 function extractToken(req) {
     const headerToken = req.headers['x-ai-test-token'];
-    if (headerToken) return { token: headerToken, source: 'header' };
+    if (headerToken)
+        return { token: headerToken, source: 'header' };
     const queryToken = req.query?.qa_access;
-    if (queryToken) return { token: queryToken, source: 'query' };
+    if (queryToken)
+        return { token: queryToken, source: 'query' };
     return { token: null, source: null };
 }
-
 function getAiContext(req) {
     const { isAiAgent, agentName } = detectAiAgent(req.headers['user-agent']);
     const { token, source } = extractToken(req);
@@ -79,12 +79,12 @@ function getAiContext(req) {
             context.tokenId = result.label;
             context.permissions = result.permissions;
             context.isAiAgent = true;
-            if (!context.agentName) context.agentName = `token:${result.label}`;
+            if (!context.agentName)
+                context.agentName = `token:${result.label}`;
         }
     }
     return context;
 }
-
 let AiTestingController = class AiTestingController {
     verify(req, res) {
         const context = getAiContext(req);
@@ -296,3 +296,4 @@ __decorate([
 exports.AiTestingController = AiTestingController = __decorate([
     (0, common_1.Controller)('ai-testing')
 ], AiTestingController);
+//# sourceMappingURL=ai-testing.controller.js.map

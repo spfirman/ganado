@@ -1,9 +1,8 @@
-import { SimpleEventType } from '../enums/simple-event-type.enum';
 export declare class SyncSimpleEventDto {
     id: string;
     idTenant: string;
     massiveEventServerId: string;
-    type: SimpleEventType;
+    type: string;
     dataJson?: string;
     isActive?: boolean;
     createdAt?: string;

@@ -28,13 +28,10 @@ const jwt_auth_guard_1 = require("../../auth/guards/jwt-auth.guard");
 const application_permissions_guard_1 = require("../../../common/application-permissions/application-permissions.guard");
 const session_user_decorator_1 = require("../../../common/decorators/session-user.decorator");
 const session_user_dto_1 = require("../../auth/dto/session-user.dto");
-const sync_brand_dto_2 = require("../dto/sync-brand.dto");
-const common_2 = require("@nestjs/common");
 let BrandController = BrandController_1 = class BrandController {
-    brandService;
-    logger = new common_2.Logger(BrandController_1.name);
     constructor(brandService) {
         this.brandService = brandService;
+        this.logger = new common_1.Logger(BrandController_1.name);
     }
     async create(sessionUser, dto, file) {
         if (!file || !file.buffer || file.size === 0) {
@@ -68,8 +65,8 @@ let BrandController = BrandController_1 = class BrandController {
         return brands.map(brand_response_dto_1.BrandResponseDto.toResponseDto);
     }
     async syncBrands(sessionUser, brandsJson, files) {
-        const brands = await sync_brand_dto_2.SyncBrandDto.parseAndValidateBrands(brandsJson);
-        const filesMap = new Map(files.map(f => [f.fieldname, f]));
+        const brands = await sync_brand_dto_1.SyncBrandDto.parseAndValidateBrands(brandsJson);
+        const filesMap = new Map(files.map((f) => [f.fieldname, f]));
         const results = await this.brandService.syncBrands(sessionUser.tenant_id, brands, filesMap);
         return { results };
     }
@@ -90,10 +87,16 @@ __decorate([
     (0, swagger_1.ApiConsumes)('multipart/form-data'),
     (0, swagger_1.ApiOperation)({ summary: 'Create a new brand' }),
     (0, common_1.HttpCode)(common_1.HttpStatus.CREATED),
-    (0, swagger_1.ApiResponse)({ status: 201, description: 'Brand created successfully', type: brand_response_dto_1.BrandResponseDto }),
+    (0, swagger_1.ApiResponse)({
+        status: 201,
+        description: 'Brand created successfully',
+        type: brand_response_dto_1.BrandResponseDto,
+    }),
     (0, application_permissions_decorator_1.RequireAction)('create'),
     (0, swagger_1.ApiBody)({
-        type: create_brand_dto_1.CreateBrandDto, required: true, examples: {
+        type: create_brand_dto_1.CreateBrandDto,
+        required: true,
+        examples: {
             example1: {
                 summary: 'Basic brand creation',
                 value: { name: 'Marca A' },
@@ -102,19 +105,24 @@ __decorate([
                 summary: 'Another brand',
                 value: { name: 'Marca B' },
             },
-        }
+        },
     }),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
     __param(1, (0, common_1.Body)()),
     __param(2, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto, create_brand_dto_1.CreateBrandDto, Object]),
+    __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto,
+        create_brand_dto_1.CreateBrandDto, Object]),
     __metadata("design:returntype", Promise)
 ], BrandController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(':id'),
     (0, swagger_1.ApiOperation)({ summary: 'Get a brand by ID' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Brand found', type: brand_response_dto_1.BrandResponseDto }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Brand found',
+        type: brand_response_dto_1.BrandResponseDto,
+    }),
     (0, application_permissions_decorator_1.RequireAction)('read'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, session_user_decorator_1.SessionUser)()),
@@ -136,14 +144,19 @@ __decorate([
         },
     })),
     (0, swagger_1.ApiConsumes)('multipart/form-data'),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Brand updated', type: brand_response_dto_1.BrandResponseDto }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Brand updated',
+        type: brand_response_dto_1.BrandResponseDto,
+    }),
     (0, application_permissions_decorator_1.RequireAction)('update'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, session_user_decorator_1.SessionUser)()),
     __param(2, (0, common_1.Body)()),
     __param(3, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, session_user_dto_1.SessionUserDto, update_brand_dto_1.UpdateBrandDto, Object]),
+    __metadata("design:paramtypes", [String, session_user_dto_1.SessionUserDto,
+        update_brand_dto_1.UpdateBrandDto, Object]),
     __metadata("design:returntype", Promise)
 ], BrandController.prototype, "update", null);
 __decorate([
@@ -160,7 +173,11 @@ __decorate([
 __decorate([
     (0, common_1.Get)(),
     (0, swagger_1.ApiOperation)({ summary: 'List all brands' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'List of brands', type: [brand_response_dto_1.BrandResponseDto] }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'List of brands',
+        type: [brand_response_dto_1.BrandResponseDto],
+    }),
     (0, application_permissions_decorator_1.RequireAction)('read'),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
     __metadata("design:type", Function),
@@ -181,22 +198,26 @@ __decorate([
                     description: 'Lista JSON de marcas a sincronizar',
                     example: JSON.stringify([
                         { id: 'uuid-local-1', idTenant: 'tenant-uuid', name: 'Marca A' },
-                        { id: 'uuid-local-2', idTenant: 'tenant-uuid', name: 'Marca B' }
-                    ])
+                        { id: 'uuid-local-2', idTenant: 'tenant-uuid', name: 'Marca B' },
+                    ]),
                 },
                 image_uuid_local_1: {
                     type: 'string',
-                    format: 'binary'
+                    format: 'binary',
                 },
                 image_uuid_local_2: {
                     type: 'string',
-                    format: 'binary'
-                }
-            }
-        }
+                    format: 'binary',
+                },
+            },
+        },
     }),
     (0, swagger_1.ApiOperation)({ summary: 'Sync offline-created brands to backend' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Sync results', type: sync_brand_dto_1.SyncBrandResponseDto }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Sync results',
+        type: sync_brand_dto_1.SyncBrandResponseDto,
+    }),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
     __param(1, (0, common_1.Body)('brands')),
     __param(2, (0, common_1.UploadedFiles)()),

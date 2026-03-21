@@ -23,7 +23,6 @@ const swagger_1 = require("@nestjs/swagger");
 const lot_response_dto_1 = require("../dto/lot-response.dto");
 const application_permissions_decorator_1 = require("../../../common/application-permissions/application-permissions.decorator");
 let LotController = class LotController {
-    lotService;
     constructor(lotService) {
         this.lotService = lotService;
     }
@@ -32,7 +31,7 @@ let LotController = class LotController {
     }
     async findByPurchase(idPurchase, user) {
         const lots = await this.lotService.findByPurchaseId(idPurchase, user.tenant_id);
-        return lots.map(lot => lot_response_dto_1.LotResponseDto.toLotResponse(lot));
+        return lots.map((lot) => lot_response_dto_1.LotResponseDto.toLotResponse(lot));
     }
 };
 exports.LotController = LotController;

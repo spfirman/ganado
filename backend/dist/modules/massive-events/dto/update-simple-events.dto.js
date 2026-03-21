@@ -12,8 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateSimpleEventDto = void 0;
 const class_validator_1 = require("class-validator");
 class UpdateSimpleEventDto {
-    data;
-    isActive;
 }
 exports.UpdateSimpleEventDto = UpdateSimpleEventDto;
 __decorate([

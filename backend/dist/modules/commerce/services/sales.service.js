@@ -20,16 +20,12 @@ const cattle_device_history_repository_1 = require("../../farm/repositories/catt
 const devices_service_1 = require("../../production-center/services/devices.service");
 const cattle_repository_1 = require("../../farm/repositories/cattle.repository");
 let SalesService = SalesService_1 = class SalesService {
-    dataSource;
-    deviceService;
-    cattleDeviceHistoryRepository;
-    cattleRepository;
-    logger = new common_1.Logger(SalesService_1.name);
     constructor(dataSource, deviceService, cattleDeviceHistoryRepository, cattleRepository) {
         this.dataSource = dataSource;
         this.deviceService = deviceService;
         this.cattleDeviceHistoryRepository = cattleDeviceHistoryRepository;
         this.cattleRepository = cattleRepository;
+        this.logger = new common_1.Logger(SalesService_1.name);
     }
     async createSale(dto) {
         return await this.dataSource.transaction(async (manager) => {
@@ -70,7 +66,9 @@ let SalesService = SalesService_1 = class SalesService {
                     });
                 }
                 if (detailDto.trackerRemoved) {
-                    const cattleInTx = await manager.findOne(cattle_entity_1.Cattle, { where: { id: detailDto.cattleId, idTenant: dto.idTenant } });
+                    const cattleInTx = await manager.findOne(cattle_entity_1.Cattle, {
+                        where: { id: detailDto.cattleId, idTenant: dto.idTenant },
+                    });
                     if (cattleInTx && cattleInTx.idDevice) {
                         const deviceId = cattleInTx.idDevice;
                         const device = await this.deviceService.findById(deviceId, dto.idTenant, manager);
@@ -82,7 +80,7 @@ let SalesService = SalesService_1 = class SalesService {
                             delete tags.id_cattle;
                             const deviceUpdateDto = {
                                 name: device.name,
-                                tags: tags
+                                tags: tags,
                             };
                             await this.deviceService.updateWithDevice(device, deviceUpdateDto, manager);
                         }
@@ -93,8 +91,14 @@ let SalesService = SalesService_1 = class SalesService {
         });
     }
     async findAll(idTenant, query) {
-        const { skip, take, orderBy, order, startDate, endDate, buyerId } = query;
-        const queryBuilder = this.dataSource.getRepository(sale_entity_1.Sale).createQueryBuilder('sale')
+        let { skip, take, orderBy, order, startDate, endDate, buyerId } = query;
+        if (query.page && !skip)
+            skip = (query.page - 1) * (query.limit || take || 10);
+        if (query.limit && !take)
+            take = query.limit;
+        const queryBuilder = this.dataSource
+            .getRepository(sale_entity_1.Sale)
+            .createQueryBuilder('sale')
             .leftJoinAndSelect('sale.buyer', 'buyer')
             .leftJoinAndSelect('sale.transporter', 'transporter')
             .leftJoinAndSelect('sale.details', 'details')
@@ -109,8 +113,14 @@ let SalesService = SalesService_1 = class SalesService {
             const end = endDate ? new Date(endDate) : new Date('2999-12-31');
             queryBuilder.andWhere('sale.transactionDate BETWEEN :start AND :end', { start, end });
         }
-        const validSortFields = ['transactionDate', 'totalAmount', 'totalWeightKg', 'createdAt', 'updatedAt'];
-        const sortField = (orderBy && validSortFields.includes(orderBy)) ? `sale.${orderBy}` : 'sale.transactionDate';
+        const validSortFields = [
+            'transactionDate',
+            'totalAmount',
+            'totalWeightKg',
+            'createdAt',
+            'updatedAt',
+        ];
+        const sortField = orderBy && validSortFields.includes(orderBy) ? `sale.${orderBy}` : 'sale.transactionDate';
         const sortOrder = order === 'ASC' ? 'ASC' : 'DESC';
         queryBuilder.orderBy(sortField, sortOrder);
         queryBuilder.skip(skip).take(take);

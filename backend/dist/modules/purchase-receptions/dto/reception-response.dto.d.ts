@@ -1,15 +1,9 @@
-import { AnimalSimpleEvent } from '../../massive-events/entities/animal-simple-event.entity';
-import { Cattle } from '../../farm/entities/cattle.entity';
-import { Lot } from '../../commerce/entities/lot.entity';
-import { PurchaseReception } from '../entities/purchase-reception.entity';
-import { Purchase } from '../../commerce/entities/purchase.entity';
-import { MassiveEvent } from '../../massive-events/entities/massive-events.entity';
-import { SimpleEventResponseDto } from 'src/modules/massive-events/dto/simple-event-response.dto';
+import { SimpleEventResponseDto } from '../../massive-events/dto/simple-event-response.dto';
 export declare class AnimalSimpleEventReceptionResponseDto {
     id: string;
-    data: any;
+    data: Record<string, any>;
     appliedAt: string;
-    static toResponseDto(entity: AnimalSimpleEvent): AnimalSimpleEventReceptionResponseDto;
+    static toResponseDto(entity: any): AnimalSimpleEventReceptionResponseDto;
 }
 export declare class CattleReceptionResponseDto {
     id: string;
@@ -18,10 +12,10 @@ export declare class CattleReceptionResponseDto {
     receivedWeight: number;
     idDevice: string;
     deviceName: string;
-    eartagLeft?: string;
-    eartagRight?: string;
-    appliedEvents: AnimalSimpleEventReceptionResponseDto[];
-    static toResponseDto(entity: Cattle, appliedEvents: AnimalSimpleEvent[]): CattleReceptionResponseDto;
+    eartagLeft: string;
+    eartagRight: string;
+    appliedEvents: any[];
+    static toResponseDto(entity: any, appliedEvents: any[]): CattleReceptionResponseDto;
 }
 export declare class LotReceptionResponseDto {
     id: string;
@@ -32,21 +26,21 @@ export declare class LotReceptionResponseDto {
     receivedCattleCount: number;
     receivedTotalWeight: number;
     cattle: CattleReceptionResponseDto[];
-    static toResponseDto(entity: Lot, lotCattle: Cattle[], appliedEvents: Record<string, AnimalSimpleEvent[]>): LotReceptionResponseDto;
+    static toResponseDto(entity: any, lotCattle: any[], appliedEvents: Record<string, any[]>): LotReceptionResponseDto;
 }
 export declare class ReceptionMassiveEventResponseDto {
     id: string;
     simpleEvents: SimpleEventResponseDto[];
     status: string;
-    static toResponseDto(entity: MassiveEvent): ReceptionMassiveEventResponseDto;
+    static toResponseDto(entity: any): ReceptionMassiveEventResponseDto;
 }
 export declare class PurchaseReceptionResponseDto {
     id: string;
     purchaseId: string;
     purchaseStatus: string;
     providerId: string;
-    massEventId?: string;
-    nextCattleNumber?: string;
+    massEventId: string;
+    nextCattleNumber: string;
     purchaseDate: string;
     purchaseProviderName: string;
     receivedAt: string;
@@ -57,10 +51,10 @@ export declare class PurchaseReceptionResponseDto {
     receivedTotalWeight: number;
     purchaseCattleCount: number;
     purchaseTotalWeight: number;
-    static toResponseDto(entity: PurchaseReception, purchase: Purchase, providerName: string, lots: Lot[], lotCattle: Record<string, Cattle[]>, cattle: Cattle[], appliedEvents: Record<string, AnimalSimpleEvent[]>, massiveEvent: MassiveEvent): PurchaseReceptionResponseDto;
+    static toResponseDto(entity: any, purchase?: any, providerName?: string, lots?: any[], lotCattle?: Record<string, any[]>, cattle?: any[], appliedEvents?: Record<string, any[]>, massiveEvent?: any): PurchaseReceptionResponseDto;
 }
 export declare class ReceptionResponseDto {
     reception: PurchaseReceptionResponseDto;
-    static toResponseDto(receptionInfo: PurchaseReceptionResponseDto): ReceptionResponseDto;
-    static toResponseDto_optional(entity: PurchaseReception, purchase: Purchase, providerName: string, lots: Lot[], lotCattle: Record<string, Cattle[]>, cattle: Cattle[], appliedEvents: Record<string, AnimalSimpleEvent[]>, massiveEvent: MassiveEvent): ReceptionResponseDto;
+    static toResponseDto(receptionInfo: any): ReceptionResponseDto;
+    static toResponseDto_optional(entity: any, purchase: any, providerName: string, lots: any[], lotCattle: Record<string, any[]>, cattle: any[], appliedEvents: Record<string, any[]>, massiveEvent: any): ReceptionResponseDto;
 }

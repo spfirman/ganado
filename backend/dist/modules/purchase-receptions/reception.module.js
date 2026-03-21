@@ -32,7 +32,7 @@ exports.ReceptionModule = ReceptionModule = __decorate([
             massive_events_module_1.MassiveEventsModule,
             farm_module_1.FarmModule,
             configuration_module_1.ConfigurationModule,
-            production_center_module_1.ProductionCenterModule
+            production_center_module_1.ProductionCenterModule,
         ],
         controllers: [purchase_reception_controller_1.ReceptionController],
         providers: [receptions_service_1.ReceptionsService, purchase_reception_repository_1.PurchaseReceptionRepository],

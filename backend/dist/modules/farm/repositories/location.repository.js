@@ -13,9 +13,7 @@ exports.LocationRepository = void 0;
 const typeorm_1 = require("typeorm");
 const location_entity_1 = require("../entities/location.entity");
 const common_1 = require("@nestjs/common");
-const typeorm_2 = require("typeorm");
 let LocationRepository = class LocationRepository extends typeorm_1.Repository {
-    dataSource;
     constructor(dataSource) {
         super(location_entity_1.Location, dataSource.createEntityManager());
         this.dataSource = dataSource;
@@ -42,6 +40,6 @@ let LocationRepository = class LocationRepository extends typeorm_1.Repository {
 exports.LocationRepository = LocationRepository;
 exports.LocationRepository = LocationRepository = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [typeorm_2.DataSource])
+    __metadata("design:paramtypes", [typeorm_1.DataSource])
 ], LocationRepository);
 //# sourceMappingURL=location.repository.js.map

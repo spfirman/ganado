@@ -3,7 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AddDetailsToModulesAndRoleModulePermissions1710000000006 = void 0;
 const typeorm_1 = require("typeorm");
 class AddDetailsToModulesAndRoleModulePermissions1710000000006 {
-    name = 'AddDetailsToModulesAndRoleModulePermissions1710000000006';
+    constructor() {
+        this.name = 'AddDetailsToModulesAndRoleModulePermissions1710000000006';
+    }
     async up(queryRunner) {
         await queryRunner.addColumn('modules', new typeorm_1.TableColumn({
             name: 'code',
@@ -42,7 +44,7 @@ class AddDetailsToModulesAndRoleModulePermissions1710000000006 {
     `);
         await queryRunner.query(`
       UPDATE modules SET code = 'EMP_MGMT',
-       access_details = '{"tenants":"CRUD0", "users":"CRUDL", "roles":"0R00L",  "modules":"0R00L", "permissions":"CRUDL"}'::jsonb 
+       access_details = '{"tenants":"CRUD0", "users":"CRUDL", "roles":"0R00L",  "modules":"0R00L", "permissions":"CRUDL"}'::jsonb
        WHERE name = 'Employee Management';
     `);
         await queryRunner.query(`
@@ -73,12 +75,12 @@ class AddDetailsToModulesAndRoleModulePermissions1710000000006 {
       ALTER TABLE roles ALTER COLUMN code SET NOT NULL;
     `);
         await queryRunner.query(`
-      ALTER TABLE public.role_module_permissions 
+      ALTER TABLE public.role_module_permissions
       DROP CONSTRAINT role_model_permissions_role_module_tenant_key;
     `);
         await queryRunner.query(`
-      ALTER TABLE public.role_module_permissions 
-      ADD CONSTRAINT role_module_permissions_tenat_role_module_uniq 
+      ALTER TABLE public.role_module_permissions
+      ADD CONSTRAINT role_module_permissions_tenat_role_module_uniq
       UNIQUE (tenant_id, id_role, id_module);
     `);
         await queryRunner.query(`ALTER TABLE user_roles DROP CONSTRAINT user_roles_pkey`);
@@ -93,12 +95,12 @@ class AddDetailsToModulesAndRoleModulePermissions1710000000006 {
         await queryRunner.dropColumn('role_module_permissions', 'can_list');
         await queryRunner.dropColumn('users', 'active');
         await queryRunner.query(`
-      ALTER TABLE public.role_module_permissions 
+      ALTER TABLE public.role_module_permissions
       DROP CONSTRAINT role_module_permissions_tenat_role_module_uniq;
     `);
         await queryRunner.query(`
-      ALTER TABLE public.role_module_permissions 
-      ADD CONSTRAINT role_model_permissions_role_module_tenant_key 
+      ALTER TABLE public.role_module_permissions
+      ADD CONSTRAINT role_model_permissions_role_module_tenant_key
       UNIQUE (id_role, id_module, tenant_id);
     `);
         await queryRunner.query(`ALTER TABLE user_roles DROP CONSTRAINT user_roles_pkey`);

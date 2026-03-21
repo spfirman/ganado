@@ -13,25 +13,6 @@ exports.Device = void 0;
 const typeorm_1 = require("typeorm");
 const device_profile_entity_1 = require("./device-profile.entity");
 let Device = class Device {
-    id;
-    deveui;
-    idTenant;
-    idDeviceProfile;
-    name;
-    description;
-    tags;
-    variables;
-    idChirpstackProfile;
-    csApplicationId;
-    csJoineui;
-    csAppKey;
-    csNwkKey;
-    batteryStatus;
-    batteryUpdate;
-    isActive;
-    createdAt;
-    updatedAt;
-    deviceProfile;
 };
 exports.Device = Device;
 __decorate([

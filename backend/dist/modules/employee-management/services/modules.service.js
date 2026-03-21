@@ -18,20 +18,22 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const module_entity_1 = require("../entities/module.entity");
 const swagger_1 = require("@nestjs/swagger");
-const typeorm_3 = require("typeorm");
 let ModulesService = class ModulesService {
-    moduleRepository;
     constructor(moduleRepository) {
         this.moduleRepository = moduleRepository;
     }
     async findAll(manager) {
-        const moduleRepo = manager ? manager.getRepository(module_entity_1.ModuleEntity) : this.moduleRepository;
+        const moduleRepo = manager
+            ? manager.getRepository(module_entity_1.ModuleEntity)
+            : this.moduleRepository;
         return moduleRepo.find();
     }
     async findByName(name, manager) {
-        const moduleRepo = manager ? manager.getRepository(module_entity_1.ModuleEntity) : this.moduleRepository;
+        const moduleRepo = manager
+            ? manager.getRepository(module_entity_1.ModuleEntity)
+            : this.moduleRepository;
         const module = await moduleRepo.findOne({
-            where: { name }
+            where: { name },
         });
         if (!module) {
             throw new common_1.NotFoundException(`Module "${name}" not found`);
@@ -39,9 +41,11 @@ let ModulesService = class ModulesService {
         return module;
     }
     async findById(id, manager) {
-        const moduleRepo = manager ? manager.getRepository(module_entity_1.ModuleEntity) : this.moduleRepository;
+        const moduleRepo = manager
+            ? manager.getRepository(module_entity_1.ModuleEntity)
+            : this.moduleRepository;
         const module = await moduleRepo.findOne({
-            where: { id }
+            where: { id },
         });
         if (!module) {
             throw new common_1.NotFoundException(`Module with ID "${id}" not found`);
@@ -51,21 +55,21 @@ let ModulesService = class ModulesService {
 };
 exports.ModulesService = ModulesService;
 __decorate([
-    (0, swagger_1.ApiOperation)({ summary: 'Obtener todos los módulos' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener todos los modulos' }),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [typeorm_3.EntityManager]),
+    __metadata("design:paramtypes", [typeorm_2.EntityManager]),
     __metadata("design:returntype", Promise)
 ], ModulesService.prototype, "findAll", null);
 __decorate([
-    (0, swagger_1.ApiOperation)({ summary: 'Buscar un módulo por nombre' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Buscar un modulo por nombre' }),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, typeorm_3.EntityManager]),
+    __metadata("design:paramtypes", [String, typeorm_2.EntityManager]),
     __metadata("design:returntype", Promise)
 ], ModulesService.prototype, "findByName", null);
 __decorate([
-    (0, swagger_1.ApiOperation)({ summary: 'Buscar un módulo por ID' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Buscar un modulo por ID' }),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, typeorm_3.EntityManager]),
+    __metadata("design:paramtypes", [String, typeorm_2.EntityManager]),
     __metadata("design:returntype", Promise)
 ], ModulesService.prototype, "findById", null);
 exports.ModulesService = ModulesService = __decorate([

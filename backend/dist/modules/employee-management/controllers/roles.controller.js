@@ -28,12 +28,10 @@ const role_module_permission_services_1 = require("../services/role-module-permi
 const role_read_dto_1 = require("../dto/role-read.dto");
 const update_permission_dto_1 = require("../dto/update-permission.dto");
 let RolesController = RolesController_1 = class RolesController {
-    roleService;
-    roleModulePermissionService;
-    logger = new common_1.Logger(RolesController_1.name);
     constructor(roleService, roleModulePermissionService) {
         this.roleService = roleService;
         this.roleModulePermissionService = roleModulePermissionService;
+        this.logger = new common_1.Logger(RolesController_1.name);
     }
     async findAll(requestUser) {
         return this.roleService.findAll(requestUser.tenant_id);
@@ -45,7 +43,7 @@ let RolesController = RolesController_1 = class RolesController {
         return this.roleModulePermissionService.createPermission(requestUser.tenant_id, createPermissionDto);
     }
     updatePermission(sessionUser, roleId, moduleId, updatePermissionDto) {
-        this.logger.debug(`Actualizando permiso para el rol ${roleId} y el módulo ${moduleId} con los datos: ${JSON.stringify(updatePermissionDto)}`);
+        this.logger.debug(`Actualizando permiso para el rol ${roleId} y el modulo ${moduleId} con los datos: ${JSON.stringify(updatePermissionDto)}`);
         return this.roleModulePermissionService.updatePermission(roleId, sessionUser.tenant_id, moduleId, updatePermissionDto);
     }
     async removePermission(sessionUser, roleId, moduleId) {
@@ -53,7 +51,7 @@ let RolesController = RolesController_1 = class RolesController {
         return {
             message: 'Permiso eliminado exitosamente',
             roleId,
-            moduleId
+            moduleId,
         };
     }
     listPermissions(sessionUser, roleId) {
@@ -70,9 +68,12 @@ __decorate([
     (0, swagger_1.ApiResponse)({
         status: 200,
         description: 'Lista de roles obtenida exitosamente',
-        type: [role_read_dto_1.RoleReadDto]
+        type: [role_read_dto_1.RoleReadDto],
     }),
-    (0, swagger_1.ApiResponse)({ status: 403, description: 'No tienes permisos para ver roles' }),
+    (0, swagger_1.ApiResponse)({
+        status: 403,
+        description: 'No tienes permisos para ver roles',
+    }),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto]),
@@ -86,7 +87,7 @@ __decorate([
     (0, swagger_1.ApiResponse)({
         status: 200,
         description: 'Rol encontrado exitosamente',
-        type: role_read_dto_1.RoleReadDto
+        type: role_read_dto_1.RoleReadDto,
     }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Rol no encontrado' }),
     __param(0, (0, common_1.Param)('id')),
@@ -102,14 +103,19 @@ __decorate([
     (0, swagger_1.ApiBody)({
         type: create_permission_dto_1.CreatePermissionDto,
         description: 'Datos del permiso a crear',
-        required: true
+        required: true,
     }),
     (0, common_1.HttpCode)(common_1.HttpStatus.CREATED),
-    (0, swagger_1.ApiResponse)({ status: 201, description: 'Permiso creado exitosamente', type: create_permission_dto_1.CreatePermissionResponseDto }),
+    (0, swagger_1.ApiResponse)({
+        status: 201,
+        description: 'Permiso creado exitosamente',
+        type: create_permission_dto_1.CreatePermissionResponseDto,
+    }),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto, create_permission_dto_1.CreatePermissionDto]),
+    __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto,
+        create_permission_dto_1.CreatePermissionDto]),
     __metadata("design:returntype", Promise)
 ], RolesController.prototype, "createPermission", null);
 __decorate([
@@ -129,28 +135,28 @@ __decorate([
                     can_read: true,
                     can_update: true,
                     can_delete: true,
-                    can_list: true
+                    can_list: true,
                 },
             },
             example2: {
-                summary: 'Actualizar solo el permiso de creación',
+                summary: 'Actualizar solo el permiso de creacion',
                 value: {
                     can_create: true,
                 },
             },
             example3: {
-                summary: 'Actualizar solo el permiso de lectura y actualización',
+                summary: 'Actualizar solo el permiso de lectura y actualizacion',
                 value: {
                     can_read: true,
                     can_update: true,
                 },
             },
-        }
+        },
     }),
     (0, swagger_1.ApiResponse)({
         status: 200,
         description: 'Permiso actualizado exitosamente',
-        type: create_permission_dto_1.CreatePermissionResponseDto
+        type: create_permission_dto_1.CreatePermissionResponseDto,
     }),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
     __param(1, (0, common_1.Param)('roleId')),
@@ -173,18 +179,18 @@ __decorate([
             properties: {
                 message: {
                     type: 'string',
-                    example: 'Permiso eliminado exitosamente'
+                    example: 'Permiso eliminado exitosamente',
                 },
                 roleId: {
                     type: 'string',
-                    example: '123e4567-e89b-12d3-a456-426614174000'
+                    example: '123e4567-e89b-12d3-a456-426614174000',
                 },
                 moduleId: {
                     type: 'string',
-                    example: '123e4567-e89b-12d3-a456-426614174001'
-                }
-            }
-        }
+                    example: '123e4567-e89b-12d3-a456-426614174001',
+                },
+            },
+        },
     }),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
     __param(1, (0, common_1.Param)('roleId')),
@@ -201,7 +207,7 @@ __decorate([
     (0, swagger_1.ApiResponse)({
         status: 200,
         description: 'Lista de permisos obtenida exitosamente',
-        type: [role_module_permission_entity_1.RoleModulePermission]
+        type: [role_module_permission_entity_1.RoleModulePermission],
     }),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
     __param(1, (0, common_1.Param)('roleId')),
@@ -215,6 +221,7 @@ exports.RolesController = RolesController = RolesController_1 = __decorate([
     (0, common_1.Controller)('roles'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, application_permissions_guard_1.ApplicationPermissionsGuard),
     (0, application_permissions_decorator_1.RequireModule)('EMP_MGMT'),
-    __metadata("design:paramtypes", [roles_service_1.RoleService, role_module_permission_services_1.RoleModulePermissionService])
+    __metadata("design:paramtypes", [roles_service_1.RoleService,
+        role_module_permission_services_1.RoleModulePermissionService])
 ], RolesController);
 //# sourceMappingURL=roles.controller.js.map

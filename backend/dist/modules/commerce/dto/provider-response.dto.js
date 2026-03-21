@@ -13,12 +13,6 @@ exports.ProviderResponseDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const provider_entity_1 = require("../entities/provider.entity");
 class ProviderResponseDto {
-    id;
-    name;
-    nit;
-    type;
-    created_at;
-    updated_at;
     static toProviderResponse(provider) {
         return {
             id: provider.id,
@@ -36,7 +30,7 @@ __decorate([
     __metadata("design:type", String)
 ], ProviderResponseDto.prototype, "id", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: 'Ganadería El Porvenir' }),
+    (0, swagger_1.ApiProperty)({ example: 'Ganaderia El Porvenir' }),
     __metadata("design:type", String)
 ], ProviderResponseDto.prototype, "name", void 0);
 __decorate([

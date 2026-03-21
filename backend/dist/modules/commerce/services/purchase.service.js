@@ -16,16 +16,12 @@ const typeorm_1 = require("typeorm");
 const purchase_repository_1 = require("../repositories/purchase.repository");
 const lot_repository_1 = require("../repositories/lot.repository");
 const purchase_entity_1 = require("../entities/purchase.entity");
-const common_2 = require("@nestjs/common");
 let PurchaseService = PurchaseService_1 = class PurchaseService {
-    dataSource;
-    purchaseRepository;
-    lotRepository;
-    logger = new common_2.Logger(PurchaseService_1.name);
     constructor(dataSource, purchaseRepository, lotRepository) {
         this.dataSource = dataSource;
         this.purchaseRepository = purchaseRepository;
         this.lotRepository = lotRepository;
+        this.logger = new common_1.Logger(PurchaseService_1.name);
     }
     async createPurchase(data, idTenant, createdBy) {
         const queryRunner = this.dataSource.createQueryRunner();
@@ -45,7 +41,7 @@ let PurchaseService = PurchaseService_1 = class PurchaseService {
                 totalWeight,
                 idTenant,
                 idCreatedBy: createdBy,
-                idUpdatedBy: createdBy
+                idUpdatedBy: createdBy,
             });
             const savedPurchase = await this.purchaseRepository.saveWithManager(queryRunner.manager, purchase);
             const savedLots = [];
@@ -53,7 +49,7 @@ let PurchaseService = PurchaseService_1 = class PurchaseService {
                 const lot = this.lotRepository.createInstance({
                     ...lotData,
                     idPurchase: savedPurchase.id,
-                    idTenant
+                    idTenant,
                 });
                 const savedLot = await this.lotRepository.saveWithManager(queryRunner.manager, lot);
                 savedLots.push(savedLot);
@@ -101,14 +97,14 @@ let PurchaseService = PurchaseService_1 = class PurchaseService {
                 purchaseDate: data.purchaseDate ? new Date(data.purchaseDate) : existing.purchaseDate,
                 totalCattle,
                 totalWeight,
-                idUpdatedBy: updatedBy
+                idUpdatedBy: updatedBy,
             });
             const savedLots = [];
             for (const lotData of data.lots || []) {
                 const lot = this.lotRepository.createInstance({
                     ...lotData,
                     idPurchase: savedPurchase.id,
-                    idTenant
+                    idTenant,
                 });
                 const savedLot = await this.lotRepository.saveWithManager(queryRunner.manager, lot);
                 savedLots.push(savedLot);

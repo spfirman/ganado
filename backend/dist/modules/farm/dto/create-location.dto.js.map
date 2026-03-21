@@ -1,1 +1,1 @@
-{"version":3,"file":"create-location.dto.js","sourceRoot":"","sources":["../../../../src/modules/farm/dto/create-location.dto.ts"],"names":[],"mappings":";;;AAAA,MAAa,iBAAiB;IAC5B,QAAQ,CAAS;IACjB,QAAQ,CAAU;IAClB,QAAQ,CAAU;IAClB,QAAQ,CAAS;IACjB,SAAS,CAAS;IAClB,QAAQ,CAAU;IAClB,IAAI,CAAO;CACZ;AARD,8CAQC"}
+{"version":3,"file":"create-location.dto.js","sourceRoot":"","sources":["../../../../src/modules/farm/dto/create-location.dto.ts"],"names":[],"mappings":";;;AAAA,MAAa,iBAAiB;CAQ7B;AARD,8CAQC"}

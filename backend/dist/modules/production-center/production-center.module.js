@@ -9,16 +9,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductionCenterModule = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
+const axios_1 = require("@nestjs/axios");
+const config_1 = require("@nestjs/config");
 const device_entity_1 = require("./entities/device.entity");
 const device_profile_entity_1 = require("./entities/device-profile.entity");
-const devices_controller_1 = require("./controllers/devices.controller");
 const device_profiles_controller_1 = require("./controllers/device-profiles.controller");
+const devices_controller_1 = require("./controllers/devices.controller");
 const devices_service_1 = require("./services/devices.service");
 const device_profiles_service_1 = require("./services/device-profiles.service");
 const device_repository_1 = require("./repositories/device.repository");
 const device_profile_repository_1 = require("./repositories/device-profile.repository");
-const axios_1 = require("@nestjs/axios");
-const config_1 = require("@nestjs/config");
 const application_permissions_module_1 = require("../../common/application-permissions/application-permissions.module");
 let ProductionCenterModule = class ProductionCenterModule {
 };
@@ -29,16 +29,16 @@ exports.ProductionCenterModule = ProductionCenterModule = __decorate([
             typeorm_1.TypeOrmModule.forFeature([device_entity_1.Device, device_profile_entity_1.DeviceProfile]),
             axios_1.HttpModule,
             config_1.ConfigModule,
-            application_permissions_module_1.ApplicationPermissionsModule
+            application_permissions_module_1.ApplicationPermissionsModule,
         ],
         controllers: [device_profiles_controller_1.DeviceProfilesController, devices_controller_1.DevicesController],
         providers: [
             devices_service_1.DevicesService,
             device_profiles_service_1.DeviceProfilesService,
             device_repository_1.DeviceRepository,
-            device_profile_repository_1.DeviceProfileRepository
+            device_profile_repository_1.DeviceProfileRepository,
         ],
-        exports: [devices_service_1.DevicesService, device_profiles_service_1.DeviceProfilesService]
+        exports: [devices_service_1.DevicesService, device_profiles_service_1.DeviceProfilesService],
     })
 ], ProductionCenterModule);
 //# sourceMappingURL=production-center.module.js.map

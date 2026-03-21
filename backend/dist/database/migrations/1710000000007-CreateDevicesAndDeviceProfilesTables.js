@@ -2,7 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateDevicesAndDeviceProfilesTables1710000000007 = void 0;
 class CreateDevicesAndDeviceProfilesTables1710000000007 {
-    name = 'CreateDevicesAndDeviceProfilesTables1710000000007';
+    constructor() {
+        this.name = 'CreateDevicesAndDeviceProfilesTables1710000000007';
+    }
     async up(queryRunner) {
         await queryRunner.query(`
       UPDATE modules SET access_details = '{"device_profiles":"CRUDL", "devices":"CRUDL"}' WHERE code = 'PROD_CENTER';

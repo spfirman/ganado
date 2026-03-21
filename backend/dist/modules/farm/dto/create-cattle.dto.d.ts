@@ -1,7 +1,5 @@
-import { CattleGender } from '../enums/cattle-gender.enum';
-import { CattleStatus } from '../entities/cattle.entity';
 export declare class CreateCattleDto {
-    idTenant: string;
+    idTenant?: string;
     idDevice?: string;
     deveui?: string;
     sysNumber: string;
@@ -27,10 +25,10 @@ export declare class CreateCattleDto {
     eartagLeft?: string;
     eartagRight?: string;
     idLot?: string;
-    gender?: CattleGender;
-    status?: CattleStatus;
+    gender?: string;
+    status?: string;
     birthDateAprx?: string;
     newFeedStartDate?: string;
     averageDailyGain?: number;
-    lastWeight?: number;
+    lastWeight: number;
 }

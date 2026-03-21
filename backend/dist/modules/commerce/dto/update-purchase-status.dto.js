@@ -14,7 +14,6 @@ const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const purchase_status_enum_1 = require("../enums/purchase-status.enum");
 class UpdatePurchaseStatusDto {
-    status;
 }
 exports.UpdatePurchaseStatusDto = UpdatePurchaseStatusDto;
 __decorate([

@@ -12,51 +12,40 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RoleReadPermissionDto = exports.ModuleReadDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 class ModuleReadDto {
-    id;
-    code;
-    name;
-    access_details;
 }
 exports.ModuleReadDto = ModuleReadDto;
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'ID del módulo',
-        example: '123e4567-e89b-12d3-a456-426614174000'
+        description: 'ID del modulo',
+        example: '123e4567-e89b-12d3-a456-426614174000',
     }),
     __metadata("design:type", String)
 ], ModuleReadDto.prototype, "id", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Código del módulo',
-        example: 'EMP_MGMT'
+        description: 'Codigo del modulo',
+        example: 'EMP_MGMT',
     }),
     __metadata("design:type", String)
 ], ModuleReadDto.prototype, "code", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Nombre del módulo',
-        example: 'Gestión de Empleados'
+        description: 'Nombre del modulo',
+        example: 'Gestion de Empleados',
     }),
     __metadata("design:type", String)
 ], ModuleReadDto.prototype, "name", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Detalles de acceso adicionales del módulo',
+        description: 'Detalles de acceso adicionales del modulo',
         example: {
             customField: 'valor',
-            settings: { enabled: true }
-        }
+            settings: { enabled: true },
+        },
     }),
     __metadata("design:type", Object)
 ], ModuleReadDto.prototype, "access_details", void 0);
 class RoleReadPermissionDto {
-    id;
-    can_create;
-    can_read;
-    can_update;
-    can_delete;
-    can_list;
-    module;
     static transformToDto(permission) {
         const roleReadPermissionDto = new RoleReadPermissionDto();
         roleReadPermissionDto.id = permission.id;
@@ -73,49 +62,49 @@ exports.RoleReadPermissionDto = RoleReadPermissionDto;
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'ID del permiso',
-        example: '123e4567-e89b-12d3-a456-426614174000'
+        example: '123e4567-e89b-12d3-a456-426614174000',
     }),
     __metadata("design:type", String)
 ], RoleReadPermissionDto.prototype, "id", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Permiso para crear',
-        example: true
+        example: true,
     }),
     __metadata("design:type", Boolean)
 ], RoleReadPermissionDto.prototype, "can_create", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Permiso para leer',
-        example: true
+        example: true,
     }),
     __metadata("design:type", Boolean)
 ], RoleReadPermissionDto.prototype, "can_read", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Permiso para actualizar',
-        example: true
+        example: true,
     }),
     __metadata("design:type", Boolean)
 ], RoleReadPermissionDto.prototype, "can_update", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Permiso para eliminar',
-        example: false
+        example: false,
     }),
     __metadata("design:type", Boolean)
 ], RoleReadPermissionDto.prototype, "can_delete", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Permiso para listar',
-        example: true
+        example: true,
     }),
     __metadata("design:type", Boolean)
 ], RoleReadPermissionDto.prototype, "can_list", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Información del módulo asociado',
-        type: ModuleReadDto
+        description: 'Informacion del modulo asociado',
+        type: ModuleReadDto,
     }),
     __metadata("design:type", ModuleReadDto)
 ], RoleReadPermissionDto.prototype, "module", void 0);

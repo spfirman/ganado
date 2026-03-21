@@ -13,12 +13,6 @@ exports.ModuleEntity = void 0;
 const typeorm_1 = require("typeorm");
 const role_module_permission_entity_1 = require("./role-module-permission.entity");
 let ModuleEntity = class ModuleEntity {
-    id;
-    code;
-    name;
-    description;
-    access_details;
-    permissions;
 };
 exports.ModuleEntity = ModuleEntity;
 __decorate([

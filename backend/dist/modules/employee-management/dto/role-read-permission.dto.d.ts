@@ -1,4 +1,3 @@
-import { RoleModulePermission } from '../entities/role-module-permission.entity';
 export declare class ModuleReadDto {
     id: string;
     code: string;
@@ -13,5 +12,5 @@ export declare class RoleReadPermissionDto {
     can_delete: boolean;
     can_list: boolean;
     module: ModuleReadDto;
-    static transformToDto(permission: RoleModulePermission): RoleReadPermissionDto;
+    static transformToDto(permission: any): RoleReadPermissionDto;
 }

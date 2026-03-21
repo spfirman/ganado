@@ -13,11 +13,6 @@ exports.UpdatePermissionResponseDto = exports.UpdatePermissionDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class UpdatePermissionDto {
-    can_create;
-    can_read;
-    can_update;
-    can_delete;
-    can_list;
 }
 exports.UpdatePermissionDto = UpdatePermissionDto;
 __decorate([
@@ -71,16 +66,6 @@ __decorate([
     __metadata("design:type", Boolean)
 ], UpdatePermissionDto.prototype, "can_list", void 0);
 class UpdatePermissionResponseDto {
-    id;
-    id_role;
-    id_module;
-    tenant_id;
-    can_create;
-    can_read;
-    can_update;
-    can_delete;
-    can_list;
-    module;
 }
 exports.UpdatePermissionResponseDto = UpdatePermissionResponseDto;
 __decorate([
@@ -99,7 +84,7 @@ __decorate([
 ], UpdatePermissionResponseDto.prototype, "id_role", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'ID del módulo al que pertenece el permiso',
+        description: 'ID del modulo al que pertenece el permiso',
         example: '123e4567-e89b-12d3-a456-426614174002',
     }),
     __metadata("design:type", String)
@@ -148,12 +133,12 @@ __decorate([
 ], UpdatePermissionResponseDto.prototype, "can_list", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Información del módulo',
+        description: 'Informacion del modulo',
         example: {
             id: '123e4567-e89b-12d3-a456-426614174002',
             name: 'Employee Management',
-            description: 'Gestión de empleados y roles'
-        }
+            description: 'Gestion de empleados y roles',
+        },
     }),
     __metadata("design:type", Object)
 ], UpdatePermissionResponseDto.prototype, "module", void 0);

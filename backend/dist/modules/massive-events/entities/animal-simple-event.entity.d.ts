@@ -3,9 +3,9 @@ export declare class AnimalSimpleEvent {
     idTenant: string;
     idSimpleEvent: string;
     idMassiveEvent: string;
-    idAnimal?: string;
-    provisionalNumber?: string;
-    data?: any;
+    idAnimal: string;
+    provisionalNumber: string;
+    data: any;
     appliedAt: Date;
-    appliedBy?: string;
+    appliedBy: string;
 }

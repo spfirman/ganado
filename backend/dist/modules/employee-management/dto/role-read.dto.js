@@ -13,16 +13,12 @@ exports.RoleReadDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const role_read_permission_dto_1 = require("./role-read-permission.dto");
 class RoleReadDto {
-    id;
-    code;
-    name;
-    permissions;
     static transformToDto(role) {
         const roleDto = new RoleReadDto();
         roleDto.id = role.id;
         roleDto.code = role.code;
         roleDto.name = role.name;
-        roleDto.permissions = role.permissions?.map(permission => ({
+        roleDto.permissions = role.permissions?.map((permission) => ({
             id: permission.id,
             can_create: permission.can_create,
             can_read: permission.can_read,
@@ -33,8 +29,8 @@ class RoleReadDto {
                 id: permission.module.id,
                 code: permission.module.code,
                 name: permission.module.name,
-                access_details: permission.module.access_details
-            }
+                access_details: permission.module.access_details,
+            },
         }));
         return roleDto;
     }
@@ -43,21 +39,21 @@ exports.RoleReadDto = RoleReadDto;
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'ID del rol',
-        example: '123e4567-e89b-12d3-a456-426614174000'
+        example: '123e4567-e89b-12d3-a456-426614174000',
     }),
     __metadata("design:type", String)
 ], RoleReadDto.prototype, "id", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Código del rol',
-        example: 'ADMIN'
+        description: 'Codigo del rol',
+        example: 'ADMIN',
     }),
     __metadata("design:type", String)
 ], RoleReadDto.prototype, "code", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Nombre del rol',
-        example: 'Administrador'
+        example: 'Administrador',
     }),
     __metadata("design:type", String)
 ], RoleReadDto.prototype, "name", void 0);
@@ -65,7 +61,8 @@ __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Lista de permisos asociados al rol',
         type: [role_read_permission_dto_1.RoleReadPermissionDto],
-        example: [{
+        example: [
+            {
                 id: '123e4567-e89b-12d3-a456-426614174001',
                 can_create: true,
                 can_read: true,
@@ -75,14 +72,15 @@ __decorate([
                 module: {
                     id: '123e4567-e89b-12d3-a456-426614174002',
                     code: 'EMP_MGMT',
-                    name: 'Gestión de Empleados',
+                    name: 'Gestion de Empleados',
                     access_details: {
                         roles: '0R00L',
                         users: 'CRUDL',
-                        permissions: 'CRUDL'
-                    }
-                }
-            }]
+                        permissions: 'CRUDL',
+                    },
+                },
+            },
+        ],
     }),
     __metadata("design:type", Array)
 ], RoleReadDto.prototype, "permissions", void 0);

@@ -19,7 +19,6 @@ const typeorm_2 = require("typeorm");
 const cattle_entity_1 = require("../entities/cattle.entity");
 const cattle_characteristic_entity_1 = require("../entities/cattle-characteristic.entity");
 let CattleRepository = class CattleRepository {
-    repository;
     constructor(repository) {
         this.repository = repository;
     }
@@ -60,7 +59,7 @@ let CattleRepository = class CattleRepository {
             .where('c.idTenant = :idTenant', { idTenant })
             .andWhere('c.idPurchase = :idPurchase', { idPurchase })
             .andWhere('c.idLot IS NULL');
-        qb.addSelect(`CASE 
+        qb.addSelect(`CASE
         WHEN c.number ~ '^[0-9]+$' THEN c.number::int
         ELSE NULL
       END`, 'number_sort');
@@ -75,7 +74,7 @@ let CattleRepository = class CattleRepository {
             .leftJoinAndSelect('c.device', 'd')
             .where('c.idTenant = :idTenant', { idTenant })
             .andWhere('c.idLot = :idLot', { idLot });
-        qb.addSelect(`CASE 
+        qb.addSelect(`CASE
         WHEN c.number ~ '^[0-9]+$' THEN c.number::int
         ELSE NULL
       END`, 'number_sort');
@@ -87,7 +86,7 @@ let CattleRepository = class CattleRepository {
         return this.repository.find({
             where: { idTenant },
             relations: ['cattleCharacteristics', 'device'],
-            order: { number: 'ASC' }
+            order: { number: 'ASC' },
         });
     }
     async update(idTenant, id, cattleDto, manager) {
@@ -95,10 +94,10 @@ let CattleRepository = class CattleRepository {
         const m = manager ?? this.repository.manager;
         if (cattleDto.characteristics) {
             await m.delete(cattle_characteristic_entity_1.CattleCharacteristic, { idCattle: id, idTenant: idTenant });
-            const charEntities = cattleDto.characteristics.map(charName => m.create(cattle_characteristic_entity_1.CattleCharacteristic, {
-                idTenant: idTenant,
+            const charEntities = cattleDto.characteristics.map((charName) => m.create(cattle_characteristic_entity_1.CattleCharacteristic, {
+                idTenant: { id: idTenant },
                 idCattle: id,
-                characteristic: charName
+                characteristic: charName,
             }));
             await m.save(cattle_characteristic_entity_1.CattleCharacteristic, charEntities);
             delete cattleDto.characteristics;
@@ -153,7 +152,7 @@ let CattleRepository = class CattleRepository {
                 id: true,
                 number: true,
                 sysNumber: true,
-            }
+            },
         });
     }
     async listPaged(idTenant, query, page, limit, manager) {
@@ -196,8 +195,7 @@ let CattleRepository = class CattleRepository {
         if (lastUpdatedAt && lastId) {
             qb.andWhere('(c.updatedAt > :lastUpdatedAt OR (c.updatedAt = :lastUpdatedAt AND c.id > :lastId))', { lastUpdatedAt, lastId });
         }
-        qb
-            .select(['c.id', 'c.number', 'c.sysNumber', 'c.updatedAt'])
+        qb.select(['c.id', 'c.number', 'c.sysNumber', 'c.updatedAt'])
             .orderBy('c.updatedAt', 'ASC')
             .addOrderBy('c.id', 'ASC')
             .limit(limit + 1);
@@ -207,9 +205,12 @@ let CattleRepository = class CattleRepository {
         let nextCursor = null;
         if (hasMore) {
             const last = pageItems[pageItems.length - 1];
-            nextCursor = Buffer.from(JSON.stringify({ updatedAt: last.updatedAt.toISOString(), id: last.id }), 'utf8').toString('base64');
+            nextCursor = Buffer.from(JSON.stringify({
+                updatedAt: last.updatedAt.toISOString(),
+                id: last.id,
+            }), 'utf8').toString('base64');
         }
-        const items = pageItems.map(r => ({
+        const items = pageItems.map((r) => ({
             idTenant: r.idTenant,
             id: r.id,
             number: r.number,
@@ -264,11 +265,14 @@ let CattleRepository = class CattleRepository {
     }
     async lockForTenant(tenantId, manager) {
         const m = manager ?? this.repository;
-        await m.query(`SELECT pg_advisory_xact_lock(hashtext($1))`, [`${tenantId}:cattle_number`]);
+        await m.query(`SELECT pg_advisory_xact_lock(hashtext($1))`, [
+            `${tenantId}:cattle_number`,
+        ]);
     }
     async search(idTenant, query, statuses, manager) {
         const repo = manager?.getRepository(cattle_entity_1.Cattle) ?? this.repository;
-        const qb = repo.createQueryBuilder('c')
+        const qb = repo
+            .createQueryBuilder('c')
             .leftJoinAndSelect('c.device', 'd')
             .where('c.idTenant = :idTenant', { idTenant })
             .andWhere('c.status IN (:...statuses)', { statuses })

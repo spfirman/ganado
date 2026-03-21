@@ -24,45 +24,6 @@ var CattleStatus;
     CattleStatus["LOST"] = "LOST";
 })(CattleStatus || (exports.CattleStatus = CattleStatus = {}));
 let Cattle = class Cattle {
-    id;
-    idTenant;
-    sysNumber;
-    number;
-    receivedAt;
-    receivedWeight;
-    idPurchase;
-    purchase;
-    purchaseWeight;
-    purchasePrice;
-    idLot;
-    idBrand;
-    color;
-    cattleCharacteristics;
-    eartagLeft;
-    eartagRight;
-    idDevice;
-    device;
-    castrated;
-    castrationDate;
-    comments;
-    purchaseCommission;
-    negotiatedPricePerKg;
-    lotPricePerWeight;
-    salePrice;
-    salePricePerKg;
-    saleWeight;
-    averageGr;
-    purchasedFrom;
-    idProvider;
-    lastWeight;
-    hasHorn;
-    status;
-    gender;
-    birthDateAprx;
-    newFeedStartDate;
-    averageDailyGain;
-    createdAt;
-    updatedAt;
 };
 exports.Cattle = Cattle;
 __decorate([
@@ -108,11 +69,11 @@ __decorate([
 ], Cattle.prototype, "purchasePrice", void 0);
 __decorate([
     (0, typeorm_1.Column)({ name: 'id_lot', type: 'uuid', nullable: true }),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], Cattle.prototype, "idLot", void 0);
 __decorate([
     (0, typeorm_1.Column)({ name: 'id_brand', type: 'uuid', nullable: true }),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], Cattle.prototype, "idBrand", void 0);
 __decorate([
     (0, typeorm_1.Column)({
@@ -128,16 +89,20 @@ __decorate([
     __metadata("design:type", Array)
 ], Cattle.prototype, "cattleCharacteristics", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ name: 'eid_tag', type: 'varchar', length: 30, nullable: true }),
+    __metadata("design:type", String)
+], Cattle.prototype, "eidTag", void 0);
+__decorate([
     (0, typeorm_1.Column)({ name: 'eartag_left', type: 'varchar', length: 50, nullable: true }),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], Cattle.prototype, "eartagLeft", void 0);
 __decorate([
     (0, typeorm_1.Column)({ name: 'eartag_right', type: 'varchar', length: 50, nullable: true }),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], Cattle.prototype, "eartagRight", void 0);
 __decorate([
     (0, typeorm_1.Column)({ name: 'id_device', type: 'uuid', nullable: true }),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], Cattle.prototype, "idDevice", void 0);
 __decorate([
     (0, typeorm_1.OneToOne)(() => device_entity_1.Device, { nullable: true, onDelete: 'SET NULL' }),
@@ -154,7 +119,7 @@ __decorate([
 ], Cattle.prototype, "castrationDate", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'text', nullable: true }),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], Cattle.prototype, "comments", void 0);
 __decorate([
     (0, typeorm_1.Column)({ name: 'purchase_commission', type: 'numeric', precision: 10, scale: 2, nullable: true }),
@@ -219,15 +184,15 @@ __decorate([
 ], Cattle.prototype, "gender", void 0);
 __decorate([
     (0, typeorm_1.Column)({ name: 'birth_date_aprx', type: 'date', nullable: true }),
-    __metadata("design:type", Object)
+    __metadata("design:type", Date)
 ], Cattle.prototype, "birthDateAprx", void 0);
 __decorate([
     (0, typeorm_1.Column)({ name: 'new_feed_start_date', type: 'date', nullable: true }),
-    __metadata("design:type", Object)
+    __metadata("design:type", Date)
 ], Cattle.prototype, "newFeedStartDate", void 0);
 __decorate([
     (0, typeorm_1.Column)({ name: 'average_daily_gain', type: 'numeric', precision: 6, scale: 3, nullable: true }),
-    __metadata("design:type", Object)
+    __metadata("design:type", Number)
 ], Cattle.prototype, "averageDailyGain", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)({ name: 'created_at' }),

@@ -19,10 +19,9 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const cattle_weight_history_entity_1 = require("../entities/cattle-weight-history.entity");
 let CattleWeightHistoryRepository = CattleWeightHistoryRepository_1 = class CattleWeightHistoryRepository {
-    repo;
-    logger = new common_1.Logger(CattleWeightHistoryRepository_1.name);
     constructor(repo) {
         this.repo = repo;
+        this.logger = new common_1.Logger(CattleWeightHistoryRepository_1.name);
     }
     async create(entity, manager) {
         var repo = this.repo;
@@ -55,7 +54,9 @@ let CattleWeightHistoryRepository = CattleWeightHistoryRepository_1 = class Catt
         }
     }
     async findLastByCattle(idTenant, idCattle, manager) {
-        const repo = manager ? manager.getRepository(cattle_weight_history_entity_1.CattleWeightHistory) : this.repo;
+        const repo = manager
+            ? manager.getRepository(cattle_weight_history_entity_1.CattleWeightHistory)
+            : this.repo;
         const list = await repo.find({
             where: { idTenant, idCattle },
             order: { date: 'DESC' },

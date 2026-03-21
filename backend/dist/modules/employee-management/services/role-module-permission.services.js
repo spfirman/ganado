@@ -14,10 +14,9 @@ exports.RoleModulePermissionService = void 0;
 const common_1 = require("@nestjs/common");
 const role_module_permission_repository_1 = require("../repositories/role-module-permission.repository");
 let RoleModulePermissionService = RoleModulePermissionService_1 = class RoleModulePermissionService {
-    roleModulePermissionRepository;
-    logger = new common_1.Logger(RoleModulePermissionService_1.name);
     constructor(roleModulePermissionRepository) {
         this.roleModulePermissionRepository = roleModulePermissionRepository;
+        this.logger = new common_1.Logger(RoleModulePermissionService_1.name);
     }
     async getByRolesAndTenant(roleIds, tenantId) {
         const roleModulePermissions = await this.roleModulePermissionRepository.findByRolesAndTenant(roleIds, tenantId);
@@ -38,7 +37,7 @@ let RoleModulePermissionService = RoleModulePermissionService_1 = class RoleModu
         if (!permission) {
             throw new common_1.NotFoundException('Permission not found');
         }
-        this.logger.debug("********************************************************");
+        this.logger.debug('********************************************************');
         this.logger.debug(permission);
         this.logger.debug(permissionDto);
         const permissionUpdated = await this.roleModulePermissionRepository.updateRoleModulePermission(permission, permissionDto);

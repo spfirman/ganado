@@ -13,8 +13,8 @@ exports.CreateSimpleEventDto = void 0;
 exports.ValidateDataFields = ValidateDataFields;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
-const simple_event_type_enum_1 = require("../enums/simple-event-type.enum");
 const class_validator_2 = require("class-validator");
+const simple_event_type_enum_1 = require("../enums/simple-event-type.enum");
 function ValidateDataFields(validationOptions) {
     return function (object, propertyName) {
         (0, class_validator_2.registerDecorator)({
@@ -48,21 +48,18 @@ function ValidateDataFields(validationOptions) {
                 defaultMessage(args) {
                     const obj = args.object;
                     if (obj.type === 'medication') {
-                        return `Para type "medication", 'data' debe incluir 'medicationName', 'dosage' y 'lot', y todos deben ser strings no vacíos`;
+                        return `Para type "medication", 'data' debe incluir 'medicationName', 'dosage' y 'lot', y todos deben ser strings no vacios`;
                     }
                     if (obj.type === 'eartag') {
-                        return `Para type "eartag", 'data' debe incluir 'eartagLeft' o 'eartagRight' con valor no vacío`;
+                        return `Para type "eartag", 'data' debe incluir 'eartagLeft' o 'eartagRight' con valor no vacio`;
                     }
-                    return `Los campos en 'data' no pueden estar vacíos para el tipo ${obj.type}`;
+                    return `Los campos en 'data' no pueden estar vacios para el tipo ${obj.type}`;
                 },
             },
         });
     };
 }
 class CreateSimpleEventDto {
-    idMassiveEvent;
-    type;
-    data;
 }
 exports.CreateSimpleEventDto = CreateSimpleEventDto;
 __decorate([
@@ -85,7 +82,7 @@ __decorate([
 ], CreateSimpleEventDto.prototype, "type", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({
-        description: 'Datos específicos del evento simple. Para eartag: { eartagLeft: "ET-001", eartagRight: "ET-002" }. Para brand: { idBrand: "abc123" }. Para medication: { medicationName: "med123", dosage: "1ml/50kg", lot: "123" }',
+        description: 'Datos especificos del evento simple. Para eartag: { eartagLeft: "ET-001", eartagRight: "ET-002" }. Para brand: { idBrand: "abc123" }. Para medication: { medicationName: "med123", dosage: "1ml/50kg", lot: "123" }',
         example: { medicationName: 'med123', dosage: '1ml/50kg', lot: '123' },
     }),
     (0, class_validator_1.IsOptional)(),

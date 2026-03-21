@@ -12,13 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateSaleDetailDto = void 0;
 const class_validator_1 = require("class-validator");
 class CreateSaleDetailDto {
-    cattleId;
-    cattleNumber;
-    measuredWeight;
-    isApproved;
-    rejectionReason;
-    trackerRemoved;
-    calculatedPrice;
 }
 exports.CreateSaleDetailDto = CreateSaleDetailDto;
 __decorate([

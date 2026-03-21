@@ -1,6 +1,5 @@
-import { Repository } from 'typeorm';
+import { Repository, EntityManager } from 'typeorm';
 import { Provider } from '../entities/provider.entity';
-import { EntityManager } from 'typeorm';
 export declare class ProviderRepository {
     private readonly repository;
     constructor(repository: Repository<Provider>);

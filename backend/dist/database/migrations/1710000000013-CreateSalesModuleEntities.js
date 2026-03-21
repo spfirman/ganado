@@ -2,7 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateSalesModuleEntities1710000000013 = void 0;
 class CreateSalesModuleEntities1710000000013 {
-    name = 'CreateSalesModuleEntities1710000000013';
+    constructor() {
+        this.name = 'CreateSalesModuleEntities1710000000013';
+    }
     async up(queryRunner) {
         await queryRunner.query(`CREATE TABLE "contacts" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "id_tenant" uuid NOT NULL, "name" character varying(150) NOT NULL, "phone_1" character varying(50), "phone_2" character varying(50), "email" character varying(150), "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_b99cd40cfd66a99f1571f4f72e6" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "sales" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "transaction_date" TIMESTAMP NOT NULL, "buyer_id" uuid NOT NULL, "transporter_id" uuid, "min_weight_config" numeric(10,2) NOT NULL, "value_per_kg_config" numeric(10,2) NOT NULL, "total_animal_count" integer NOT NULL, "total_weight_kg" numeric(10,2) NOT NULL, "total_amount" numeric(12,2) NOT NULL, "notes" text, "id_tenant" uuid NOT NULL, "created_by" uuid, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_4f0bc990ae81dba46da680895ea" PRIMARY KEY ("id"))`);

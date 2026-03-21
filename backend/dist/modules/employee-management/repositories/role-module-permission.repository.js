@@ -14,7 +14,6 @@ const typeorm_1 = require("typeorm");
 const common_1 = require("@nestjs/common");
 const role_module_permission_entity_1 = require("../entities/role-module-permission.entity");
 let RoleModulePermissionRepository = class RoleModulePermissionRepository extends typeorm_1.Repository {
-    dataSource;
     constructor(dataSource) {
         super(role_module_permission_entity_1.RoleModulePermission, dataSource.createEntityManager());
         this.dataSource = dataSource;
@@ -25,14 +24,16 @@ let RoleModulePermissionRepository = class RoleModulePermissionRepository extend
             const permissions = await repository.find({
                 where: {
                     id_role: (0, typeorm_1.In)(roleIds),
-                    tenant_id: tenantId
+                    tenant_id: tenantId,
                 },
-                relations: ['module']
+                relations: ['module'],
             });
             return permissions;
         }
         catch (error) {
-            throw new common_1.InternalServerErrorException('Error en la base de datos', { cause: error.message });
+            throw new common_1.InternalServerErrorException('Error en la base de datos', {
+                cause: error.message,
+            });
         }
     }
     async findByRoleAndModuleAndTenant(roleId, moduleId, tenantId, manager) {
@@ -42,13 +43,15 @@ let RoleModulePermissionRepository = class RoleModulePermissionRepository extend
                 where: {
                     tenant_id: tenantId,
                     id_role: roleId,
-                    id_module: moduleId
-                }
+                    id_module: moduleId,
+                },
             });
             return permission;
         }
         catch (error) {
-            throw new common_1.InternalServerErrorException('Error in data base', { cause: error.message });
+            throw new common_1.InternalServerErrorException('Error in data base', {
+                cause: error.message,
+            });
         }
     }
     async createRoleModulePermission(tenantId, createPermissionDto, manager) {
@@ -62,18 +65,20 @@ let RoleModulePermissionRepository = class RoleModulePermissionRepository extend
                 can_read: createPermissionDto.can_read,
                 can_update: createPermissionDto.can_update,
                 can_delete: createPermissionDto.can_delete,
-                can_list: createPermissionDto.can_list
+                can_list: createPermissionDto.can_list,
             });
             return repository.save(permission);
         }
         catch (error) {
-            throw new common_1.InternalServerErrorException('Error in data base', { cause: error.message });
+            throw new common_1.InternalServerErrorException('Error in data base', {
+                cause: error.message,
+            });
         }
     }
     async createRoleModulePermissions(tenantId, createPermissionDtos, manager) {
         const repository = manager?.getRepository(role_module_permission_entity_1.RoleModulePermission) || this;
         try {
-            const permissions = createPermissionDtos.map(dto => repository.create({
+            const permissions = createPermissionDtos.map((dto) => repository.create({
                 tenant_id: tenantId,
                 id_role: dto.roleId,
                 id_module: dto.moduleId,
@@ -81,12 +86,14 @@ let RoleModulePermissionRepository = class RoleModulePermissionRepository extend
                 can_read: dto.can_read,
                 can_update: dto.can_update,
                 can_delete: dto.can_delete,
-                can_list: dto.can_list
+                can_list: dto.can_list,
             }));
             return repository.save(permissions);
         }
         catch (error) {
-            throw new common_1.InternalServerErrorException('Error in data base', { cause: error.message });
+            throw new common_1.InternalServerErrorException('Error in data base', {
+                cause: error.message,
+            });
         }
     }
     async updateRoleModulePermission(permission, updatePermissionDto, manager) {
@@ -99,7 +106,7 @@ let RoleModulePermissionRepository = class RoleModulePermissionRepository extend
         const result = await repository.delete({
             id_role: roleId,
             tenant_id: tenantId,
-            id_module: moduleId
+            id_module: moduleId,
         });
         return result;
     }
@@ -108,9 +115,9 @@ let RoleModulePermissionRepository = class RoleModulePermissionRepository extend
         return repository.find({
             where: {
                 id_role: roleId,
-                tenant_id: tenantId
+                tenant_id: tenantId,
             },
-            relations: ['module']
+            relations: ['module'],
         });
     }
 };

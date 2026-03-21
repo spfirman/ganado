@@ -1,5 +1,5 @@
 export declare class FilterUsersDto {
-    tenantId?: string;
-    roleId?: string;
-    searchTerm?: string;
+    tenantId: string;
+    roleId: string;
+    searchTerm: string;
 }

@@ -14,18 +14,6 @@ const typeorm_1 = require("typeorm");
 const sale_entity_1 = require("./sale.entity");
 const cattle_entity_1 = require("../../farm/entities/cattle.entity");
 let SaleDetail = class SaleDetail {
-    id;
-    saleId;
-    sale;
-    cattleId;
-    cattle;
-    measuredWeight;
-    isApproved;
-    rejectionReason;
-    trackerRemoved;
-    calculatedPrice;
-    idTenant;
-    createdAt;
 };
 exports.SaleDetail = SaleDetail;
 __decorate([

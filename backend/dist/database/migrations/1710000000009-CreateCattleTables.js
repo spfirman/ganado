@@ -2,7 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateCattleTables1710000000009 = void 0;
 class CreateCattleTables1710000000009 {
-    name = 'CreateCattleTables1710000000009';
+    constructor() {
+        this.name = 'CreateCattleTables1710000000009';
+    }
     async up(queryRunner) {
         await queryRunner.query(`
       UPDATE modules SET access_details = '{"brands": "CRUDL", "cattles":"CRUDL"}' WHERE code = 'FARM';

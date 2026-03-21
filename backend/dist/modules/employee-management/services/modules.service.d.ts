@@ -1,8 +1,7 @@
-import { Repository } from 'typeorm';
+import { Repository, EntityManager } from 'typeorm';
 import { ModuleEntity } from '../entities/module.entity';
-import { EntityManager } from 'typeorm';
 export declare class ModulesService {
-    private readonly moduleRepository;
+    private moduleRepository;
     constructor(moduleRepository: Repository<ModuleEntity>);
     findAll(manager?: EntityManager): Promise<ModuleEntity[]>;
     findByName(name: string, manager?: EntityManager): Promise<ModuleEntity>;

@@ -27,8 +27,6 @@ const session_user_decorator_1 = require("../../../common/decorators/session-use
 const session_user_dto_1 = require("../../auth/dto/session-user.dto");
 const roles_service_1 = require("../services/roles.service");
 let UsersController = class UsersController {
-    usersService;
-    rolesService;
     constructor(usersService, rolesService) {
         this.usersService = usersService;
         this.rolesService = rolesService;
@@ -39,6 +37,9 @@ let UsersController = class UsersController {
     }
     async getRoles(sessionUser) {
         return this.rolesService.findAll(sessionUser.tenant_id);
+    }
+    async getMe(sessionUser) {
+        return this.usersService.findOne(sessionUser.sub, sessionUser);
     }
     async findOne(sessionUser, id) {
         return this.usersService.findOne(id, sessionUser);
@@ -62,13 +63,17 @@ __decorate([
     (0, swagger_1.ApiResponse)({
         status: 201,
         description: 'Usuario creado exitosamente',
-        type: user_entity_1.User
+        type: user_entity_1.User,
     }),
-    (0, swagger_1.ApiResponse)({ status: 403, description: 'No tienes permisos para crear usuarios' }),
+    (0, swagger_1.ApiResponse)({
+        status: 403,
+        description: 'No tienes permisos para crear usuarios',
+    }),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto, create_user_dto_1.CreateUserDto]),
+    __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto,
+        create_user_dto_1.CreateUserDto]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "create", null);
 __decorate([
@@ -81,13 +86,27 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getRoles", null);
 __decorate([
+    (0, common_1.Get)('me'),
+    (0, application_permissions_decorator_1.RequireAction)('read'),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener el perfil del usuario actual' }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Perfil del usuario actual',
+        type: user_response_dto_1.UserResponseDto,
+    }),
+    __param(0, (0, session_user_decorator_1.SessionUser)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "getMe", null);
+__decorate([
     (0, common_1.Get)(':id'),
     (0, application_permissions_decorator_1.RequireAction)('read'),
     (0, swagger_1.ApiOperation)({ summary: 'Obtener un usuario por ID' }),
     (0, swagger_1.ApiResponse)({
         status: 200,
         description: 'Usuario encontrado exitosamente',
-        type: user_entity_1.User
+        type: user_entity_1.User,
     }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Usuario no encontrado' }),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
@@ -103,12 +122,12 @@ __decorate([
     (0, swagger_1.ApiBody)({
         type: update_user_dto_1.UpdateUserDto,
         description: 'Actualizar datos usuario.',
-        required: true
+        required: true,
     }),
     (0, swagger_1.ApiResponse)({
         status: 200,
         description: 'Usuario actualizado exitosamente',
-        type: user_entity_1.User
+        type: user_entity_1.User,
     }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Usuario no encontrado' }),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
@@ -124,10 +143,13 @@ __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Eliminar un usuario' }),
     (0, swagger_1.ApiResponse)({
         status: 200,
-        description: 'Usuario eliminado exitosamente'
+        description: 'Usuario eliminado exitosamente',
     }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Usuario no encontrado' }),
-    (0, swagger_1.ApiResponse)({ status: 403, description: 'No tienes permisos para eliminar usuarios' }),
+    (0, swagger_1.ApiResponse)({
+        status: 403,
+        description: 'No tienes permisos para eliminar usuarios',
+    }),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
     __param(1, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
@@ -141,10 +163,16 @@ __decorate([
     (0, swagger_1.ApiResponse)({
         status: 200,
         description: 'Lista de usuarios obtenida exitosamente',
-        type: [user_response_dto_1.UserResponseDto]
+        type: [user_response_dto_1.UserResponseDto],
     }),
-    (0, swagger_1.ApiResponse)({ status: 403, description: 'No tienes permisos para ver usuarios' }),
-    (0, swagger_1.ApiResponse)({ status: 403, description: 'No tienes permisos para ver usuarios' }),
+    (0, swagger_1.ApiResponse)({
+        status: 403,
+        description: 'No tienes permisos para ver usuarios',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 403,
+        description: 'No tienes permisos para ver usuarios',
+    }),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
     __param(1, (0, common_1.Query)('page', new common_1.DefaultValuePipe(1), common_1.ParseIntPipe)),
     __param(2, (0, common_1.Query)('limit', new common_1.DefaultValuePipe(10), common_1.ParseIntPipe)),

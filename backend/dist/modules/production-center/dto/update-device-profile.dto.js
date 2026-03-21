@@ -13,19 +13,6 @@ exports.UpdateDeviceProfileDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class UpdateDeviceProfileDto {
-    idTenant;
-    name;
-    description;
-    idChipstack;
-    csApplicationId;
-    csJoineui;
-    csAppKey;
-    csNwkKey;
-    fccId;
-    regions;
-    model;
-    input;
-    updatedAt;
 }
 exports.UpdateDeviceProfileDto = UpdateDeviceProfileDto;
 __decorate([
@@ -40,7 +27,7 @@ __decorate([
     __metadata("design:type", String)
 ], UpdateDeviceProfileDto.prototype, "name", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Descripción del perfil de dispositivo', required: false }),
+    (0, swagger_1.ApiProperty)({ description: 'Descripcion del perfil de dispositivo', required: false }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
@@ -52,7 +39,7 @@ __decorate([
     __metadata("design:type", String)
 ], UpdateDeviceProfileDto.prototype, "idChipstack", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'ID de la aplicación en Chirpstack', required: false }),
+    (0, swagger_1.ApiProperty)({ description: 'ID de la aplicacion en Chirpstack', required: false }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsUUID)(),
     __metadata("design:type", String)

@@ -13,19 +13,6 @@ exports.DeviceProfileResponseDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_transformer_1 = require("class-transformer");
 let DeviceProfileResponseDto = class DeviceProfileResponseDto {
-    id;
-    name;
-    idChipstack;
-    csApplicationId;
-    csJoineui;
-    csAppKey;
-    csNwkKey;
-    fccId;
-    regions;
-    model;
-    input;
-    createdAt;
-    updatedAt;
 };
 exports.DeviceProfileResponseDto = DeviceProfileResponseDto;
 __decorate([
@@ -45,7 +32,7 @@ __decorate([
 ], DeviceProfileResponseDto.prototype, "idChipstack", void 0);
 __decorate([
     (0, class_transformer_1.Expose)(),
-    (0, swagger_1.ApiProperty)({ description: 'ID de la aplicación en Chirpstack' }),
+    (0, swagger_1.ApiProperty)({ description: 'ID de la aplicacion en Chirpstack' }),
     __metadata("design:type", String)
 ], DeviceProfileResponseDto.prototype, "csApplicationId", void 0);
 __decorate([
@@ -85,12 +72,12 @@ __decorate([
 ], DeviceProfileResponseDto.prototype, "input", void 0);
 __decorate([
     (0, class_transformer_1.Expose)(),
-    (0, swagger_1.ApiProperty)({ description: 'Fecha de creación' }),
+    (0, swagger_1.ApiProperty)({ description: 'Fecha de creacion' }),
     __metadata("design:type", Date)
 ], DeviceProfileResponseDto.prototype, "createdAt", void 0);
 __decorate([
     (0, class_transformer_1.Expose)(),
-    (0, swagger_1.ApiProperty)({ description: 'Fecha de actualización' }),
+    (0, swagger_1.ApiProperty)({ description: 'Fecha de actualizacion' }),
     __metadata("design:type", Date)
 ], DeviceProfileResponseDto.prototype, "updatedAt", void 0);
 exports.DeviceProfileResponseDto = DeviceProfileResponseDto = __decorate([

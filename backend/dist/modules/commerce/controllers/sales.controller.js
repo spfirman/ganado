@@ -25,7 +25,6 @@ const application_permissions_guard_1 = require("../../../common/application-per
 const application_permissions_decorator_1 = require("../../../common/application-permissions/application-permissions.decorator");
 const swagger_1 = require("@nestjs/swagger");
 let SalesController = class SalesController {
-    salesService;
     constructor(salesService) {
         this.salesService = salesService;
     }
@@ -63,7 +62,8 @@ __decorate([
     __param(0, (0, common_1.Query)()),
     __param(1, (0, session_user_decorator_1.SessionUser)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [get_sales_query_dto_1.GetSalesQueryDto, session_user_dto_1.SessionUserDto]),
+    __metadata("design:paramtypes", [get_sales_query_dto_1.GetSalesQueryDto,
+        session_user_dto_1.SessionUserDto]),
     __metadata("design:returntype", Promise)
 ], SalesController.prototype, "findAll", null);
 __decorate([
@@ -82,7 +82,8 @@ __decorate([
     __param(1, (0, common_1.Body)()),
     __param(2, (0, session_user_decorator_1.SessionUser)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_sale_dto_1.UpdateSaleDto, session_user_dto_1.SessionUserDto]),
+    __metadata("design:paramtypes", [String, update_sale_dto_1.UpdateSaleDto,
+        session_user_dto_1.SessionUserDto]),
     __metadata("design:returntype", Promise)
 ], SalesController.prototype, "update", null);
 exports.SalesController = SalesController = __decorate([

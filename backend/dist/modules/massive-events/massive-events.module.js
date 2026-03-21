@@ -26,14 +26,18 @@ let MassiveEventsModule = class MassiveEventsModule {
 exports.MassiveEventsModule = MassiveEventsModule;
 exports.MassiveEventsModule = MassiveEventsModule = __decorate([
     (0, common_1.Module)({
-        imports: [(0, common_1.forwardRef)(() => farm_module_1.FarmModule), application_permissions_module_1.ApplicationPermissionsModule, typeorm_1.TypeOrmModule.forFeature([massive_events_entity_1.MassiveEvent, simple_event_entity_1.SimpleEvent, animal_simple_event_entity_1.AnimalSimpleEvent])],
+        imports: [
+            (0, common_1.forwardRef)(() => farm_module_1.FarmModule),
+            application_permissions_module_1.ApplicationPermissionsModule,
+            typeorm_1.TypeOrmModule.forFeature([massive_events_entity_1.MassiveEvent, simple_event_entity_1.SimpleEvent, animal_simple_event_entity_1.AnimalSimpleEvent]),
+        ],
         controllers: [massive_event_controller_1.MassiveEventController, simple_event_controller_1.SimpleEventController],
         providers: [
             massive_event_repository_1.MassiveEventRepository,
             simple_event_repository_1.SimpleEventRepository,
             animal_simple_event_repository_1.AnimalSimpleEventRepository,
             massive_event_service_1.MassiveEventService,
-            simple_event_service_1.SimpleEventService
+            simple_event_service_1.SimpleEventService,
         ],
         exports: [
             massive_event_repository_1.MassiveEventRepository,

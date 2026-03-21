@@ -13,8 +13,6 @@ exports.CreateRoleDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class CreateRoleDto {
-    name;
-    description;
 }
 exports.CreateRoleDto = CreateRoleDto;
 __decorate([
@@ -30,7 +28,7 @@ __decorate([
 ], CreateRoleDto.prototype, "name", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Descripción del rol',
+        description: 'Descripcion del rol',
         example: 'Rol con acceso total al sistema',
         required: true,
     }),

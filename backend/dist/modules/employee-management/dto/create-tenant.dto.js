@@ -13,14 +13,6 @@ exports.CreateTenantDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class CreateTenantDto {
-    name;
-    company_username;
-    status;
-    admin_username;
-    admin_first_name;
-    admin_last_name;
-    admin_password;
-    admin_email;
 }
 exports.CreateTenantDto = CreateTenantDto;
 __decorate([
@@ -36,7 +28,7 @@ __decorate([
 ], CreateTenantDto.prototype, "name", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Nombre de usuario de la compañía',
+        description: 'Nombre de usuario de la compania',
         example: 'finca_alamos',
         required: true,
     }),
@@ -80,7 +72,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Apellido del administrador',
-        example: 'Pérez',
+        example: 'Perez',
         required: true,
     }),
     (0, class_validator_1.IsString)(),
@@ -90,8 +82,8 @@ __decorate([
 ], CreateTenantDto.prototype, "admin_last_name", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Contraseña del administrador',
-        example: 'Contraseña123!',
+        description: 'Contrasena del administrador',
+        example: 'Contrasena123!',
         required: true,
     }),
     (0, class_validator_1.IsString)(),
@@ -101,7 +93,7 @@ __decorate([
 ], CreateTenantDto.prototype, "admin_password", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Correo electrónico del administrador',
+        description: 'Correo electronico del administrador',
         example: 'admin@fincaalamos.com',
         required: true,
     }),

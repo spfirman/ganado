@@ -23,7 +23,6 @@ const swagger_1 = require("@nestjs/swagger");
 const application_permissions_decorator_1 = require("../../../common/application-permissions/application-permissions.decorator");
 const jwt_auth_guard_1 = require("../../auth/guards/jwt-auth.guard");
 const application_permissions_guard_1 = require("../../../common/application-permissions/application-permissions.guard");
-const common_2 = require("@nestjs/common");
 const cattle_response_dto_1 = require("../dto/cattle-response.dto");
 const cattle_basic_response_dto_1 = require("../dto/cattle-basic-response.dto");
 const cattle_basic_page_dto_1 = require("../dto/cattle-basic-page.dto");
@@ -39,14 +38,11 @@ const apply_simple_events_dto_1 = require("../../massive-events/dto/apply-simple
 const animal_simple_event_repository_1 = require("../../massive-events/repositories/animal-simple-event.repository");
 const sync_animal_simple_event_dto_1 = require("../../massive-events/dto/sync-animal-simple-event.dto");
 const animal_simple_event_entity_1 = require("../../massive-events/entities/animal-simple-event.entity");
-const common_3 = require("@nestjs/common");
 let CattleController = CattleController_1 = class CattleController {
-    cattleService;
-    simpleEventCattleRepository;
-    logger = new common_3.Logger(CattleController_1.name);
     constructor(cattleService, simpleEventCattleRepository) {
         this.cattleService = cattleService;
         this.simpleEventCattleRepository = simpleEventCattleRepository;
+        this.logger = new common_1.Logger(CattleController_1.name);
     }
     create(sessionUser, dto) {
         return this.cattleService.create(sessionUser.tenant_id, dto, sessionUser.sub);
@@ -78,7 +74,7 @@ let CattleController = CattleController_1 = class CattleController {
     }
     async findSimpleEventsByCattle(id, sessionUser) {
         const links = await this.simpleEventCattleRepository.findByCattle(sessionUser.tenant_id, id);
-        return links.map(link => ({
+        return links.map((link) => ({
             idSimpleEvent: link.idSimpleEvent,
             appliedAt: link.appliedAt,
             appliedBy: link.appliedBy,
@@ -118,7 +114,9 @@ __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Create a new cattle' }),
     (0, application_permissions_decorator_1.RequireAction)('create'),
     (0, swagger_1.ApiBody)({
-        type: create_cattle_dto_1.CreateCattleDto, required: true, examples: {
+        type: create_cattle_dto_1.CreateCattleDto,
+        required: true,
+        examples: {
             example1: {
                 summary: 'Mandatory fields',
                 value: {
@@ -128,7 +126,7 @@ __decorate([
                     color: 'colors_enum',
                     receivedWeight: 100,
                     purchasePrice: 100,
-                    purchaseWeight: 100
+                    purchaseWeight: 100,
                 },
             },
             example2: {
@@ -151,24 +149,38 @@ __decorate([
                     lotPricePerWeight: 0,
                 },
             },
-        }
+        },
     }),
     (0, common_1.HttpCode)(common_1.HttpStatus.CREATED),
-    (0, swagger_1.ApiResponse)({ status: 201, description: 'Cattle created successfully', type: cattle_response_dto_1.CattleResponseDto }),
+    (0, swagger_1.ApiResponse)({
+        status: 201,
+        description: 'Cattle created successfully',
+        type: cattle_response_dto_1.CattleResponseDto,
+    }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Invalid request body' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Device {deveui} not found' }),
     (0, swagger_1.ApiResponse)({ status: 409, description: 'Cattle number already exists' }),
-    (0, swagger_1.ApiResponse)({ status: 500, description: 'Unexpected error during creation process' }),
+    (0, swagger_1.ApiResponse)({
+        status: 500,
+        description: 'Unexpected error during creation process',
+    }),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto, create_cattle_dto_1.CreateCattleDto]),
+    __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto,
+        create_cattle_dto_1.CreateCattleDto]),
     __metadata("design:returntype", void 0)
 ], CattleController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)('search'),
-    (0, swagger_1.ApiOperation)({ summary: 'Search cattle by number, eartags, or device' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'List of matching cattle', type: [cattle_response_dto_1.CattleResponseDto] }),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Search cattle by number, eartags, or device',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'List of matching cattle',
+        type: [cattle_response_dto_1.CattleResponseDto],
+    }),
     (0, application_permissions_decorator_1.RequireAction)('read'),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
     __param(1, (0, common_1.Query)('q')),
@@ -179,7 +191,11 @@ __decorate([
 __decorate([
     (0, common_1.Get)(':id'),
     (0, swagger_1.ApiOperation)({ summary: 'Get a cattle by ID' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Cattle found', type: cattle_response_dto_1.CattleResponseDto }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Cattle found',
+        type: cattle_response_dto_1.CattleResponseDto,
+    }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Cattle not found' }),
     (0, application_permissions_decorator_1.RequireAction)('read'),
     __param(0, (0, common_1.Param)('id')),
@@ -199,7 +215,8 @@ __decorate([
     __param(1, (0, session_user_decorator_1.SessionUser)()),
     __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, session_user_dto_1.SessionUserDto, update_cattle_dto_1.UpdateCattleDto]),
+    __metadata("design:paramtypes", [String, session_user_dto_1.SessionUserDto,
+        update_cattle_dto_1.UpdateCattleDto]),
     __metadata("design:returntype", void 0)
 ], CattleController.prototype, "update", null);
 __decorate([
@@ -213,14 +230,18 @@ __decorate([
     __param(1, (0, session_user_decorator_1.SessionUser)()),
     __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, session_user_dto_1.SessionUserDto, create_cattle_medication_history_dto_1.CreateCattleMedicationHistoryDto]),
+    __metadata("design:paramtypes", [String, session_user_dto_1.SessionUserDto,
+        create_cattle_medication_history_dto_1.CreateCattleMedicationHistoryDto]),
     __metadata("design:returntype", void 0)
 ], CattleController.prototype, "addMedication", null);
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, swagger_1.ApiOperation)({ summary: 'Delete a cattle' }),
     (0, common_1.HttpCode)(common_1.HttpStatus.NO_CONTENT),
-    (0, swagger_1.ApiResponse)({ status: 204, description: 'Cattle deleted successfully' }),
+    (0, swagger_1.ApiResponse)({
+        status: 204,
+        description: 'Cattle deleted successfully',
+    }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Cattle not found' }),
     (0, application_permissions_decorator_1.RequireAction)('delete'),
     __param(0, (0, common_1.Param)('id')),
@@ -232,18 +253,27 @@ __decorate([
 __decorate([
     (0, common_1.Get)(),
     (0, swagger_1.ApiOperation)({ summary: 'List all cattle' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'List of cattle', type: paged_response_dto_1.PagedResponseDto }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'List of cattle',
+        type: paged_response_dto_1.PagedResponseDto,
+    }),
     (0, application_permissions_decorator_1.RequireAction)('read'),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
     __param(1, (0, common_1.Query)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto, cattle_list_query_dto_1.CattleListQueryDto]),
+    __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto,
+        cattle_list_query_dto_1.CattleListQueryDto]),
     __metadata("design:returntype", Promise)
 ], CattleController.prototype, "list", null);
 __decorate([
     (0, common_1.Get)('basic-info'),
     (0, swagger_1.ApiOperation)({ summary: 'Get basic info of all cattle' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Basic info of all cattle', type: [cattle_basic_response_dto_1.CattleBasicResponseDto] }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Basic info of all cattle',
+        type: [cattle_basic_response_dto_1.CattleBasicResponseDto],
+    }),
     (0, application_permissions_decorator_1.RequireAction)('read'),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
     __metadata("design:type", Function),
@@ -252,7 +282,9 @@ __decorate([
 ], CattleController.prototype, "getBasicInfo", null);
 __decorate([
     (0, common_1.Get)('basic'),
-    (0, swagger_1.ApiOperation)({ summary: 'Get basic cattle info (paged with cursor & optional delta)' }),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Get basic cattle info (paged with cursor & optional delta)',
+    }),
     (0, swagger_1.ApiResponse)({ status: 200, type: cattle_basic_page_dto_1.CattleBasicPageDto }),
     (0, application_permissions_decorator_1.RequireAction)('read'),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
@@ -264,8 +296,13 @@ __decorate([
 ], CattleController.prototype, "getBasicInfoPaged", null);
 __decorate([
     (0, common_1.Get)('simple-events/:id'),
-    (0, swagger_1.ApiOperation)({ summary: 'List all simple events applied to a cattle' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'List of simple events IDs' }),
+    (0, swagger_1.ApiOperation)({
+        summary: 'List all simple events applied to a cattle',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'List of simple events IDs',
+    }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Cattle not found' }),
     (0, application_permissions_decorator_1.RequireAction)('read'),
     __param(0, (0, common_1.Param)('id')),
@@ -276,10 +313,22 @@ __decorate([
 ], CattleController.prototype, "findSimpleEventsByCattle", null);
 __decorate([
     (0, common_1.Post)('apply-events/:cattleNumber'),
-    (0, swagger_1.ApiOperation)({ summary: 'Apply multiple simple events to a single cattle by number' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Events applied successfully', type: [animal_simple_event_entity_1.AnimalSimpleEvent] }),
-    (0, swagger_1.ApiResponse)({ status: 404, description: 'Cattle {cattleNumber} not found / Device {deveui} not found' }),
-    (0, swagger_1.ApiResponse)({ status: 500, description: 'Unexpected error during application process' }),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Apply multiple simple events to a single cattle by number',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Events applied successfully',
+        type: [animal_simple_event_entity_1.AnimalSimpleEvent],
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 404,
+        description: 'Cattle {cattleNumber} not found / Device {deveui} not found',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 500,
+        description: 'Unexpected error during application process',
+    }),
     (0, application_permissions_decorator_1.RequireAction)('update'),
     (0, swagger_1.ApiBody)({
         schema: {
@@ -291,14 +340,24 @@ __decorate([
                     items: {
                         type: 'object',
                         properties: {
-                            type: { type: 'string', enum: ['weight', 'eartag', 'tracker', 'brand', 'castration', 'medication'] },
+                            type: {
+                                type: 'string',
+                                enum: [
+                                    'weight',
+                                    'eartag',
+                                    'tracker',
+                                    'brand',
+                                    'castration',
+                                    'medication',
+                                ],
+                            },
                             data: { type: 'object' },
                             appliedBy: { type: 'string' },
-                            idSimpleEvent: { type: 'string' }
-                        }
-                    }
-                }
-            }
+                            idSimpleEvent: { type: 'string' },
+                        },
+                    },
+                },
+            },
         },
         examples: {
             example1: {
@@ -307,18 +366,56 @@ __decorate([
                     applied: {
                         idMassiveEvent: 'uuid-massive-event-1',
                         events: [
-                            { type: 'weight', data: { weight: 350.58 }, idSimpleEvent: 'uuid-simple-event-1' },
-                            { type: 'eartag', data: { eartagLeft: 'ET-789', eartagRight: 'ET-790' }, idSimpleEvent: 'uuid-simple-event-2' },
-                            { type: 'tracker', data: { tracker_deveui: 'a173ecf6ffe3abcd' }, idSimpleEvent: 'uuid-simple-event-3' },
-                            { type: 'castration', data: {}, idSimpleEvent: 'uuid-simple-event-4' },
-                            { type: 'medication', data: { medicationName: "Antrimizin NF 85 mg", dosage: "1.2 mg/kg", route: "oral", lot: "LOT-2025" }, idSimpleEvent: 'uuid-simple-event-5' },
-                            { type: 'medication', data: { medicationName: "Boldenona 50 mg", dosage: "1 mL/90 Kg", route: "Intramuscular profunda", lot: "LOT-2025" }, idSimpleEvent: 'uuid-simple-event-6' },
-                            { type: 'brand', data: { idBrand: "abc123" }, idSimpleEvent: 'uuid-simple-event-7' }
-                        ]
-                    }
-                }
-            }
-        }
+                            {
+                                type: 'weight',
+                                data: { weight: 350.58 },
+                                idSimpleEvent: 'uuid-simple-event-1',
+                            },
+                            {
+                                type: 'eartag',
+                                data: { eartagLeft: 'ET-789', eartagRight: 'ET-790' },
+                                idSimpleEvent: 'uuid-simple-event-2',
+                            },
+                            {
+                                type: 'tracker',
+                                data: { tracker_deveui: 'a173ecf6ffe3abcd' },
+                                idSimpleEvent: 'uuid-simple-event-3',
+                            },
+                            {
+                                type: 'castration',
+                                data: {},
+                                idSimpleEvent: 'uuid-simple-event-4',
+                            },
+                            {
+                                type: 'medication',
+                                data: {
+                                    medicationName: 'Antrimizin NF 85 mg',
+                                    dosage: '1.2 mg/kg',
+                                    route: 'oral',
+                                    lot: 'LOT-2025',
+                                },
+                                idSimpleEvent: 'uuid-simple-event-5',
+                            },
+                            {
+                                type: 'medication',
+                                data: {
+                                    medicationName: 'Boldenona 50 mg',
+                                    dosage: '1 mL/90 Kg',
+                                    route: 'Intramuscular profunda',
+                                    lot: 'LOT-2025',
+                                },
+                                idSimpleEvent: 'uuid-simple-event-6',
+                            },
+                            {
+                                type: 'brand',
+                                data: { idBrand: 'abc123' },
+                                idSimpleEvent: 'uuid-simple-event-7',
+                            },
+                        ],
+                    },
+                },
+            },
+        },
     }),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
     __param(1, (0, common_1.Param)('cattleNumber')),
@@ -329,8 +426,14 @@ __decorate([
 ], CattleController.prototype, "applyEventsToSingleCattle", null);
 __decorate([
     (0, common_1.Post)('apply-simple-events'),
-    (0, swagger_1.ApiOperation)({ summary: 'Apply multiple simple events to multiple cattle by their number' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Events applied successfully', type: [cattle_response_dto_1.CattleResponseDto] }),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Apply multiple simple events to multiple cattle by their number',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Events applied successfully',
+        type: [cattle_response_dto_1.CattleResponseDto],
+    }),
     (0, application_permissions_decorator_1.RequireAction)('update'),
     (0, swagger_1.ApiBody)({
         type: apply_simple_events_dto_1.ApplySimpleEventsDto,
@@ -344,26 +447,26 @@ __decorate([
                             type: 'weight',
                             data: { weight: 350 },
                             idMassiveEvent: 'uuid-massive-event-1',
-                            idSimpleEvent: 'uuid-simple-event-1'
+                            idSimpleEvent: 'uuid-simple-event-1',
                         },
                         {
                             cattleNumber: 'C-002',
                             type: 'eartag',
                             data: { eartagLeft: 'ET-789' },
                             idMassiveEvent: 'uuid-massive-event-1',
-                            idSimpleEvent: 'uuid-simple-event-2'
+                            idSimpleEvent: 'uuid-simple-event-2',
                         },
                         {
                             cattleNumber: 'C-003',
                             type: 'eartag',
                             data: { eartagRight: 'ET-790' },
                             idMassiveEvent: 'uuid-massive-event-2',
-                            idSimpleEvent: 'uuid-simple-event-3'
-                        }
-                    ]
-                }
-            }
-        }
+                            idSimpleEvent: 'uuid-simple-event-3',
+                        },
+                    ],
+                },
+            },
+        },
     }),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
     __param(1, (0, common_1.Body)()),
@@ -374,8 +477,14 @@ __decorate([
 ], CattleController.prototype, "applySimpleEventsToSeveralCattle", null);
 __decorate([
     (0, common_1.Post)('sync-cattle-simple-event'),
-    (0, swagger_1.ApiOperation)({ summary: 'Sync offline cattle-simple-event records to backend' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Sync results', type: sync_animal_simple_event_dto_1.SyncAnimalSimpleEventResponseDto }),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Sync offline cattle-simple-event records to backend',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Sync results',
+        type: sync_animal_simple_event_dto_1.SyncAnimalSimpleEventResponseDto,
+    }),
     (0, application_permissions_decorator_1.RequireAction)('update'),
     (0, swagger_1.ApiBody)({
         type: sync_animal_simple_event_dto_1.SyncAnimalSimpleEventRequestDto,
@@ -393,7 +502,7 @@ __decorate([
                             appliedAt: '2025-07-24T10:00:00Z',
                             appliedBy: 'user-123',
                             idMassiveEvent: 'uuid-massive-event-1',
-                            idSimpleEvent: 'uuid-simple-event-1'
+                            idSimpleEvent: 'uuid-simple-event-1',
                         },
                         {
                             id: 'uuid-local-2',
@@ -404,12 +513,12 @@ __decorate([
                             appliedAt: '2025-07-24T11:00:00Z',
                             appliedBy: 'user-123',
                             idMassiveEvent: 'uuid-massive-event-1',
-                            idSimpleEvent: 'uuid-simple-event-2'
-                        }
-                    ]
-                }
-            }
-        }
+                            idSimpleEvent: 'uuid-simple-event-2',
+                        },
+                    ],
+                },
+            },
+        },
     }),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
     __param(1, (0, common_1.Body)()),
@@ -422,7 +531,15 @@ __decorate([
     (0, common_1.Post)('import'),
     (0, swagger_1.ApiOperation)({ summary: 'Import cattle from an Excel file' }),
     (0, swagger_1.ApiConsumes)('multipart/form-data'),
-    (0, swagger_1.ApiBody)({ schema: { type: 'object', required: ['file'], properties: { file: { type: 'string', format: 'binary' } } } }),
+    (0, swagger_1.ApiBody)({
+        schema: {
+            type: 'object',
+            required: ['file'],
+            properties: {
+                file: { type: 'string', format: 'binary' },
+            },
+        },
+    }),
     (0, application_permissions_decorator_1.RequireAction)('create'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file', {
         storage: (0, multer_1.diskStorage)({
@@ -468,7 +585,10 @@ __decorate([
             },
         },
     }),
-    (0, swagger_1.ApiResponse)({ status: 500, description: 'Unexpected error during import process' }),
+    (0, swagger_1.ApiResponse)({
+        status: 500,
+        description: 'Unexpected error during import process',
+    }),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
     __param(1, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
@@ -478,9 +598,18 @@ __decorate([
 __decorate([
     (0, common_1.Get)('validate-number/:number'),
     (0, application_permissions_decorator_1.RequireAction)('read'),
-    (0, swagger_1.ApiOperation)({ summary: 'Validate cattle by number for sale (checks ACTIVE status)' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Cattle is valid and ACTIVE', type: cattle_response_dto_1.CattleResponseDto }),
-    (0, swagger_1.ApiResponse)({ status: 400, description: 'Cattle not found or not ACTIVE' }),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Validate cattle by number for sale (checks ACTIVE status)',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Cattle is valid and ACTIVE',
+        type: cattle_response_dto_1.CattleResponseDto,
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 400,
+        description: 'Cattle not found or not ACTIVE',
+    }),
     __param(0, (0, common_1.Param)('number')),
     __param(1, (0, session_user_decorator_1.SessionUser)()),
     __metadata("design:type", Function),
@@ -491,7 +620,10 @@ __decorate([
     (0, common_1.Post)(':id/weight-history'),
     (0, application_permissions_decorator_1.RequireAction)('update'),
     (0, swagger_1.ApiOperation)({ summary: 'Record weight measurement in history' }),
-    (0, swagger_1.ApiResponse)({ status: 201, description: 'Weight recorded successfully' }),
+    (0, swagger_1.ApiResponse)({
+        status: 201,
+        description: 'Weight recorded successfully',
+    }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __param(2, (0, session_user_decorator_1.SessionUser)()),
@@ -503,7 +635,10 @@ __decorate([
     (0, common_1.Put)(':id/weight'),
     (0, application_permissions_decorator_1.RequireAction)('update'),
     (0, swagger_1.ApiOperation)({ summary: 'Update cattle current weight' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Weight updated successfully' }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Weight updated successfully',
+    }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __param(2, (0, session_user_decorator_1.SessionUser)()),
@@ -515,7 +650,10 @@ __decorate([
     (0, common_1.Put)('bulk-status'),
     (0, application_permissions_decorator_1.RequireAction)('update'),
     (0, swagger_1.ApiOperation)({ summary: 'Bulk update cattle status' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Cattle statuses updated successfully' }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Cattle statuses updated successfully',
+    }),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, session_user_decorator_1.SessionUser)()),
     __metadata("design:type", Function),
@@ -528,7 +666,7 @@ exports.CattleController = CattleController = CattleController_1 = __decorate([
     (0, common_1.Controller)('cattle'),
     (0, application_permissions_decorator_1.RequireEntity)('cattle'),
     (0, application_permissions_decorator_1.RequireModule)('FARM'),
-    (0, common_2.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, application_permissions_guard_1.ApplicationPermissionsGuard),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, application_permissions_guard_1.ApplicationPermissionsGuard),
     __metadata("design:paramtypes", [cattle_service_1.CattleService,
         animal_simple_event_repository_1.AnimalSimpleEventRepository])
 ], CattleController);

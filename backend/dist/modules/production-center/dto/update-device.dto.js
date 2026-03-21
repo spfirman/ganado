@@ -13,18 +13,6 @@ exports.UpdateDeviceDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class UpdateDeviceDto {
-    deveui;
-    idDeviceProfile;
-    name;
-    description;
-    csApplicationId;
-    csJoineui;
-    csAppKey;
-    csNwkKey;
-    tags;
-    variables;
-    isActive;
-    updatedAt;
 }
 exports.UpdateDeviceDto = UpdateDeviceDto;
 __decorate([
@@ -59,7 +47,7 @@ __decorate([
 ], UpdateDeviceDto.prototype, "name", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Descripción del dispositivo',
+        description: 'Descripcion del dispositivo',
         example: 'Sensor de temperatura ubicado en el invernadero principal',
         required: false,
     }),
@@ -69,7 +57,7 @@ __decorate([
 ], UpdateDeviceDto.prototype, "description", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'ID de la aplicación de ChipStack',
+        description: 'ID de la aplicacion de ChipStack',
         example: 'e7c68b4f-0c09-472a-8b9b-44ca8f074c73',
         required: false,
     }),

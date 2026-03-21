@@ -13,12 +13,6 @@ exports.PurchaseResponseDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const lot_response_dto_1 = require("./lot-response.dto");
 class PurchaseResponseDto {
-    id;
-    idProvider;
-    purchaseDate;
-    totalCattle;
-    totalWeight;
-    lots;
     static toPurchaseResponse(purchase) {
         return {
             id: purchase.id,
@@ -26,7 +20,7 @@ class PurchaseResponseDto {
             purchaseDate: String(purchase.purchaseDate),
             totalCattle: purchase.totalCattle,
             totalWeight: purchase.totalWeight,
-            lots: purchase.lots ? purchase.lots.map(lot_response_dto_1.LotResponseDto.toLotResponse) : []
+            lots: purchase.lots ? purchase.lots.map(lot_response_dto_1.LotResponseDto.toLotResponse) : [],
         };
     }
 }

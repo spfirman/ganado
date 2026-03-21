@@ -2,7 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreatePurchaseTablesAndUpdateCattle1710000000011 = void 0;
 class CreatePurchaseTablesAndUpdateCattle1710000000011 {
-    name = 'CreatePurchaseTablesAndUpdateCattle1710000000011';
+    constructor() {
+        this.name = 'CreatePurchaseTablesAndUpdateCattle1710000000011';
+    }
     async up(queryRunner) {
         await queryRunner.query(`
       CREATE TABLE "providers" (

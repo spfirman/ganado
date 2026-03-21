@@ -1,7 +1,6 @@
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UsersService } from '../../employee-management/services/users.service';
-import { User } from '../../employee-management/entities/user.entity';
 import { ApplicationPermissionsService } from '../../../common/application-permissions/application-permissions.service';
 import { RoleModulePermissionService } from '../../employee-management/services/role-module-permission.services';
 export declare class AuthService {
@@ -16,19 +15,19 @@ export declare class AuthService {
     private getAccessTokenExpirationSeconds;
     private buildAccessPayload;
     private issueAccessAndRefreshTokens;
-    validateUser(username: string, company_username: string, password: string): Promise<any>;
-    login(user: User): Promise<{
+    validateUser(username: string, company_username: string, password: string): Promise<import("../../employee-management/entities/user.entity").User>;
+    login(user: any): Promise<{
         access_token: string;
         refresh_token: string;
         expires_in: number;
         user: {
-            id: string;
-            username: string;
-            first_name: string;
-            last_name: string;
-            email: string;
-            tenant_id: string;
-            roles: import("../../employee-management/entities/role.entity").Role[];
+            id: any;
+            username: any;
+            first_name: any;
+            last_name: any;
+            email: any;
+            tenant_id: any;
+            roles: any;
         };
         permissions: Record<string, Record<string, string>>;
     }>;

@@ -6,8 +6,8 @@ export declare class SyncAnimalSimpleEventDto {
     dataJson?: string;
     appliedAt: string;
     appliedBy?: string;
-    idMassiveEvent: string;
-    idSimpleEvent: string;
+    idMassiveEvent?: string;
+    idSimpleEvent?: string;
 }
 export declare class SyncAnimalSimpleEventRequestDto {
     animalSimpleEvent: SyncAnimalSimpleEventDto[];

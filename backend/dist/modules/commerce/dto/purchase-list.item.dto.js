@@ -12,14 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PurchaseListItemDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 class PurchaseListItemDto {
-    id;
-    purchaseDate;
-    providerName;
-    totalWeight;
-    totalCattle;
-    receivedCattle;
-    receivedWeight;
-    status;
 }
 exports.PurchaseListItemDto = PurchaseListItemDto;
 __decorate([
@@ -32,7 +24,7 @@ __decorate([
 ], PurchaseListItemDto.prototype, "purchaseDate", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ nullable: true }),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], PurchaseListItemDto.prototype, "providerName", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ example: 12000 }),

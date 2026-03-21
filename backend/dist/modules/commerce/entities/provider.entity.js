@@ -22,16 +22,6 @@ var ProviderType;
     ProviderType["PROVIDER"] = "PROVIDER";
 })(ProviderType || (exports.ProviderType = ProviderType = {}));
 let Provider = class Provider {
-    id;
-    idTenant;
-    name;
-    nit;
-    type;
-    address;
-    contactPersonId;
-    contactPerson;
-    created_at;
-    updated_at;
 };
 exports.Provider = Provider;
 __decorate([

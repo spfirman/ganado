@@ -24,7 +24,6 @@ const application_permissions_decorator_1 = require("../../../common/application
 const session_user_dto_1 = require("../../auth/dto/session-user.dto");
 const session_user_decorator_1 = require("../../../common/decorators/session-user.decorator");
 let TenantsController = class TenantsController {
-    tenantsService;
     constructor(tenantsService) {
         this.tenantsService = tenantsService;
     }
@@ -41,15 +40,20 @@ let TenantsController = class TenantsController {
 exports.TenantsController = TenantsController;
 __decorate([
     (0, common_1.Post)(),
-    (0, swagger_1.ApiOperation)({ summary: 'Crear un nuevo tenant con usuario administrador' }),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Crear un nuevo tenant con usuario administrador',
+    }),
     (0, common_1.HttpCode)(common_1.HttpStatus.CREATED),
     (0, swagger_1.ApiResponse)({
         status: 201,
         description: 'El tenant ha sido creado exitosamente con su usuario administrador',
         type: create_tenant_dto_1.CreateTenantDto,
     }),
-    (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos' }),
-    (0, swagger_1.ApiResponse)({ status: 409, description: 'El nombre de usuario de la compañía ya existe' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos invalidos' }),
+    (0, swagger_1.ApiResponse)({
+        status: 409,
+        description: 'El nombre de usuario de la compania ya existe',
+    }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_tenant_dto_1.CreateTenantDto]),

@@ -13,15 +13,6 @@ exports.MassiveEvent = void 0;
 const typeorm_1 = require("typeorm");
 const simple_event_entity_1 = require("./simple-event.entity");
 let MassiveEvent = class MassiveEvent {
-    id;
-    idTenant;
-    name;
-    eventDate;
-    status;
-    createdBy;
-    createdAt;
-    updatedAt;
-    simpleEvents;
 };
 exports.MassiveEvent = MassiveEvent;
 __decorate([

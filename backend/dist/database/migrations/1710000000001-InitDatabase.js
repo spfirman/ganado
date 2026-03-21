@@ -2,7 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.InitDatabase1710000000001 = void 0;
 class InitDatabase1710000000001 {
-    name = 'InitDatabase1710000000001';
+    constructor() {
+        this.name = 'InitDatabase1710000000001';
+    }
     async up(queryRunner) {
         await queryRunner.query(`
       CREATE TABLE "tenants" (

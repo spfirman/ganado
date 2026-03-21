@@ -1,4 +1,4 @@
 export declare class UpdateSimpleEventDto {
-    data?: Record<string, any>;
+    data?: any;
     isActive: boolean;
 }

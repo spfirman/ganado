@@ -18,7 +18,6 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const device_profile_entity_1 = require("../entities/device-profile.entity");
 let DeviceProfileRepository = class DeviceProfileRepository {
-    repository;
     constructor(repository) {
         this.repository = repository;
     }

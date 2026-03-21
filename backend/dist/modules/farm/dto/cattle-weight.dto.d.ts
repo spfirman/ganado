@@ -1,8 +1,7 @@
-import { WeightContext } from '../entities/cattle-weight-history.entity';
 export declare class RecordWeightDto {
     weight: number;
     measuredDate: string;
-    context: WeightContext;
+    context: string;
     measuredBy?: string;
 }
 export declare class UpdateCattleWeightDto {

@@ -1,1 +1,1 @@
-{"version":3,"file":"session-user.dto.js","sourceRoot":"","sources":["../../../../src/modules/auth/dto/session-user.dto.ts"],"names":[],"mappings":";;;AAAA,MAAa,cAAc;IACzB,QAAQ,CAAS;IACjB,GAAG,CAAS;IACZ,SAAS,CAAS;IAClB,IAAI,CAAS;IACb,eAAe,CAAS;IACxB,WAAW,CAAyC;IACpD,SAAS,CAAS;CACnB;AARD,wCAQC"}
+{"version":3,"file":"session-user.dto.js","sourceRoot":"","sources":["../../../../src/modules/auth/dto/session-user.dto.ts"],"names":[],"mappings":";;;AAAA,MAAa,cAAc;CAQ1B;AARD,wCAQC"}

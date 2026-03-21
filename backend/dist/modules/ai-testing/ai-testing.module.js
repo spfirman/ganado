@@ -9,10 +9,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AiTestingModule = void 0;
 const common_1 = require("@nestjs/common");
 const ai_testing_controller_1 = require("./ai-testing.controller");
-let AiTestingModule = class AiTestingModule {};
+let AiTestingModule = class AiTestingModule {
+};
 exports.AiTestingModule = AiTestingModule;
 exports.AiTestingModule = AiTestingModule = __decorate([
     (0, common_1.Module)({
         controllers: [ai_testing_controller_1.AiTestingController],
     })
 ], AiTestingModule);
+//# sourceMappingURL=ai-testing.module.js.map

@@ -12,14 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Contact = void 0;
 const typeorm_1 = require("typeorm");
 let Contact = class Contact {
-    id;
-    idTenant;
-    name;
-    phone1;
-    phone2;
-    email;
-    createdAt;
-    updatedAt;
 };
 exports.Contact = Contact;
 __decorate([

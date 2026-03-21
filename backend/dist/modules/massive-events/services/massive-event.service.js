@@ -21,18 +21,13 @@ const simple_event_entity_1 = require("../entities/simple-event.entity");
 const massive_events_entity_1 = require("../entities/massive-events.entity");
 const uuid_1 = require("uuid");
 let MassiveEventService = MassiveEventService_1 = class MassiveEventService {
-    dataSource;
-    massiveEventRepo;
-    simpleEventRepo;
-    simpleEventCattleRepository;
-    cattleRepository;
-    logger = new common_1.Logger(MassiveEventService_1.name);
     constructor(dataSource, massiveEventRepo, simpleEventRepo, simpleEventCattleRepository, cattleRepository) {
         this.dataSource = dataSource;
         this.massiveEventRepo = massiveEventRepo;
         this.simpleEventRepo = simpleEventRepo;
         this.simpleEventCattleRepository = simpleEventCattleRepository;
         this.cattleRepository = cattleRepository;
+        this.logger = new common_1.Logger(MassiveEventService_1.name);
     }
     async saveMassiveAndSimples(manager, payload) {
         let massiveEvent = await manager.findOne(massive_events_entity_1.MassiveEvent, {
@@ -82,7 +77,7 @@ let MassiveEventService = MassiveEventService_1 = class MassiveEventService {
                 eventDate: dto.eventDate,
                 status: 'open',
                 createdBy,
-                simpleEvents: dto.simpleEvents?.map(se => ({
+                simpleEvents: dto.simpleEvents?.map((se) => ({
                     id: (0, uuid_1.v4)(),
                     type: se.type,
                     dataJson: se.data ? JSON.stringify(se.data) : undefined,
@@ -141,20 +136,20 @@ let MassiveEventService = MassiveEventService_1 = class MassiveEventService {
     }
     async findCattleByMassiveEvent(idTenant, idMassiveEvent) {
         const simpleEvents = await this.simpleEventRepo.findByMassiveEvent(idTenant, idMassiveEvent);
-        const simpleEventIds = simpleEvents.map(ev => ev.id);
+        const simpleEventIds = simpleEvents.map((ev) => ev.id);
         if (simpleEventIds.length === 0) {
             return [];
         }
         const links = await this.simpleEventCattleRepository.findBySimpleEvents(idTenant, simpleEventIds);
-        const cattleIds = links.map(link => link.idAnimal).filter(Boolean);
+        const cattleIds = links.map((link) => link.idAnimal).filter(Boolean);
         const cattleList = await this.cattleRepository.findByIds(idTenant, cattleIds);
-        return cattleList.map(cattle => {
+        return cattleList.map((cattle) => {
             return {
                 id: cattle.id,
                 number: cattle.number,
                 idBrand: cattle.idBrand,
                 lastWeight: cattle.lastWeight,
-                appliedAt: links.find(l => l.idAnimal === cattle.id)?.appliedAt,
+                appliedAt: links.find((l) => l.idAnimal === cattle.id)?.appliedAt,
             };
         });
     }

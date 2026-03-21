@@ -15,13 +15,10 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
 const simple_event_entity_1 = require("../entities/simple-event.entity");
 const animal_simple_event_entity_1 = require("../entities/animal-simple-event.entity");
-const typeorm_2 = require("typeorm");
 let SimpleEventRepository = SimpleEventRepository_1 = class SimpleEventRepository {
-    dataSource;
-    logger = new common_1.Logger(SimpleEventRepository_1.name);
-    repository;
     constructor(dataSource) {
         this.dataSource = dataSource;
+        this.logger = new common_1.Logger(SimpleEventRepository_1.name);
         this.repository = this.dataSource.getRepository(simple_event_entity_1.SimpleEvent);
     }
     createInstance(data) {
@@ -79,7 +76,7 @@ let SimpleEventRepository = SimpleEventRepository_1 = class SimpleEventRepositor
     }
     findByIds(idTenant, ids, manager) {
         const repo = manager?.getRepository(simple_event_entity_1.SimpleEvent) ?? this.repository;
-        return repo.find({ where: { idTenant, id: (0, typeorm_2.In)(ids) } });
+        return repo.find({ where: { idTenant, id: (0, typeorm_1.In)(ids) } });
     }
     updateSimpleEvent(id, dto, manager) {
         return manager.save(simple_event_entity_1.SimpleEvent, {

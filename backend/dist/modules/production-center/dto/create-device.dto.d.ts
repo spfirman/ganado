@@ -3,13 +3,13 @@ export declare class CreateDeviceDto {
     idDeviceProfile: string;
     deveui: string;
     name: string;
-    description?: string;
+    description: string;
     csApplicationId: string;
-    csJoineui?: string;
-    csAppKey?: string;
-    csNwkKey?: string;
-    tags?: Record<string, any>;
-    variables?: Record<string, any>;
-    createdAt?: Date;
-    updatedAt?: Date;
+    csJoineui: string;
+    csAppKey: string;
+    csNwkKey: string;
+    tags: Record<string, any>;
+    variables: Record<string, any>;
+    createdAt: Date;
+    updatedAt: Date;
 }

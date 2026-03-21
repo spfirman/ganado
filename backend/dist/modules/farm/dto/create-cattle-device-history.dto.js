@@ -12,10 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateCattleDeviceHistoryDto = void 0;
 const class_validator_1 = require("class-validator");
 class CreateCattleDeviceHistoryDto {
-    idCattle;
-    idDevice;
-    assignedBy;
-    idMassiveEvent;
 }
 exports.CreateCattleDeviceHistoryDto = CreateCattleDeviceHistoryDto;
 __decorate([

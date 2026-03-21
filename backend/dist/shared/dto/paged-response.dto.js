@@ -12,11 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PagedResponseDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 class PagedResponseDto {
-    page;
-    limit;
-    total;
-    hasMore;
-    items;
     static of(p, l, total, items) {
         return { page: p, limit: l, total, hasMore: p * l < total, items };
     }

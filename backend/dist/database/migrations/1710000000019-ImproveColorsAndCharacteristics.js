@@ -2,7 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ImproveColorsAndCharacteristics1710000000019 = void 0;
 class ImproveColorsAndCharacteristics1710000000019 {
-    name = 'ImproveColorsAndCharacteristics1710000000019';
+    constructor() {
+        this.name = 'ImproveColorsAndCharacteristics1710000000019';
+    }
     async up(queryRunner) {
         await queryRunner.query(`ALTER TABLE public.cattle DROP COLUMN IF EXISTS color_description;`);
         await queryRunner.query(`ALTER TABLE public.cattle DROP COLUMN IF EXISTS color_main;`);
@@ -131,9 +133,6 @@ class ImproveColorsAndCharacteristics1710000000019 {
           WHERE chr.id = cc.id_characteristic;
 
           -- Insert extra row WHITE_HEAD for "White belly and head"
-          -- ✅ IMPORTANT FIX:
-          -- Use the characteristics.id of "White head" (same tenant) as id_characteristic
-          -- so we don't violate the existing unique (id_cattle, id_characteristic).
           INSERT INTO public.cattle_characteristics (id_tenant, id_cattle, id_characteristic, characteristic, created_at)
           SELECT
             cc.id_tenant,

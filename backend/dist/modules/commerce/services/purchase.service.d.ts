@@ -1,9 +1,9 @@
 import { DataSource } from 'typeorm';
 import { PurchaseRepository } from '../repositories/purchase.repository';
 import { LotRepository } from '../repositories/lot.repository';
+import { Purchase } from '../entities/purchase.entity';
 import { CreatePurchaseDto } from '../dto/create-purchase.dto';
 import { UpdatePurchaseDto } from '../dto/update-purchase.dto';
-import { Purchase } from '../entities/purchase.entity';
 import { PurchaseListQueryDto } from '../dto/purchase-list.query.dto';
 import { PurchaseListItemDto } from '../dto/purchase-list.item.dto';
 export declare class PurchaseService {

@@ -13,13 +13,6 @@ exports.MassiveEventResponseDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const simple_event_response_dto_1 = require("./simple-event-response.dto");
 class MassiveEventResponseDto {
-    id;
-    idTenant;
-    status;
-    eventDate;
-    createdAt;
-    updatedAt;
-    simpleEvents;
     static toResponseDto(entity, simpleEvents) {
         return {
             id: entity.id,

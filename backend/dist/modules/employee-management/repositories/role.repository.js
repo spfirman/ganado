@@ -16,16 +16,16 @@ const Repository_1 = require("typeorm/repository/Repository");
 const role_entity_1 = require("../entities/role.entity");
 const common_1 = require("@nestjs/common");
 let RoleRepository = RoleRepository_1 = class RoleRepository extends Repository_1.Repository {
-    dataSource;
-    logger = new common_1.Logger(RoleRepository_1.name);
     constructor(dataSource) {
         super(role_entity_1.Role, dataSource.createEntityManager());
         this.dataSource = dataSource;
+        this.logger = new common_1.Logger(RoleRepository_1.name);
     }
     async findAllByTenantID(tenantId, manager) {
         const repo = manager?.getRepository(role_entity_1.Role) ?? this.dataSource.getRepository(role_entity_1.Role);
         try {
-            const query = repo.createQueryBuilder('role')
+            const query = repo
+                .createQueryBuilder('role')
                 .leftJoinAndSelect('role.permissions', 'permissions', 'permissions.tenant_id = :tenantId', { tenantId })
                 .leftJoinAndSelect('permissions.module', 'module')
                 .where('(permissions.tenant_id = :tenantId OR permissions.id IS NULL)', { tenantId: tenantId });
@@ -42,7 +42,7 @@ let RoleRepository = RoleRepository_1 = class RoleRepository extends Repository_
         try {
             return await this.findOne({
                 where: { id },
-                relations: ['permissions', 'permissions.module']
+                relations: ['permissions', 'permissions.module'],
             });
         }
         catch (error) {
@@ -54,7 +54,7 @@ let RoleRepository = RoleRepository_1 = class RoleRepository extends Repository_
         try {
             return await this.findOne({
                 where: { code },
-                relations: ['permissions', 'permissions.module']
+                relations: ['permissions', 'permissions.module'],
             });
         }
         catch (error) {

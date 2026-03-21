@@ -17,16 +17,15 @@ const user_entity_1 = require("../entities/user.entity");
 const common_1 = require("@nestjs/common");
 const role_entity_1 = require("../entities/role.entity");
 let UserRepository = UserRepository_1 = class UserRepository extends Repository_1.Repository {
-    dataSource;
-    logger = new common_1.Logger(UserRepository_1.name);
     constructor(dataSource) {
         super(user_entity_1.User, dataSource.createEntityManager());
         this.dataSource = dataSource;
+        this.logger = new common_1.Logger(UserRepository_1.name);
     }
     async findById(id) {
         const user = await this.findOne({
             where: { id },
-            relations: ['roles']
+            relations: ['roles'],
         });
         return user;
     }
@@ -53,7 +52,7 @@ let UserRepository = UserRepository_1 = class UserRepository extends Repository_
     async findByUsernameAndTenant(username, tenantId) {
         const user = await this.findOne({
             where: { username, tenantId: tenantId },
-            relations: ['roles']
+            relations: ['roles'],
         });
         return user;
     }
@@ -63,7 +62,9 @@ let UserRepository = UserRepository_1 = class UserRepository extends Repository_
                 .innerJoinAndSelect('user.tenant', 'tenant')
                 .leftJoinAndSelect('user.roles', 'roles', 'roles.id IN (SELECT id_role FROM user_roles WHERE id_user = user.id)')
                 .where('user.username = :username', { username })
-                .andWhere('tenant.company_username = :company_username', { company_username })
+                .andWhere('tenant.company_username = :company_username', {
+                company_username,
+            })
                 .andWhere('user.active = true');
             const sql = queryBuilder.getSql();
             const parameters = queryBuilder.getParameters();
@@ -79,7 +80,9 @@ let UserRepository = UserRepository_1 = class UserRepository extends Repository_
                 throw new common_1.InternalServerErrorException('Una columna referenciada no existe', { cause: error.message });
             }
             else {
-                throw new common_1.InternalServerErrorException('Database error', { cause: error.message });
+                throw new common_1.InternalServerErrorException('Database error', {
+                    cause: error.message,
+                });
             }
         }
     }
@@ -92,7 +95,9 @@ let UserRepository = UserRepository_1 = class UserRepository extends Repository_
             manager = queryRunner.manager;
         }
         try {
-            const roleIds = Array.isArray(createUserDto.roleIds) ? createUserDto.roleIds : [];
+            const roleIds = Array.isArray(createUserDto.roleIds)
+                ? createUserDto.roleIds
+                : [];
             if (roleIds.length > 0) {
                 const existingRoles = await manager.find(role_entity_1.Role, {
                     where: { id: (0, typeorm_1.In)(roleIds) },
@@ -103,12 +108,12 @@ let UserRepository = UserRepository_1 = class UserRepository extends Repository_
             }
             const userData = {
                 ...createUserDto,
-                password: hashedPassword
+                password: hashedPassword,
             };
             const user = manager.create(user_entity_1.User, userData);
             await manager.save(user);
             if (roleIds.length > 0) {
-                const values = roleIds.map(roleId => ({
+                const values = roleIds.map((roleId) => ({
                     id_user: user.id,
                     id_role: roleId,
                 }));
@@ -174,7 +179,7 @@ let UserRepository = UserRepository_1 = class UserRepository extends Repository_
                     .from('user_roles')
                     .where('id_user = :userId', { userId: user.id })
                     .execute();
-                const values = updateUserDto.roleIds.map(roleId => ({
+                const values = updateUserDto.roleIds.map((roleId) => ({
                     id_user: user.id,
                     id_role: roleId,
                 }));
@@ -189,7 +194,7 @@ let UserRepository = UserRepository_1 = class UserRepository extends Repository_
             }
             const updatedUser = await manager.findOne(user_entity_1.User, {
                 where: { id: user.id },
-                relations: ['roles']
+                relations: ['roles'],
             });
             if (!updatedUser) {
                 throw new common_1.BadRequestException('Error al actualizar el usuario');
@@ -222,7 +227,7 @@ let UserRepository = UserRepository_1 = class UserRepository extends Repository_
         }
         try {
             const user = await manager.findOne(user_entity_1.User, {
-                where: { id }
+                where: { id },
             });
             if (!user) {
                 return false;

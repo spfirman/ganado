@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ganado_app/core/router/app_router.dart';
+import 'package:ganado_app/core/l10n/locale_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GanadoApp extends ConsumerWidget {
@@ -10,6 +11,7 @@ class GanadoApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
+    final locale = ref.watch(localeProvider);
 
     return MaterialApp.router(
       title: 'Ganado',
@@ -23,11 +25,8 @@ class GanadoApp extends ConsumerWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: const [
-        Locale('es'),
-        Locale('en'),
-      ],
-      locale: const Locale('es'),
+      supportedLocales: supportedLocales,
+      locale: locale,
       routerConfig: router,
     );
   }

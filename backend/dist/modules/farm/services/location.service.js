@@ -14,8 +14,6 @@ exports.LocationService = void 0;
 const common_1 = require("@nestjs/common");
 const location_repository_1 = require("../repositories/location.repository");
 let LocationService = LocationService_1 = class LocationService {
-    locationRepository;
-    logger;
     constructor(locationRepository) {
         this.locationRepository = locationRepository;
         this.logger = new common_1.Logger(LocationService_1.name);

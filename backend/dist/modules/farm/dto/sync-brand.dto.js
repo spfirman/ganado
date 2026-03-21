@@ -15,10 +15,6 @@ const common_1 = require("@nestjs/common");
 const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 class SyncBrandDto {
-    id;
-    idTenant;
-    name;
-    image;
     static async parseAndValidateBrands(brandsJson) {
         let parsed;
         try {
@@ -36,7 +32,7 @@ class SyncBrandDto {
             if (errors.length > 0) {
                 throw new common_1.BadRequestException({
                     message: `Error de validación en brands[${index}]`,
-                    errors: errors.map(e => ({
+                    errors: errors.map((e) => ({
                         property: e.property,
                         constraints: e.constraints,
                     })),
@@ -64,7 +60,6 @@ __decorate([
     __metadata("design:type", Object)
 ], SyncBrandDto.prototype, "image", void 0);
 class SyncBrandRequestDto {
-    brands;
 }
 exports.SyncBrandRequestDto = SyncBrandRequestDto;
 __decorate([
@@ -72,10 +67,6 @@ __decorate([
     __metadata("design:type", Array)
 ], SyncBrandRequestDto.prototype, "brands", void 0);
 class SyncBrandResultDto {
-    id;
-    status;
-    serverId;
-    message;
 }
 exports.SyncBrandResultDto = SyncBrandResultDto;
 __decorate([
@@ -95,7 +86,6 @@ __decorate([
     __metadata("design:type", String)
 ], SyncBrandResultDto.prototype, "message", void 0);
 class SyncBrandResponseDto {
-    results;
 }
 exports.SyncBrandResponseDto = SyncBrandResponseDto;
 __decorate([

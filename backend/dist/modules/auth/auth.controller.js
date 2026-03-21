@@ -23,7 +23,6 @@ const session_user_decorator_1 = require("../../common/decorators/session-user.d
 const session_user_dto_1 = require("./dto/session-user.dto");
 const logout_dto_1 = require("./dto/logout.dto");
 let AuthController = class AuthController {
-    authService;
     constructor(authService) {
         this.authService = authService;
     }
@@ -64,9 +63,9 @@ __decorate([
                         last_name: { type: 'string' },
                         email: { type: 'string' },
                         tenant_id: { type: 'string' },
-                        roles: { type: 'array', items: { type: 'object' } }
-                    }
-                }
+                        roles: { type: 'array', items: { type: 'object' } },
+                    },
+                },
             },
         },
     }),
@@ -80,7 +79,10 @@ __decorate([
     (0, common_1.Post)('refresh'),
     (0, swagger_1.ApiOperation)({ summary: 'Renovar access token con refresh token' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Token renovado exitosamente' }),
-    (0, swagger_1.ApiResponse)({ status: 401, description: 'Refresh token inválido o expirado' }),
+    (0, swagger_1.ApiResponse)({
+        status: 401,
+        description: 'Refresh token inválido o expirado',
+    }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [refresh_token_dto_1.RefreshTokenDto]),

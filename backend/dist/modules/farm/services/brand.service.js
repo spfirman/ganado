@@ -14,8 +14,6 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
 const brand_repository_1 = require("../repositories/brand.repository");
 let BrandService = class BrandService {
-    brandRepository;
-    dataSource;
     constructor(brandRepository, dataSource) {
         this.brandRepository = brandRepository;
         this.dataSource = dataSource;
@@ -33,7 +31,7 @@ let BrandService = class BrandService {
             idTenant,
             name: dto.name,
             image: imageFile.buffer,
-            imageMimeType: imageFile.mimetype
+            imageMimeType: imageFile.mimetype,
         };
         return await this.brandRepository.create(brand);
     }
@@ -91,7 +89,7 @@ let BrandService = class BrandService {
                     idTenant,
                     name: b.name,
                     image: imageFile.buffer,
-                    imageMimeType: imageFile.mimetype
+                    imageMimeType: imageFile.mimetype,
                 });
                 results.push({ id: b.id, status: 'synced', serverId: brand.id });
             }

@@ -13,19 +13,6 @@ exports.CreateDeviceDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class CreateDeviceDto {
-    idTenant;
-    idDeviceProfile;
-    deveui;
-    name;
-    description;
-    csApplicationId;
-    csJoineui;
-    csAppKey;
-    csNwkKey;
-    tags;
-    variables;
-    createdAt;
-    updatedAt;
 }
 exports.CreateDeviceDto = CreateDeviceDto;
 __decorate([
@@ -52,13 +39,13 @@ __decorate([
     __metadata("design:type", String)
 ], CreateDeviceDto.prototype, "name", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Descripción del dispositivo' }),
+    (0, swagger_1.ApiProperty)({ description: 'Descripcion del dispositivo' }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateDeviceDto.prototype, "description", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'ID de la aplicación de ChipStack' }),
+    (0, swagger_1.ApiProperty)({ description: 'ID de la aplicacion de ChipStack' }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)

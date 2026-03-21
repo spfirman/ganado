@@ -14,9 +14,6 @@ const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const create_lot_dto_1 = require("./create-lot.dto");
 class CreatePurchaseDto {
-    idProvider;
-    purchaseDate;
-    lots;
 }
 exports.CreatePurchaseDto = CreatePurchaseDto;
 __decorate([

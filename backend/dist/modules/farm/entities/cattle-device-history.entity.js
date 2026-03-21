@@ -12,14 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CattleDeviceHistory = void 0;
 const typeorm_1 = require("typeorm");
 let CattleDeviceHistory = class CattleDeviceHistory {
-    id;
-    idTenant;
-    idCattle;
-    idDevice;
-    assignedAt;
-    unassignedAt;
-    assignedBy;
-    idMassiveEvent;
 };
 exports.CattleDeviceHistory = CattleDeviceHistory;
 __decorate([

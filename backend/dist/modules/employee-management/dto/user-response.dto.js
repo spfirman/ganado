@@ -13,14 +13,6 @@ exports.UserResponseDto = void 0;
 const class_transformer_1 = require("class-transformer");
 const tenant_entity_1 = require("../entities/tenant.entity");
 let UserResponseDto = class UserResponseDto {
-    id;
-    username;
-    firstName;
-    lastName;
-    email;
-    tenantId;
-    tenant;
-    roles;
     constructor(partial) {
         Object.assign(this, partial);
     }

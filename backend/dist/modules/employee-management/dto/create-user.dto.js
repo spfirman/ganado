@@ -13,13 +13,6 @@ exports.CreateUserDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class CreateUserDto {
-    tenantId;
-    username;
-    password;
-    roleIds;
-    firstName;
-    lastName;
-    email;
 }
 exports.CreateUserDto = CreateUserDto;
 __decorate([
@@ -40,8 +33,8 @@ __decorate([
 ], CreateUserDto.prototype, "username", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Contraseña del usuario',
-        example: 'Contraseña123!',
+        description: 'Contrasena del usuario',
+        example: 'Contrasena123!',
         required: true,
     }),
     (0, class_validator_1.IsString)(),
@@ -76,7 +69,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Apellido del usuario',
-        example: 'Pérez',
+        example: 'Perez',
         required: true,
     }),
     (0, class_validator_1.IsString)(),
@@ -86,7 +79,7 @@ __decorate([
 ], CreateUserDto.prototype, "lastName", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Correo electrónico del usuario',
+        description: 'Correo electronico del usuario',
         example: 'juan.perez@ejemplo.com',
         required: true,
     }),

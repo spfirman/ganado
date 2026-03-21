@@ -1,17 +1,16 @@
 import { ConfigService } from '@nestjs/config';
-import { RedisService } from 'src/modules/auth/redis/redis.service';
-import { RoleModulePermission } from 'src/modules/employee-management/entities/role-module-permission.entity';
+import { RedisService } from '../../modules/auth/redis/redis.service';
 export declare class ApplicationPermissionsService {
     private readonly redisService;
     private readonly configService;
     private readonly logger;
-    private static readonly DEFAULT_SESSION_TTL_SECONDS;
-    private static readonly DEFAULT_REFRESH_TTL_SECONDS;
+    static readonly DEFAULT_SESSION_TTL_SECONDS = 86400;
+    static readonly DEFAULT_REFRESH_TTL_SECONDS = 604800;
     constructor(redisService: RedisService, configService: ConfigService);
     private parseDurationToSeconds;
     private resolveTtlFromConfig;
-    computePermissionsHash(permissions: Record<string, Record<string, string>>): string;
-    saveSessionData(userId: string, sessionId: string, sessionData: Record<string, any>): Promise<void>;
+    computePermissionsHash(permissions: any): string;
+    saveSessionData(userId: string, sessionId: string, sessionData: any): Promise<void>;
     saveRefreshToken(refreshToken: string, userId: string, sessionId: string): Promise<void>;
     getRefreshTokenData(refreshToken: string): Promise<{
         userId: string;
@@ -19,8 +18,8 @@ export declare class ApplicationPermissionsService {
     } | null>;
     deleteRefreshToken(refreshToken: string): Promise<void>;
     deleteRefreshTokenBySession(userId: string, sessionId: string): Promise<void>;
-    getSessionFromRedis(userId: string, sessionId?: string): Promise<any>;
+    getSessionFromRedis(userId: string, sessionId?: string): Promise<any | null>;
     deleteUserSession(userId: string, sessionId?: string): Promise<void>;
-    canAccessModuleEntity(module_code: string, entity: string, action: string, permissions: Record<string, Record<string, string>>): Promise<boolean>;
-    getSimplefiedModulePermissionsByRolesAndModuleAndTenant(roleModulePermissions: RoleModulePermission[]): Record<string, Record<string, string>>;
+    canAccessModuleEntity(module_code: string, entity: string, action: string, permissions: any): Promise<boolean>;
+    getSimplefiedModulePermissionsByRolesAndModuleAndTenant(roleModulePermissions: any[]): Record<string, Record<string, string>>;
 }

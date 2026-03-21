@@ -2,10 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AddRoleModulePermissionsAndUserRoles1710000000003 = void 0;
 class AddRoleModulePermissionsAndUserRoles1710000000003 {
-    name = 'AddRoleModulePermissionsAndUserRoles1710000000003';
+    constructor() {
+        this.name = 'AddRoleModulePermissionsAndUserRoles1710000000003';
+    }
     async up(queryRunner) {
         await queryRunner.query(`
-      ALTER TABLE "users" 
+      ALTER TABLE "users"
       ALTER COLUMN "id_tenant" SET NOT NULL,
       DROP CONSTRAINT IF EXISTS "users_id_role_fkey",
       DROP COLUMN IF EXISTS "id_role"

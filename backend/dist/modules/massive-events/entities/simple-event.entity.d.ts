@@ -1,12 +1,11 @@
-import { SimpleEventType } from '../enums/simple-event-type.enum';
 import { MassiveEvent } from './massive-events.entity';
 export declare class SimpleEvent {
     id: string;
     idTenant: string;
     idMassiveEvent: string;
     massiveEvent: MassiveEvent;
-    type: SimpleEventType;
+    type: string;
     isActive: boolean;
-    data?: any;
+    data: any;
     createdAt: Date;
 }

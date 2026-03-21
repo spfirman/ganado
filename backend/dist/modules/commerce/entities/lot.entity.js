@@ -14,22 +14,6 @@ const typeorm_1 = require("typeorm");
 const purchase_entity_1 = require("./purchase.entity");
 const cattle_gender_enum_1 = require("../../farm/enums/cattle-gender.enum");
 let Lot = class Lot {
-    id;
-    idTenant;
-    lotNumber;
-    originPlace;
-    purchasedCattleCount;
-    receivedCattleCount;
-    averageWeight;
-    totalWeight;
-    receivedTotalWeight;
-    pricePerKg;
-    totalValue;
-    gender;
-    idPurchase;
-    purchase;
-    created_at;
-    updated_at;
 };
 exports.Lot = Lot;
 __decorate([

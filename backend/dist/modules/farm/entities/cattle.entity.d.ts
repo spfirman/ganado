@@ -1,8 +1,6 @@
 import { Device } from '../../production-center/entities/device.entity';
 import { Purchase } from '../../commerce/entities/purchase.entity';
-import { CattleColor } from '../enums/cattle-color.enum';
 import { CattleCharacteristic } from './cattle-characteristic.entity';
-import { CattleGender } from '../enums/cattle-gender.enum';
 export declare enum CattleStatus {
     ACTIVE = "ACTIVE",
     SOLD = "SOLD",
@@ -17,17 +15,18 @@ export declare class Cattle {
     receivedAt: Date;
     receivedWeight: number;
     idPurchase: string;
-    purchase?: Purchase;
+    purchase: Purchase;
     purchaseWeight: number;
     purchasePrice: number;
     idLot: string | null;
     idBrand: string | null;
-    color: CattleColor;
+    color: string;
     cattleCharacteristics: CattleCharacteristic[];
+    eidTag: string | null;
     eartagLeft: string | null;
     eartagRight: string | null;
     idDevice: string | null;
-    device?: Device;
+    device: Device;
     castrated: boolean;
     castrationDate: Date;
     comments: string | null;
@@ -42,8 +41,8 @@ export declare class Cattle {
     idProvider: string;
     lastWeight: number;
     hasHorn: boolean;
-    status: CattleStatus;
-    gender: CattleGender;
+    status: string;
+    gender: string;
     birthDateAprx: Date | null;
     newFeedStartDate: Date | null;
     averageDailyGain: number | null;

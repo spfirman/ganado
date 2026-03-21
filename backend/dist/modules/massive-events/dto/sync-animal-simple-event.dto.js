@@ -12,15 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SyncAnimalSimpleEventResponseDto = exports.SyncAnimalSimpleEventResultDto = exports.SyncAnimalSimpleEventRequestDto = exports.SyncAnimalSimpleEventDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 class SyncAnimalSimpleEventDto {
-    id;
-    idTenant;
-    cattleNumber;
-    type;
-    dataJson;
-    appliedAt;
-    appliedBy;
-    idMassiveEvent;
-    idSimpleEvent;
 }
 exports.SyncAnimalSimpleEventDto = SyncAnimalSimpleEventDto;
 __decorate([
@@ -60,7 +51,6 @@ __decorate([
     __metadata("design:type", String)
 ], SyncAnimalSimpleEventDto.prototype, "idSimpleEvent", void 0);
 class SyncAnimalSimpleEventRequestDto {
-    animalSimpleEvent;
 }
 exports.SyncAnimalSimpleEventRequestDto = SyncAnimalSimpleEventRequestDto;
 __decorate([
@@ -68,10 +58,6 @@ __decorate([
     __metadata("design:type", Array)
 ], SyncAnimalSimpleEventRequestDto.prototype, "animalSimpleEvent", void 0);
 class SyncAnimalSimpleEventResultDto {
-    id;
-    status;
-    animalServerId;
-    message;
 }
 exports.SyncAnimalSimpleEventResultDto = SyncAnimalSimpleEventResultDto;
 __decorate([
@@ -91,7 +77,6 @@ __decorate([
     __metadata("design:type", String)
 ], SyncAnimalSimpleEventResultDto.prototype, "message", void 0);
 class SyncAnimalSimpleEventResponseDto {
-    results;
 }
 exports.SyncAnimalSimpleEventResponseDto = SyncAnimalSimpleEventResponseDto;
 __decorate([

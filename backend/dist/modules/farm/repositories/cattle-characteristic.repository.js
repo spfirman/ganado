@@ -14,7 +14,6 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
 const cattle_characteristic_entity_1 = require("../entities/cattle-characteristic.entity");
 let CattleCharacteristicRepository = class CattleCharacteristicRepository extends typeorm_1.Repository {
-    dataSource;
     constructor(dataSource) {
         super(cattle_characteristic_entity_1.CattleCharacteristic, dataSource.createEntityManager());
         this.dataSource = dataSource;
@@ -23,7 +22,11 @@ let CattleCharacteristicRepository = class CattleCharacteristicRepository extend
         const m = manager ?? this.manager;
         if (!characteristicIds?.length)
             return;
-        const rows = characteristicIds.map((char) => m.create(cattle_characteristic_entity_1.CattleCharacteristic, { idTenant: { id: tenantId }, cattle: { id: cattleId }, characteristic: char }));
+        const rows = characteristicIds.map((char) => m.create(cattle_characteristic_entity_1.CattleCharacteristic, {
+            idTenant: { id: tenantId },
+            cattle: { id: cattleId },
+            characteristic: char,
+        }));
         await m
             .createQueryBuilder()
             .insert()

@@ -4,6 +4,6 @@ export declare class SessionUserDto {
     tenant_id: string;
     date: string;
     permissionsHash: string;
-    permissions: Record<string, Record<string, string>>;
+    permissions: any;
     sessionId: string;
 }

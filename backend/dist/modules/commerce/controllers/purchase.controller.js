@@ -28,10 +28,9 @@ const application_permissions_decorator_1 = require("../../../common/application
 const paged_response_dto_1 = require("../../../shared/dto/paged-response.dto");
 const purchase_list_query_dto_1 = require("../dto/purchase-list.query.dto");
 let PurchaseController = PurchaseController_1 = class PurchaseController {
-    purchaseService;
-    logger = new common_1.Logger(PurchaseController_1.name);
     constructor(purchaseService) {
         this.purchaseService = purchaseService;
+        this.logger = new common_1.Logger(PurchaseController_1.name);
     }
     async createPurchase(dto, user) {
         const purchase = await this.purchaseService.createPurchase(dto, user.tenant_id, user.sub);
@@ -42,7 +41,7 @@ let PurchaseController = PurchaseController_1 = class PurchaseController {
         return purchase_response_dto_1.PurchaseResponseDto.toPurchaseResponse(purchase);
     }
     async list(user, q) {
-        this.logger.debug("COMPRAS FILTRADAS ");
+        this.logger.debug('COMPRAS FILTRADAS ');
         const { items, total, page, limit } = await this.purchaseService.listPaged(user.tenant_id, q);
         const resp = paged_response_dto_1.PagedResponseDto.of(page, limit, total, items);
         this.logger.debug(resp);
@@ -86,7 +85,7 @@ __decorate([
     (0, common_1.Get)(),
     (0, application_permissions_decorator_1.RequireAction)('read'),
     (0, swagger_1.ApiOperation)({ summary: 'List purchases for tenant' }),
-    (0, swagger_1.ApiOkResponse)({ type: (paged_response_dto_1.PagedResponseDto) }),
+    (0, swagger_1.ApiOkResponse)({ type: paged_response_dto_1.PagedResponseDto }),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
     __param(1, (0, common_1.Query)()),
     __metadata("design:type", Function),

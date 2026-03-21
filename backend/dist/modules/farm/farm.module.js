@@ -56,11 +56,11 @@ exports.FarmModule = FarmModule = __decorate([
                 cattle_eartag_history_entity_1.CattleEartagHistory,
                 cattle_medication_history_entity_1.CattleMedicationHistory,
                 location_entity_1.Location,
-                brand_entity_1.Brand
+                brand_entity_1.Brand,
             ]),
             config_1.ConfigModule,
             application_permissions_module_1.ApplicationPermissionsModule,
-            production_center_module_1.ProductionCenterModule
+            production_center_module_1.ProductionCenterModule,
         ],
         providers: [
             cattle_repository_1.CattleRepository,
@@ -89,7 +89,7 @@ exports.FarmModule = FarmModule = __decorate([
             cattle_repository_1.CattleRepository,
             cattle_device_history_repository_1.CattleDeviceHistoryRepository,
             cattle_weight_history_repository_1.CattleWeightHistoryRepository,
-            cattle_characteristic_repository_1.CattleCharacteristicRepository
+            cattle_characteristic_repository_1.CattleCharacteristicRepository,
         ],
     })
 ], FarmModule);

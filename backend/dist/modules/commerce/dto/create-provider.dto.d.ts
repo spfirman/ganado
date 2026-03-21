@@ -1,8 +1,7 @@
-import { ProviderType } from '../entities/provider.entity';
 export declare class CreateProviderDto {
     name: string;
     nit: string;
-    type: ProviderType;
+    type: string;
     address?: string;
     contactPersonName?: string;
     phone1?: string;

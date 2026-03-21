@@ -9,10 +9,12 @@ export declare enum SortOrder {
     DESC = "DESC"
 }
 export declare class GetSalesQueryDto {
-    skip?: number;
-    take?: number;
-    orderBy?: SaleSortField;
-    order?: SortOrder;
+    skip: number;
+    take: number;
+    page?: number;
+    limit?: number;
+    orderBy: string;
+    order: string;
     startDate?: string;
     endDate?: string;
     buyerId?: string;

@@ -14,18 +14,17 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MassiveEventController = void 0;
 const common_1 = require("@nestjs/common");
+const swagger_1 = require("@nestjs/swagger");
 const massive_event_service_1 = require("../services/massive-event.service");
 const create_massive_event_dto_1 = require("../dto/create-massive-event.dto");
-const swagger_1 = require("@nestjs/swagger");
+const massive_event_response_dto_1 = require("../dto/massive-event-response.dto");
+const sync_massive_event_dto_1 = require("../dto/sync-massive-event.dto");
 const application_permissions_decorator_1 = require("../../../common/application-permissions/application-permissions.decorator");
 const jwt_auth_guard_1 = require("../../auth/guards/jwt-auth.guard");
 const application_permissions_guard_1 = require("../../../common/application-permissions/application-permissions.guard");
 const session_user_decorator_1 = require("../../../common/decorators/session-user.decorator");
 const session_user_dto_1 = require("../../auth/dto/session-user.dto");
-const massive_event_response_dto_1 = require("../dto/massive-event-response.dto");
-const sync_massive_event_dto_1 = require("../dto/sync-massive-event.dto");
 let MassiveEventController = class MassiveEventController {
-    massiveEventService;
     constructor(massiveEventService) {
         this.massiveEventService = massiveEventService;
     }
@@ -42,7 +41,7 @@ let MassiveEventController = class MassiveEventController {
     }
     async list(sessionUser) {
         const massiveEvents = await this.massiveEventService.findAll(sessionUser.tenant_id);
-        return massiveEvents.map(massiveEvent => massive_event_response_dto_1.MassiveEventResponseDto.toResponseDto(massiveEvent, massiveEvent.simpleEvents));
+        return massiveEvents.map((massiveEvent) => massive_event_response_dto_1.MassiveEventResponseDto.toResponseDto(massiveEvent, massiveEvent.simpleEvents));
     }
     async close(sessionUser, id) {
         await this.massiveEventService.closeMassiveEvent(sessionUser.tenant_id, id);
@@ -73,18 +72,19 @@ __decorate([
                                 medicationName: 'abc',
                                 dosage: '1ml/50kg',
                                 route: 'oral',
-                                lot: '232adf-asdf'
-                            }
-                        }
-                    ]
-                }
-            }
-        }
+                                lot: '232adf-asdf',
+                            },
+                        },
+                    ],
+                },
+            },
+        },
     }),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto, create_massive_event_dto_1.CreateMassiveEventDto]),
+    __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto,
+        create_massive_event_dto_1.CreateMassiveEventDto]),
     __metadata("design:returntype", Promise)
 ], MassiveEventController.prototype, "create", null);
 __decorate([
@@ -153,47 +153,25 @@ __decorate([
                             createdBy: 'user-123',
                             createdAt: '2025-07-24T00:00:00Z',
                             simpleEvents: [
-                                {
-                                    id: 'uuid-se-weight',
-                                    type: 'weight',
-                                    dataJson: '{}'
-                                },
-                                {
-                                    id: 'uuid-se-eartag',
-                                    type: 'eartag',
-                                    dataJson: '{"eartagLeft":"ET-L-001","eartagRight":"ET-R-001"}'
-                                },
-                                {
-                                    id: 'uuid-se-tracker',
-                                    type: 'tracker',
-                                    dataJson: '{}'
-                                },
-                                {
-                                    id: 'uuid-se-brand',
-                                    type: 'brand',
-                                    dataJson: '{"idBrand":"brand-777"}'
-                                },
-                                {
-                                    id: 'uuid-se-castration',
-                                    type: 'castration'
-                                },
-                                {
-                                    id: 'uuid-se-medication',
-                                    type: 'medication',
-                                    dataJson: '{"medicationName":"med-001","dosage":"1ml","route":"oral","lot":"LOT-2025"}'
-                                }
-                            ]
-                        }
-                    ]
-                }
-            }
+                                { id: 'uuid-se-weight', type: 'weight', dataJson: '{}' },
+                                { id: 'uuid-se-eartag', type: 'eartag', dataJson: '{"eartagLeft":"ET-L-001","eartagRight":"ET-R-001"}' },
+                                { id: 'uuid-se-tracker', type: 'tracker', dataJson: '{}' },
+                                { id: 'uuid-se-brand', type: 'brand', dataJson: '{"idBrand":"brand-777"}' },
+                                { id: 'uuid-se-castration', type: 'castration' },
+                                { id: 'uuid-se-medication', type: 'medication', dataJson: '{"medicationName":"med-001","dosage":"1ml","route":"oral","lot":"LOT-2025"}' },
+                            ],
+                        },
+                    ],
+                },
+            },
         },
     }),
     (0, application_permissions_decorator_1.RequireAction)('create'),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto, sync_massive_event_dto_1.SyncMassiveEventsRequestDto]),
+    __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto,
+        sync_massive_event_dto_1.SyncMassiveEventsRequestDto]),
     __metadata("design:returntype", void 0)
 ], MassiveEventController.prototype, "sync", null);
 exports.MassiveEventController = MassiveEventController = __decorate([

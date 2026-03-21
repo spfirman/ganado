@@ -11,7 +11,7 @@ export declare class Provider {
     idTenant: string;
     name: string;
     nit: string;
-    type: ProviderType;
+    type: string;
     address: string;
     contactPersonId: string;
     contactPerson: Contact;

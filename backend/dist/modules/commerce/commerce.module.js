@@ -59,7 +59,13 @@ exports.CommerceModule = CommerceModule = __decorate([
             lot_service_1.LotService,
             sales_service_1.SalesService,
         ],
-        exports: [provider_repository_1.ProviderRepository, purchase_repository_1.PurchaseRepository, lot_repository_1.LotRepository, lot_service_1.LotService, purchase_service_1.PurchaseService],
+        exports: [
+            provider_repository_1.ProviderRepository,
+            purchase_repository_1.PurchaseRepository,
+            lot_repository_1.LotRepository,
+            lot_service_1.LotService,
+            purchase_service_1.PurchaseService,
+        ],
     })
 ], CommerceModule);
 //# sourceMappingURL=commerce.module.js.map

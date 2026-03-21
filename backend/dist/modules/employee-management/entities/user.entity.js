@@ -14,16 +14,6 @@ const typeorm_1 = require("typeorm");
 const tenant_entity_1 = require("./tenant.entity");
 const role_entity_1 = require("./role.entity");
 let User = class User {
-    id;
-    username;
-    password;
-    active;
-    firstName;
-    lastName;
-    email;
-    tenantId;
-    tenant;
-    roles;
 };
 exports.User = User;
 __decorate([
@@ -69,12 +59,12 @@ __decorate([
         name: 'user_roles',
         joinColumn: {
             name: 'id_user',
-            referencedColumnName: 'id'
+            referencedColumnName: 'id',
         },
         inverseJoinColumn: {
             name: 'id_role',
-            referencedColumnName: 'id'
-        }
+            referencedColumnName: 'id',
+        },
     }),
     __metadata("design:type", Array)
 ], User.prototype, "roles", void 0);

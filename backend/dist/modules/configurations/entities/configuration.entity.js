@@ -12,17 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Configuration = void 0;
 const typeorm_1 = require("typeorm");
 let Configuration = class Configuration {
-    id;
-    idTenant;
-    code;
-    isSystemConfig;
-    name;
-    description;
-    value;
-    valueType;
-    createdAt;
-    updatedAt;
-    updatedBy;
 };
 exports.Configuration = Configuration;
 __decorate([

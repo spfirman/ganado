@@ -12,10 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CattleBasicResponseDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 class CattleBasicResponseDto {
-    idTenant;
-    id;
-    number;
-    sysNumber;
 }
 exports.CattleBasicResponseDto = CattleBasicResponseDto;
 __decorate([

@@ -22,17 +22,8 @@ const users_service_1 = require("./users.service");
 const modules_service_1 = require("./modules.service");
 const create_permission_dto_1 = require("../dto/create-permission.dto");
 const role_module_permission_services_1 = require("./role-module-permission.services");
-const typeorm_3 = require("typeorm");
-const typeorm_4 = require("@nestjs/typeorm");
 const configurations_service_1 = require("../../configurations/services/configurations.service");
 let TenantsService = class TenantsService {
-    dataSource;
-    tenantRepository;
-    rolesService;
-    RoleModulePermissionService;
-    usersService;
-    modulesService;
-    configurationsService;
     constructor(dataSource, tenantRepository, rolesService, RoleModulePermissionService, usersService, modulesService, configurationsService) {
         this.dataSource = dataSource;
         this.tenantRepository = tenantRepository;
@@ -49,11 +40,11 @@ let TenantsService = class TenantsService {
             const existingTenant = await tenantRepo.findOne({
                 where: {
                     name: createTenantDto.name,
-                    company_username: createTenantDto.company_username
-                }
+                    company_username: createTenantDto.company_username,
+                },
             });
             if (existingTenant) {
-                throw new common_1.ConflictException('Ya existe un tenant con ese nombre o username de compañía');
+                throw new common_1.ConflictException('Ya existe un tenant con ese nombre o username de compania');
             }
             const tenant = tenantRepo.create(createTenantDto);
             await tenantRepo.save(tenant);
@@ -63,7 +54,7 @@ let TenantsService = class TenantsService {
                 email: createTenantDto.admin_email,
                 firstName: createTenantDto.admin_first_name,
                 lastName: createTenantDto.admin_last_name,
-                tenantId: tenant.id
+                tenantId: tenant.id,
             }, manager);
             const allModules = await this.modulesService.findAll(manager);
             const roles = await this.rolesService.findAll(tenant.id, manager);
@@ -83,7 +74,8 @@ let TenantsService = class TenantsService {
                             permissionsToCreate.push(sysAdminPermission);
                             break;
                         case 'MANAGER':
-                            if (module.code == 'EMP_MGMT' || module.code == 'COMMERCE') {
+                            if (module.code == 'EMP_MGMT' ||
+                                module.code == 'COMMERCE') {
                                 const managerPermission = new create_permission_dto_1.CreatePermissionDto();
                                 managerPermission.moduleId = module.id;
                                 managerPermission.roleId = role.id;
@@ -109,7 +101,10 @@ let TenantsService = class TenantsService {
                             }
                             break;
                         case 'FARM_WORKER':
-                            if (module.code == 'MASSIVE_EVENTS' || module.code == 'FARM' || module.code == 'RECEPTION' || module.code == 'PROD_CENTER') {
+                            if (module.code == 'MASSIVE_EVENTS' ||
+                                module.code == 'FARM' ||
+                                module.code == 'RECEPTION' ||
+                                module.code == 'PROD_CENTER') {
                                 const workerPermission = new create_permission_dto_1.CreatePermissionDto();
                                 workerPermission.moduleId = module.id;
                                 workerPermission.roleId = role.id;
@@ -161,7 +156,7 @@ let TenantsService = class TenantsService {
     }
     async findByCompanyUsername(company_username) {
         const tenant = await this.tenantRepository.findOne({
-            where: { company_username }
+            where: { company_username },
         });
         if (!tenant) {
             throw new common_1.NotFoundException(`Tenant with company_username ${company_username} not found`);
@@ -172,9 +167,9 @@ let TenantsService = class TenantsService {
 exports.TenantsService = TenantsService;
 exports.TenantsService = TenantsService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, typeorm_4.InjectDataSource)()),
+    __param(0, (0, typeorm_1.InjectDataSource)()),
     __param(1, (0, typeorm_1.InjectRepository)(tenant_entity_1.Tenant)),
-    __metadata("design:paramtypes", [typeorm_3.DataSource,
+    __metadata("design:paramtypes", [typeorm_2.DataSource,
         typeorm_2.Repository,
         roles_service_1.RoleService,
         role_module_permission_services_1.RoleModulePermissionService,

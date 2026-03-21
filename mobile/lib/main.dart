@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ganado_app/app.dart';
 import 'package:ganado_app/core/auth/auth_provider.dart';
 import 'package:ganado_app/core/config/app_config.dart';
 import 'package:ganado_app/core/config/environment.dart';
+import 'package:ganado_app/core/l10n/locale_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,7 +16,14 @@ void main() async {
     env == 'development' ? Environment.development : Environment.production,
   );
 
-  final container = ProviderContainer();
+  // Initialize SharedPreferences for locale persistence
+  final prefs = await SharedPreferences.getInstance();
+
+  final container = ProviderContainer(
+    overrides: [
+      sharedPreferencesProvider.overrideWithValue(prefs),
+    ],
+  );
 
   // Check stored auth tokens
   await container.read(authStateProvider.notifier).checkAuthStatus();

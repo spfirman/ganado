@@ -12,24 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CattleResponseDto = void 0;
 const class_transformer_1 = require("class-transformer");
 class CattleResponseDto {
-    id;
-    idDevice;
-    deveui;
-    sysNumber;
-    number;
-    brand;
-    characteristics;
-    receivedAt;
-    receivedWeight;
-    purchaseWeight;
-    comments;
-    purchasedFrom;
-    purchasePrice;
-    purchaseCommission;
-    negotiatedPricePerKg;
-    lotPricePerWeight;
-    createdAt;
-    updatedAt;
 }
 exports.CattleResponseDto = CattleResponseDto;
 __decorate([

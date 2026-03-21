@@ -19,7 +19,6 @@ const typeorm_2 = require("typeorm");
 const brand_entity_1 = require("../entities/brand.entity");
 const uuid_1 = require("uuid");
 let BrandRepository = class BrandRepository {
-    repo;
     constructor(repo) {
         this.repo = repo;
     }
@@ -45,7 +44,10 @@ let BrandRepository = class BrandRepository {
     }
     async findOne(idTenant, id, manager) {
         const repo = manager?.getRepository(brand_entity_1.Brand) ?? this.repo;
-        return await repo.findOne({ where: { idTenant, id }, select: ['id', 'idTenant', 'name', 'createdAt', 'updatedAt', 'image'], });
+        return await repo.findOne({
+            where: { idTenant, id },
+            select: ['id', 'idTenant', 'name', 'createdAt', 'updatedAt', 'image'],
+        });
     }
     async findByName(idTenant, name, manager) {
         const repo = manager?.getRepository(brand_entity_1.Brand) ?? this.repo;

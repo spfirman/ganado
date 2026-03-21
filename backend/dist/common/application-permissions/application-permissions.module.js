@@ -16,15 +16,9 @@ let ApplicationPermissionsModule = class ApplicationPermissionsModule {
 exports.ApplicationPermissionsModule = ApplicationPermissionsModule;
 exports.ApplicationPermissionsModule = ApplicationPermissionsModule = __decorate([
     (0, common_1.Module)({
-        imports: [
-            redis_module_1.RedisModule
-        ],
-        providers: [
-            application_permissions_service_1.ApplicationPermissionsService,
-            application_permissions_guard_1.ApplicationPermissionsGuard
-        ],
-        exports: [application_permissions_service_1.ApplicationPermissionsService,
-            application_permissions_guard_1.ApplicationPermissionsGuard]
+        imports: [redis_module_1.RedisModule],
+        providers: [application_permissions_service_1.ApplicationPermissionsService, application_permissions_guard_1.ApplicationPermissionsGuard],
+        exports: [application_permissions_service_1.ApplicationPermissionsService, application_permissions_guard_1.ApplicationPermissionsGuard],
     })
 ], ApplicationPermissionsModule);
 //# sourceMappingURL=application-permissions.module.js.map

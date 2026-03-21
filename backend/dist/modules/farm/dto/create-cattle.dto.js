@@ -15,38 +15,6 @@ const swagger_1 = require("@nestjs/swagger");
 const cattle_gender_enum_1 = require("../enums/cattle-gender.enum");
 const cattle_entity_1 = require("../entities/cattle.entity");
 class CreateCattleDto {
-    idTenant;
-    idDevice;
-    deveui;
-    sysNumber;
-    number;
-    brand;
-    receivedAt;
-    receivedWeight;
-    purchaseWeight;
-    comments;
-    purchasedFrom;
-    purchasePrice;
-    purchaseCommission;
-    negotiatedPricePerKg;
-    lotPricePerWeight;
-    salePrice;
-    salePricePerKg;
-    saleWeight;
-    averageGr;
-    color;
-    characteristics;
-    hasHorn;
-    castrated;
-    eartagLeft;
-    eartagRight;
-    idLot;
-    gender;
-    status;
-    birthDateAprx;
-    newFeedStartDate;
-    averageDailyGain;
-    lastWeight;
 }
 exports.CreateCattleDto = CreateCattleDto;
 __decorate([

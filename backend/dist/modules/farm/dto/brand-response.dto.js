@@ -12,13 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.BrandResponseDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 class BrandResponseDto {
-    id;
-    name;
-    idTenant;
-    createdAt;
-    updatedAt;
-    imageMimeType;
-    imageBase64;
     static toResponseDto(brand) {
         const mime = brand.imageMimeType;
         const base64 = `data:${mime};base64,${brand.image.toString('base64')}`;

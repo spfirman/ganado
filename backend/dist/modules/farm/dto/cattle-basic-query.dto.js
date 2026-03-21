@@ -14,9 +14,9 @@ const swagger_1 = require("@nestjs/swagger");
 const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 class CattleBasicQueryDto {
-    limit = 500;
-    cursor;
-    updated_after;
+    constructor() {
+        this.limit = 500;
+    }
 }
 exports.CattleBasicQueryDto = CattleBasicQueryDto;
 __decorate([
@@ -24,7 +24,7 @@ __decorate([
     (0, class_transformer_1.Transform)(({ value }) => Number(value)),
     (0, class_validator_1.IsInt)(),
     (0, class_validator_1.Min)(1),
-    __metadata("design:type", Object)
+    __metadata("design:type", Number)
 ], CattleBasicQueryDto.prototype, "limit", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({ description: 'Cursor opaco de la página anterior (base64 JSON)' }),
@@ -35,7 +35,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({
         description: 'Delta-sync: traer registros con updatedAt > updated_after (ISO-8601). Ej: 2025-08-01T00:00:00Z',
-        example: '2025-08-01T00:00:00Z'
+        example: '2025-08-01T00:00:00Z',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),

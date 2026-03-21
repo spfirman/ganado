@@ -14,8 +14,6 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
 const purchase_reception_entity_1 = require("../entities/purchase-reception.entity");
 let PurchaseReceptionRepository = class PurchaseReceptionRepository extends typeorm_1.Repository {
-    ds;
-    repository;
     constructor(ds) {
         super(purchase_reception_entity_1.PurchaseReception, ds.createEntityManager());
         this.ds = ds;

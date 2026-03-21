@@ -2,7 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Location1710000000010 = void 0;
 class Location1710000000010 {
-    name = 'Location1710000000010';
+    constructor() {
+        this.name = 'Location1710000000010';
+    }
     async up(queryRunner) {
         await queryRunner.query(`
       CREATE TABLE location (

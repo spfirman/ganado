@@ -1,7 +1,6 @@
-import { SimpleEventType } from '../enums/simple-event-type.enum';
 declare class SingleEventDto {
     cattleNumber: string;
-    type: SimpleEventType;
+    type: string;
     data: any;
     appliedBy?: string;
     appliedAt?: Date;

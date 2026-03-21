@@ -12,15 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Location = void 0;
 const typeorm_1 = require("typeorm");
 let Location = class Location {
-    id;
-    idTenant;
-    idDevice;
-    idCattle;
-    latitude;
-    longitude;
-    altitude;
-    time;
-    createdAt;
 };
 exports.Location = Location;
 __decorate([

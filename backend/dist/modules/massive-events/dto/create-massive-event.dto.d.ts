@@ -1,6 +1,5 @@
-import { SimpleEventType } from '../enums/simple-event-type.enum';
 declare class SimpleEventInputDto {
-    type: SimpleEventType;
+    type: string;
     data?: any;
 }
 export declare class CreateMassiveEventDto {

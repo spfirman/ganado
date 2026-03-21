@@ -1,7 +1,7 @@
+import { EntityManager } from 'typeorm';
 import { LotRepository } from '../repositories/lot.repository';
 import { Lot } from '../entities/lot.entity';
-import { EntityManager } from 'typeorm';
-import { CattleRepository } from 'src/modules/farm/repositories/cattle.repository';
+import { CattleRepository } from '../../farm/repositories/cattle.repository';
 export declare class LotService {
     private readonly lotRepository;
     private readonly cattleRepository;

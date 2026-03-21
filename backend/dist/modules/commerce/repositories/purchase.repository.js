@@ -14,8 +14,6 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
 const purchase_entity_1 = require("../entities/purchase.entity");
 let PurchaseRepository = class PurchaseRepository {
-    dataSource;
-    repository;
     constructor(dataSource) {
         this.dataSource = dataSource;
         this.repository = this.dataSource.getRepository(purchase_entity_1.Purchase);
@@ -43,7 +41,7 @@ let PurchaseRepository = class PurchaseRepository {
         const { from, to, provider, status = 'all' } = q;
         const qb = this.repository.createQueryBuilder('p')
             .leftJoin('providers', 'prov', 'prov.id = p.id_provider')
-            .leftJoin(qb1 => qb1
+            .leftJoin((qb1) => qb1
             .subQuery()
             .select('lot.id_purchase', 'id_purchase')
             .addSelect('SUM(lot.purchased_cattle_count)', 'total_cattle')
@@ -51,7 +49,7 @@ let PurchaseRepository = class PurchaseRepository {
             .addSelect('SUM(lot.received_cattle_count)', 'received_cattle_lot')
             .from('lots', 'lot')
             .groupBy('lot.id_purchase'), 'lot_agg', 'lot_agg.id_purchase = p.id')
-            .leftJoin(qb2 => qb2
+            .leftJoin((qb2) => qb2
             .subQuery()
             .select('c.id_purchase', 'id_purchase')
             .addSelect('COUNT(*)', 'received_cattle_no_lot')
@@ -80,7 +78,8 @@ let PurchaseRepository = class PurchaseRepository {
             const dbStatus = status.toUpperCase();
             qb.andWhere('p.status = :dbStatus', { dbStatus });
         }
-        const totalRaw = await qb.clone()
+        const totalRaw = await qb
+            .clone()
             .select('COUNT(DISTINCT p.id)', 'cnt')
             .offset(undefined)
             .limit(undefined)

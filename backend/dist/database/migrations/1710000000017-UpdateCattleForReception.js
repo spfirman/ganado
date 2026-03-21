@@ -2,7 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateCattleForReception1710000000017 = void 0;
 class UpdateCattleForReception1710000000017 {
-    name = 'UpdateCattleForReception1710000000017';
+    constructor() {
+        this.name = 'UpdateCattleForReception1710000000017';
+    }
     async up(queryRunner) {
         await queryRunner.query(`ALTER TABLE public.cattle ALTER COLUMN purchased_from DROP NOT NULL;`);
         await queryRunner.query(`DROP INDEX IF EXISTS idx_cattle_id_color;`);

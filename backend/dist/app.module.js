@@ -21,6 +21,7 @@ const reception_module_1 = require("./modules/purchase-receptions/reception.modu
 const configuration_module_1 = require("./modules/configurations/configuration.module");
 const ai_testing_module_1 = require("./modules/ai-testing/ai-testing.module");
 const i18n_module_1 = require("./modules/i18n/i18n.module");
+const hardware_integration_module_1 = require("./modules/hardware-integration/hardware-integration.module");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 let AppModule = class AppModule {
@@ -44,6 +45,7 @@ exports.AppModule = AppModule = __decorate([
             mqtt_module_1.MqttModule,
             ai_testing_module_1.AiTestingModule,
             i18n_module_1.I18nModule,
+            hardware_integration_module_1.HardwareIntegrationModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

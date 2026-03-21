@@ -1,5 +1,5 @@
 export declare class CreateUserDto {
-    tenantId?: string;
+    tenantId: string;
     username: string;
     password: string;
     roleIds: string[];

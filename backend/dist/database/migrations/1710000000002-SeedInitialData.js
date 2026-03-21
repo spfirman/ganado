@@ -2,7 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SeedInitialData1710000000002 = void 0;
 class SeedInitialData1710000000002 {
-    name = 'SeedInitialData1710000000002';
+    constructor() {
+        this.name = 'SeedInitialData1710000000002';
+    }
     async up(queryRunner) {
         await queryRunner.query(`
       INSERT INTO roles (id, name, description) VALUES

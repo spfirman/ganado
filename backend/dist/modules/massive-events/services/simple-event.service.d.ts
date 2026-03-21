@@ -1,10 +1,8 @@
 import { SimpleEventRepository } from '../repositories/simple-event.repository';
-import { CreateSimpleEventDto } from '../dto/create-simple-event.dto';
 import { DataSource, EntityManager } from 'typeorm';
 import { SimpleEvent } from '../entities/simple-event.entity';
-import { SyncSimpleEventDto } from '../dto/sync-simple-events.dto';
-import { SyncSimpleEventResultDto } from '../dto/sync-simple-events.dto';
 import { MassiveEventService } from './massive-event.service';
+import { CreateSimpleEventDto } from '../dto/create-simple-event.dto';
 import { UpdateSimpleEventDto } from '../dto/update-simple-events.dto';
 export declare class SimpleEventService {
     private readonly dataSource;
@@ -12,9 +10,9 @@ export declare class SimpleEventService {
     private readonly massiveEventSevice;
     constructor(dataSource: DataSource, simpleEventRepo: SimpleEventRepository, massiveEventSevice: MassiveEventService);
     createSimpleEvent12(idTenant: string, dto: CreateSimpleEventDto): Promise<SimpleEvent>;
-    private saveNewSimpleEvent;
+    saveNewSimpleEvent(manager: EntityManager, payload: any): Promise<SimpleEvent>;
     createSimpleEvent(idTenant: string, dto: CreateSimpleEventDto): Promise<SimpleEvent>;
-    syncSimpleEvents(idTenant: string, dtos: SyncSimpleEventDto[]): Promise<SyncSimpleEventResultDto[]>;
+    syncSimpleEvents(idTenant: string, dtos: any[]): Promise<any[]>;
     findByIdOrFail(idTenant: string, id: string, manager?: EntityManager): Promise<SimpleEvent>;
     findByMassiveEvent(idTenant: string, idMassiveEvent: string): Promise<SimpleEvent[]>;
     delete(id: string): Promise<void>;

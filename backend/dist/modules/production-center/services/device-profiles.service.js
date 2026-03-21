@@ -18,18 +18,12 @@ const config_1 = require("@nestjs/config");
 const rxjs_1 = require("rxjs");
 const devices_service_1 = require("./devices.service");
 let DeviceProfilesService = DeviceProfilesService_1 = class DeviceProfilesService {
-    deviceProfileRepository;
-    httpService;
-    configService;
-    devicesService;
-    chirpstackUrl;
-    chirpstackToken;
-    logger = new common_1.Logger(DeviceProfilesService_1.name);
     constructor(deviceProfileRepository, httpService, configService, devicesService) {
         this.deviceProfileRepository = deviceProfileRepository;
         this.httpService = httpService;
         this.configService = configService;
         this.devicesService = devicesService;
+        this.logger = new common_1.Logger(DeviceProfilesService_1.name);
         const chirpstackUrl = this.configService.get('CHIRPSTACK_API_URL');
         const chirpstackToken = this.configService.get('CHIRPSTACK_API_KEY');
         if (!chirpstackUrl || !chirpstackToken) {
@@ -39,7 +33,9 @@ let DeviceProfilesService = DeviceProfilesService_1 = class DeviceProfilesServic
         this.chirpstackToken = chirpstackToken;
     }
     async create(createDeviceProfileDto) {
-        const existingProfile = await this.deviceProfileRepository.findByNameAndTenantId(createDeviceProfileDto.name, createDeviceProfileDto.idTenant).catch(() => null);
+        const existingProfile = await this.deviceProfileRepository
+            .findByNameAndTenantId(createDeviceProfileDto.name, createDeviceProfileDto.idTenant)
+            .catch(() => null);
         if (existingProfile) {
             throw new common_1.ConflictException(`Device profile with name ${createDeviceProfileDto.name} already exists`);
         }
@@ -54,7 +50,7 @@ let DeviceProfilesService = DeviceProfilesService_1 = class DeviceProfilesServic
         try {
             const response = await (0, rxjs_1.firstValueFrom)(this.httpService.get(`${this.chirpstackUrl}/api/device-profiles/${idChipstack}`, {
                 headers: {
-                    'accept': 'application/json',
+                    accept: 'application/json',
                     'Grpc-Metadata-Authorization': `Bearer ${this.chirpstackToken}`,
                 },
             }));
@@ -88,7 +84,9 @@ let DeviceProfilesService = DeviceProfilesService_1 = class DeviceProfilesServic
             throw error;
         }
         if (updateDeviceProfileDto.name) {
-            const existingProfile = await this.deviceProfileRepository.findByNameAndTenantId(updateDeviceProfileDto.name, idTenant).catch(() => null);
+            const existingProfile = await this.deviceProfileRepository
+                .findByNameAndTenantId(updateDeviceProfileDto.name, idTenant)
+                .catch(() => null);
             if (existingProfile && existingProfile.id !== id) {
                 throw new common_1.ConflictException(`Device profile with name ${updateDeviceProfileDto.name} already exists`);
             }

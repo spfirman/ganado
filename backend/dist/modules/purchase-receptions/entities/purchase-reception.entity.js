@@ -12,14 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PurchaseReception = void 0;
 const typeorm_1 = require("typeorm");
 let PurchaseReception = class PurchaseReception {
-    id;
-    idTenant;
-    idPurchase;
-    idMassiveEvent;
-    receivedAt;
-    nextCattleNumber;
-    createdAt;
-    updatedAt;
 };
 exports.PurchaseReception = PurchaseReception;
 __decorate([

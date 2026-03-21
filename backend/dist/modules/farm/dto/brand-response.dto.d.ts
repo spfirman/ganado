@@ -6,6 +6,6 @@ export declare class BrandResponseDto {
     createdAt: Date;
     updatedAt: Date;
     imageMimeType: string;
-    imageBase64?: string;
+    imageBase64: string;
     static toResponseDto(brand: Brand): BrandResponseDto;
 }

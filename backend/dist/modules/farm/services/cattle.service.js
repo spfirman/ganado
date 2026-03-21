@@ -1,43 +1,10 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
@@ -57,8 +24,8 @@ const massive_event_service_1 = require("../../massive-events/services/massive-e
 const simple_event_service_1 = require("../../massive-events/services/simple-event.service");
 const animal_simple_event_repository_1 = require("../../massive-events/repositories/animal-simple-event.repository");
 const devices_service_1 = require("../../production-center/services/devices.service");
-const ExcelJS = __importStar(require("exceljs"));
-const fs = __importStar(require("fs"));
+const ExcelJS = require("exceljs");
+const fs = require("fs");
 const simple_event_type_enum_1 = require("../../massive-events/enums/simple-event-type.enum");
 const cattle_characteristic_repository_1 = require("../repositories/cattle-characteristic.repository");
 const cattle_characteristic_entity_1 = require("../entities/cattle-characteristic.entity");
@@ -66,19 +33,6 @@ const cattle_weight_history_entity_1 = require("../entities/cattle-weight-histor
 const cattle_medication_history_entity_1 = require("../entities/cattle-medication-history.entity");
 const configurations_service_1 = require("../../configurations/services/configurations.service");
 let CattleService = CattleService_1 = class CattleService {
-    cattleRepository;
-    cattleDeviceHistoryRepository;
-    cattleWeightHistoryRepository;
-    cattleEartagHistoryRepository;
-    cattleMedicationHistoryRepository;
-    cattleCharacteristicRepository;
-    deviceService;
-    animalSimpleEventRepository;
-    dataSource;
-    massiveEventService;
-    simpleEventService;
-    configurationsService;
-    logger = new common_1.Logger(CattleService_1.name);
     constructor(cattleRepository, cattleDeviceHistoryRepository, cattleWeightHistoryRepository, cattleEartagHistoryRepository, cattleMedicationHistoryRepository, cattleCharacteristicRepository, deviceService, animalSimpleEventRepository, dataSource, massiveEventService, simpleEventService, configurationsService) {
         this.cattleRepository = cattleRepository;
         this.cattleDeviceHistoryRepository = cattleDeviceHistoryRepository;
@@ -92,6 +46,7 @@ let CattleService = CattleService_1 = class CattleService {
         this.massiveEventService = massiveEventService;
         this.simpleEventService = simpleEventService;
         this.configurationsService = configurationsService;
+        this.logger = new common_1.Logger(CattleService_1.name);
     }
     async applyBulkSimpleEvents(idTenant, idCurrentUser, events) {
         return this.dataSource.transaction(async (manager) => {
@@ -108,7 +63,10 @@ let CattleService = CattleService_1 = class CattleService {
                     throw new common_1.HttpException('Massive event already closed', common_1.HttpStatus.UNPROCESSABLE_ENTITY);
                 if (!minimumMassiveEvents[ev.idMassiveEvent])
                     minimumMassiveEvents[ev.idMassiveEvent] = [];
-                minimumMassiveEvents[ev.idMassiveEvent].push({ idSimEv: ev.idSimpleEvent, type: ev.type });
+                minimumMassiveEvents[ev.idMassiveEvent].push({
+                    idSimEv: ev.idSimpleEvent,
+                    type: ev.type,
+                });
                 await this.applySingleEventToCattle(manager, idTenant, idCurrentUser, cattle, ev);
                 if (ev.idMassiveEvent) {
                     await this.animalSimpleEventRepository.saveWithManager(manager, {
@@ -141,17 +99,23 @@ let CattleService = CattleService_1 = class CattleService {
         const massiveEvent = await this.massiveEventService.findWithSimpleEventsByIdOrFail(idTenant, idMassiveEvent, manager);
         if (massiveEvent.status === 'closed')
             throw new common_1.HttpException('Massive event already closed', common_1.HttpStatus.UNPROCESSABLE_ENTITY);
-        const cattleEntity = cattle ?? await this.cattleRepository.findOneForUpdateByNumber(idTenant, cattleNumber, manager);
+        const cattleEntity = cattle ??
+            (await this.cattleRepository.findOneForUpdateByNumber(idTenant, cattleNumber, manager));
         if (!cattleEntity)
             throw new common_1.NotFoundException(`Cattle ${cattleNumber} not found`);
         this.validateStatusForApplyEvents(cattleEntity.status);
         const createdEvents = [];
         for (const ev of events) {
-            if (ev.type === simple_event_type_enum_1.SimpleEventType.CASTRATION && cattleEntity.castrated) {
+            if (ev.type === simple_event_type_enum_1.SimpleEventType.CASTRATION &&
+                cattleEntity.castrated) {
                 continue;
             }
             await this.simpleEventService.findByIdOrFail(idTenant, ev.idSimpleEvent, manager);
-            await this.applySingleEventToCattle(manager, idTenant, idCurrentUser, cattleEntity, { ...ev, idMassiveEvent: idMassiveEvent, appliedBy: ev.appliedBy ?? idCurrentUser });
+            await this.applySingleEventToCattle(manager, idTenant, idCurrentUser, cattleEntity, {
+                ...ev,
+                idMassiveEvent: idMassiveEvent,
+                appliedBy: ev.appliedBy ?? idCurrentUser,
+            });
             const event = await this.animalSimpleEventRepository.saveWithManager(manager, {
                 id: crypto.randomUUID(),
                 idTenant,
@@ -168,7 +132,7 @@ let CattleService = CattleService_1 = class CattleService {
                 idAnimal: cattleEntity.id,
                 type: ev.type,
                 animalNumber: cattleNumber,
-                data: ev.data
+                data: ev.data,
             };
             createdEvents.push(responsedto);
         }
@@ -207,7 +171,8 @@ let CattleService = CattleService_1 = class CattleService {
                 const nextEartagRight = ev.data.eartagRight ?? null;
                 if (nextEartagLeft) {
                     const cattleWithSameEartagLeft = await this.cattleRepository.findByAnyEartag(idTenant, nextEartagLeft, manager);
-                    if (cattleWithSameEartagLeft && cattleWithSameEartagLeft.id !== cattle.id) {
+                    if (cattleWithSameEartagLeft &&
+                        cattleWithSameEartagLeft.id !== cattle.id) {
                         throw new common_1.ConflictException(`Eartag ${nextEartagLeft} already exists for another cattle`);
                     }
                     cattle.eartagLeft = nextEartagLeft;
@@ -222,7 +187,8 @@ let CattleService = CattleService_1 = class CattleService {
                 }
                 if (nextEartagRight) {
                     const cattleWithSameEartagRight = await this.cattleRepository.findByAnyEartag(idTenant, nextEartagRight, manager);
-                    if (cattleWithSameEartagRight && cattleWithSameEartagRight.id !== cattle.id) {
+                    if (cattleWithSameEartagRight &&
+                        cattleWithSameEartagRight.id !== cattle.id) {
                         throw new common_1.ConflictException(`Eartag ${nextEartagRight} already exists for another cattle`);
                     }
                     cattle.eartagRight = nextEartagRight;
@@ -258,7 +224,7 @@ let CattleService = CattleService_1 = class CattleService {
                         tags.idDevice = device.id;
                         tags.idTenant = idTenant;
                         const deviceUpdateDto = {
-                            tags: tags
+                            tags: tags,
                         };
                         await this.deviceService.updateWithDevice(device, deviceUpdateDto, manager);
                         cattle.idDevice = device.id;
@@ -341,7 +307,11 @@ let CattleService = CattleService_1 = class CattleService {
                     provisionalNumber: payload.cattleNumber,
                 });
                 await this.cattleRepository.saveWithManager(manager, cattle);
-                results.push({ id: payload.id, status: 'synced', animalServerId: cattle.id });
+                results.push({
+                    id: payload.id,
+                    status: 'synced',
+                    animalServerId: cattle.id,
+                });
             }
             return results;
         });
@@ -374,7 +344,7 @@ let CattleService = CattleService_1 = class CattleService {
                 tags.idDevice = device.id;
                 tags.idTenant = idTenant;
                 const deviceUpdateDto = {
-                    tags: tags
+                    tags: tags,
                 };
                 device = await this.deviceService.updateWithDevice(device, deviceUpdateDto, trxManager);
                 await this.cattleDeviceHistoryRepository.assignDeviceToCattle(device.id, cattle.id, idTenant, idCurrentUser, new Date(), undefined, trxManager);
@@ -408,9 +378,12 @@ let CattleService = CattleService_1 = class CattleService {
         this.logger.log(data);
         return this.dataSource.transaction(async (trxManager) => {
             const oldCattle = await this.findByIdOrFail(idTenant, id, trxManager);
-            if (!((data.status == cattle_entity_1.CattleStatus.ACTIVE && oldCattle.status == cattle_entity_1.CattleStatus.LOST)
-                || (data.status == cattle_entity_1.CattleStatus.DEAD && oldCattle.status == cattle_entity_1.CattleStatus.LOST)
-                || (data.status == cattle_entity_1.CattleStatus.ACTIVE && oldCattle.status == cattle_entity_1.CattleStatus.DEAD))) {
+            if (!((data.status == cattle_entity_1.CattleStatus.ACTIVE &&
+                oldCattle.status == cattle_entity_1.CattleStatus.LOST) ||
+                (data.status == cattle_entity_1.CattleStatus.DEAD &&
+                    oldCattle.status == cattle_entity_1.CattleStatus.LOST) ||
+                (data.status == cattle_entity_1.CattleStatus.ACTIVE &&
+                    oldCattle.status == cattle_entity_1.CattleStatus.DEAD))) {
                 this.validateStatusForApplyEvents(oldCattle.status);
             }
             const { characteristics, ...updateD } = data;
@@ -435,7 +408,7 @@ let CattleService = CattleService_1 = class CattleService {
                     tags.idDevice = device.id;
                     tags.idTenant = idTenant;
                     const deviceUpdateDto = {
-                        tags: tags
+                        tags: tags,
                     };
                     await this.deviceService.updateWithDevice(device, deviceUpdateDto, trxManager);
                     await this.cattleDeviceHistoryRepository.assignDeviceToCattle(device.id, id, idTenant, idCurrentUser, new Date(), undefined, trxManager);
@@ -446,19 +419,28 @@ let CattleService = CattleService_1 = class CattleService {
             }
             if (updateData.number) {
                 let cattle = await this.cattleRepository.findByNumberAndTenantId(idTenant, updateData.number, trxManager);
-                if (cattle && (cattle.status === cattle_entity_1.CattleStatus.ACTIVE || cattle.status === cattle_entity_1.CattleStatus.LOST) && cattle.id != id) {
+                if (cattle &&
+                    (cattle.status === cattle_entity_1.CattleStatus.ACTIVE ||
+                        cattle.status === cattle_entity_1.CattleStatus.LOST) &&
+                    cattle.id != id) {
                     throw new common_1.ConflictException('Cattle with number ' + updateData.number + ' already exists');
                 }
             }
             if (updateData.eartagLeft) {
                 const cattle = await this.cattleRepository.findByAnyEartag(idTenant, updateData.eartagLeft, trxManager);
-                if (cattle && (cattle.status === cattle_entity_1.CattleStatus.ACTIVE || cattle.status === cattle_entity_1.CattleStatus.LOST) && cattle.id != id) {
+                if (cattle &&
+                    (cattle.status === cattle_entity_1.CattleStatus.ACTIVE ||
+                        cattle.status === cattle_entity_1.CattleStatus.LOST) &&
+                    cattle.id != id) {
                     throw new common_1.ConflictException(`Eartag ${updateData.eartagLeft} already exists for another cattle`);
                 }
             }
             if (updateData.eartagRight) {
                 const cattle = await this.cattleRepository.findByAnyEartag(idTenant, updateData.eartagRight, trxManager);
-                if (cattle && (cattle.status === cattle_entity_1.CattleStatus.ACTIVE || cattle.status === cattle_entity_1.CattleStatus.LOST) && cattle.id != id) {
+                if (cattle &&
+                    (cattle.status === cattle_entity_1.CattleStatus.ACTIVE ||
+                        cattle.status === cattle_entity_1.CattleStatus.LOST) &&
+                    cattle.id != id) {
                     throw new common_1.ConflictException(`Eartag ${updateData.eartagRight} already exists for another cattle`);
                 }
             }
@@ -523,11 +505,19 @@ let CattleService = CattleService_1 = class CattleService {
                 this.cattleMedicationHistoryRepository.findByCattle(idTenant, id, trxManager),
             ]);
             const tenantGainConfig = await this.configurationsService.getTenantConfiguration(idTenant, 'average_daily_gain');
-            const tenantGainKg = tenantGainConfig ? parseFloat(tenantGainConfig.value) : 0;
-            const lastWeight = updatedCattle.lastWeight != null ? Number(updatedCattle.lastWeight) : null;
-            const lastEntry = weightHistory.length > 0 ? weightHistory[weightHistory.length - 1] : null;
+            const tenantGainKg = tenantGainConfig
+                ? parseFloat(tenantGainConfig.value)
+                : 0;
+            const lastWeight = updatedCattle.lastWeight != null
+                ? Number(updatedCattle.lastWeight)
+                : null;
+            const lastEntry = weightHistory.length > 0
+                ? weightHistory[weightHistory.length - 1]
+                : null;
             const lastWeightDate = lastEntry ? new Date(lastEntry.date) : null;
-            const gainPerDayKg = updatedCattle.averageDailyGain != null ? Number(updatedCattle.averageDailyGain) : tenantGainKg;
+            const gainPerDayKg = updatedCattle.averageDailyGain != null
+                ? Number(updatedCattle.averageDailyGain)
+                : tenantGainKg;
             const daysSince = lastWeightDate
                 ? (Date.now() - lastWeightDate.getTime()) / (1000 * 60 * 60 * 24)
                 : 0;
@@ -636,16 +626,22 @@ let CattleService = CattleService_1 = class CattleService {
         const limit = Math.max(1, q.limit ?? 10);
         const { total, rows } = await this.cattleRepository.listPaged(idTenant, q, page, limit);
         const tenantGainConfig = await this.configurationsService.getTenantConfiguration(idTenant, 'average_daily_gain');
-        const tenantGainKg = tenantGainConfig ? parseFloat(tenantGainConfig.value) : 0;
+        const tenantGainKg = tenantGainConfig
+            ? parseFloat(tenantGainConfig.value)
+            : 0;
         const items = await Promise.all(rows.map(async (cattle) => {
             const [weightHistory, medicationHistory] = await Promise.all([
                 this.cattleWeightHistoryRepository.findByCattle(idTenant, cattle.id),
                 this.cattleMedicationHistoryRepository.findByCattle(idTenant, cattle.id),
             ]);
             const lastWeight = cattle.lastWeight != null ? Number(cattle.lastWeight) : null;
-            const lastEntry = weightHistory.length > 0 ? weightHistory[weightHistory.length - 1] : null;
+            const lastEntry = weightHistory.length > 0
+                ? weightHistory[weightHistory.length - 1]
+                : null;
             const lastWeightDate = lastEntry ? new Date(lastEntry.date) : null;
-            const gainPerDayKg = cattle.averageDailyGain != null ? Number(cattle.averageDailyGain) : tenantGainKg;
+            const gainPerDayKg = cattle.averageDailyGain != null
+                ? Number(cattle.averageDailyGain)
+                : tenantGainKg;
             const daysSince = lastWeightDate
                 ? (Date.now() - lastWeightDate.getTime()) / (1000 * 60 * 60 * 24)
                 : 0;
@@ -714,7 +710,9 @@ let CattleService = CattleService_1 = class CattleService {
         medicationHistory.route = dto.route;
         medicationHistory.lot = dto.lot;
         medicationHistory.recordedBy = userId;
-        medicationHistory.appliedAt = dto.appliedAt ? new Date(dto.appliedAt) : new Date();
+        medicationHistory.appliedAt = dto.appliedAt
+            ? new Date(dto.appliedAt)
+            : new Date();
         return this.cattleMedicationHistoryRepository.create(medicationHistory);
     }
     async updateCattleWeight(cattleId, weight, idTenant) {
@@ -723,7 +721,9 @@ let CattleService = CattleService_1 = class CattleService {
             throw new common_1.NotFoundException('Cattle not found');
         }
         this.validateStatusForApplyEvents(cattle.status);
-        await this.cattleRepository.update(idTenant, cattleId, { lastWeight: weight });
+        await this.cattleRepository.update(idTenant, cattleId, {
+            lastWeight: weight,
+        });
         return { success: true, message: 'Weight updated successfully' };
     }
     async bulkUpdateStatus(cattleIds, status, idTenant) {
@@ -745,8 +745,8 @@ let CattleService = CattleService_1 = class CattleService {
         }
         return {
             totalProcessed: cattleIds.length,
-            successful: results.filter(r => r.success).length,
-            failed: results.filter(r => !r.success).length,
+            successful: results.filter((r) => r.success).length,
+            failed: results.filter((r) => !r.success).length,
             results,
         };
     }
@@ -755,7 +755,9 @@ let CattleService = CattleService_1 = class CattleService {
     }
     async getBasicInfoPaged(idTenant, query) {
         const { limit, cursor, updated_after } = query;
-        const updatedAfter = updated_after ? new Date(updated_after) : undefined;
+        const updatedAfter = updated_after
+            ? new Date(updated_after)
+            : undefined;
         return this.cattleRepository.getBasicInfoPaged({
             idTenant,
             limit,
@@ -820,7 +822,11 @@ let CattleService = CattleService_1 = class CattleService {
             try {
                 const row = worksheet.getRow(rowNumber);
                 const rowValues = Array.isArray(row.values)
-                    ? row.values.slice(1).map((v) => typeof v === 'object' && v?.result !== undefined ? v.result : v)
+                    ? row.values
+                        .slice(1)
+                        .map((v) => typeof v === 'object' && v?.result !== undefined
+                        ? v.result
+                        : v)
                     : [];
                 if (rowValues.length === 0) {
                     results.errors.push(`Row ${rowNumber} is empty`);

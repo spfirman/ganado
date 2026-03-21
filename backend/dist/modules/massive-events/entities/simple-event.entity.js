@@ -14,14 +14,6 @@ const typeorm_1 = require("typeorm");
 const simple_event_type_enum_1 = require("../enums/simple-event-type.enum");
 const massive_events_entity_1 = require("./massive-events.entity");
 let SimpleEvent = class SimpleEvent {
-    id;
-    idTenant;
-    idMassiveEvent;
-    massiveEvent;
-    type;
-    isActive;
-    data;
-    createdAt;
 };
 exports.SimpleEvent = SimpleEvent;
 __decorate([
@@ -37,7 +29,7 @@ __decorate([
     __metadata("design:type", String)
 ], SimpleEvent.prototype, "idMassiveEvent", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => massive_events_entity_1.MassiveEvent, me => me.simpleEvents, { onDelete: 'CASCADE' }),
+    (0, typeorm_1.ManyToOne)(() => massive_events_entity_1.MassiveEvent, (me) => me.simpleEvents, { onDelete: 'CASCADE' }),
     (0, typeorm_1.JoinColumn)({ name: 'id_massive_event' }),
     __metadata("design:type", massive_events_entity_1.MassiveEvent)
 ], SimpleEvent.prototype, "massiveEvent", void 0);

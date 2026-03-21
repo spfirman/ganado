@@ -26,7 +26,9 @@ exports.RedisModule = RedisModule = __decorate([
                     const password = configService.get('FA_REDIS_PASSWORD', '');
                     return {
                         type: 'single',
-                        url: password ? `redis://:${password}@${host}:${port}` : `redis://${host}:${port}`,
+                        url: password
+                            ? `redis://:${password}@${host}:${port}`
+                            : `redis://${host}:${port}`,
                     };
                 },
             }),

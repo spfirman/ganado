@@ -14,19 +14,6 @@ const typeorm_1 = require("typeorm");
 const lot_entity_1 = require("./lot.entity");
 const cattle_entity_1 = require("../../farm/entities/cattle.entity");
 let Purchase = class Purchase {
-    id;
-    idTenant;
-    purchaseDate;
-    totalCattle;
-    totalWeight;
-    status;
-    idProvider;
-    lots;
-    cattle;
-    idCreatedBy;
-    idUpdatedBy;
-    createdAt;
-    updatedAt;
 };
 exports.Purchase = Purchase;
 __decorate([

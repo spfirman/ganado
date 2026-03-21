@@ -15,13 +15,6 @@ const swagger_2 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const create_user_dto_1 = require("./create-user.dto");
 class UpdateUserDto extends (0, swagger_1.PartialType)(create_user_dto_1.CreateUserDto) {
-    username;
-    password;
-    firstName;
-    lastName;
-    email;
-    active;
-    roleIds;
 }
 exports.UpdateUserDto = UpdateUserDto;
 __decorate([
@@ -31,7 +24,7 @@ __decorate([
     __metadata("design:type", String)
 ], UpdateUserDto.prototype, "username", void 0);
 __decorate([
-    (0, swagger_2.ApiProperty)({ required: false, description: 'Contraseña del usuario' }),
+    (0, swagger_2.ApiProperty)({ required: false, description: 'Contrasena del usuario' }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
@@ -49,7 +42,7 @@ __decorate([
     __metadata("design:type", String)
 ], UpdateUserDto.prototype, "lastName", void 0);
 __decorate([
-    (0, swagger_2.ApiProperty)({ required: false, description: 'Correo electrónico del usuario' }),
+    (0, swagger_2.ApiProperty)({ required: false, description: 'Correo electronico del usuario' }),
     (0, class_validator_1.IsEmail)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)

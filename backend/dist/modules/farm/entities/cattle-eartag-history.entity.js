@@ -12,13 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CattleEartagHistory = void 0;
 const typeorm_1 = require("typeorm");
 let CattleEartagHistory = class CattleEartagHistory {
-    id;
-    idTenant;
-    idCattle;
-    data;
-    assignedAt;
-    assignedBy;
-    idMassiveEvent;
 };
 exports.CattleEartagHistory = CattleEartagHistory;
 __decorate([

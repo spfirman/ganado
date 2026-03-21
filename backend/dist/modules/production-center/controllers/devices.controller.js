@@ -15,6 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DevicesController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
+const platform_express_1 = require("@nestjs/platform-express");
+const multer_1 = require("multer");
+const path_1 = require("path");
 const devices_service_1 = require("../services/devices.service");
 const create_device_dto_1 = require("../dto/create-device.dto");
 const update_device_dto_1 = require("../dto/update-device.dto");
@@ -24,11 +27,7 @@ const application_permissions_guard_1 = require("../../../common/application-per
 const application_permissions_decorator_1 = require("../../../common/application-permissions/application-permissions.decorator");
 const session_user_decorator_1 = require("../../../common/decorators/session-user.decorator");
 const session_user_dto_1 = require("../../auth/dto/session-user.dto");
-const platform_express_1 = require("@nestjs/platform-express");
-const multer_1 = require("multer");
-const path_1 = require("path");
 let DevicesController = class DevicesController {
-    deviceService;
     constructor(deviceService) {
         this.deviceService = deviceService;
     }
@@ -66,7 +65,8 @@ __decorate([
     __param(0, (0, session_user_decorator_1.SessionUser)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto, create_device_dto_1.CreateDeviceDto]),
+    __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto,
+        create_device_dto_1.CreateDeviceDto]),
     __metadata("design:returntype", Promise)
 ], DevicesController.prototype, "create", null);
 __decorate([
@@ -89,7 +89,8 @@ __decorate([
     __param(1, (0, session_user_decorator_1.SessionUser)()),
     __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, session_user_dto_1.SessionUserDto, update_device_dto_1.UpdateDeviceDto]),
+    __metadata("design:paramtypes", [String, session_user_dto_1.SessionUserDto,
+        update_device_dto_1.UpdateDeviceDto]),
     __metadata("design:returntype", Promise)
 ], DevicesController.prototype, "update", null);
 __decorate([
@@ -144,7 +145,7 @@ __decorate([
                     example: '12345e8d-926c-800c-bff5-490e7f8c6051',
                 },
                 file: {
-                    description: 'Archivo Excel, tiene este orden de columnas: devEui, deviceName, deviceProfileId, description, joinEui, nwkKey, tags, variables. Los valores mandatorios son: devEui y deviceName. Si no se envía deviceProfileId en el excel, se debe enviar en el body de la petición. Si no se envía joinEui, nwkKey se tomarán del deviceProfile.',
+                    description: 'Archivo Excel, tiene este orden de columnas: devEui, deviceName, deviceProfileId, description, joinEui, nwkKey, tags, variables. Los valores mandatorios son: devEui y deviceName. Si no se envia deviceProfileId en el excel, se debe enviar en el body de la peticion. Si no se envia joinEui, nwkKey se tomaran del deviceProfile.',
                     type: 'string',
                     format: 'binary',
                 },

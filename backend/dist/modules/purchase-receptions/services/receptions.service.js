@@ -15,11 +15,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ReceptionsService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
+const typeorm_2 = require("@nestjs/typeorm");
+const uuid_1 = require("uuid");
 const purchase_reception_repository_1 = require("../repositories/purchase-reception.repository");
 const reception_response_dto_1 = require("../dto/reception-response.dto");
+const receive_cattle_response_dto_1 = require("../dto/receive-cattle-response.dto");
 const simple_event_type_enum_1 = require("../../massive-events/enums/simple-event-type.enum");
-const common_2 = require("@nestjs/common");
-const uuid_1 = require("uuid");
 const massive_event_repository_1 = require("../../massive-events/repositories/massive-event.repository");
 const lot_repository_1 = require("../../commerce/repositories/lot.repository");
 const cattle_repository_1 = require("../../farm/repositories/cattle.repository");
@@ -32,34 +33,13 @@ const cattle_service_1 = require("../../farm/services/cattle.service");
 const configurations_service_1 = require("../../configurations/services/configurations.service");
 const cattle_weight_history_entity_1 = require("../../farm/entities/cattle-weight-history.entity");
 const cattle_weight_history_repository_1 = require("../../farm/repositories/cattle-weight-history.repository");
-const receive_cattle_response_dto_1 = require("../dto/receive-cattle-response.dto");
 const cattle_characteristic_repository_1 = require("../../farm/repositories/cattle-characteristic.repository");
 const color_characteristics_service_1 = require("../../farm/services/color-characteristics.service");
 const lot_service_1 = require("../../commerce/services/lot.service");
 const device_entity_1 = require("../../production-center/entities/device.entity");
-const typeorm_2 = require("typeorm");
-const typeorm_3 = require("@nestjs/typeorm");
 const devices_service_1 = require("../../production-center/services/devices.service");
 const cattle_device_history_repository_1 = require("../../farm/repositories/cattle-device-history.repository");
 let ReceptionsService = class ReceptionsService {
-    ds;
-    prRepo;
-    purchaseRepo;
-    massiveEventRepo;
-    lotRepo;
-    cattleService;
-    cattleRepo;
-    animalSimpleEventRepo;
-    simpleEventRepo;
-    providerRepo;
-    configurationsService;
-    cattleWeightHistoryRepo;
-    cattleCharacteristicRepository;
-    cattleDeviceHistoryRepository;
-    deviceService;
-    colorCharacteristicsService;
-    lotService;
-    deviceRepo;
     constructor(ds, prRepo, purchaseRepo, massiveEventRepo, lotRepo, cattleService, cattleRepo, animalSimpleEventRepo, simpleEventRepo, providerRepo, configurationsService, cattleWeightHistoryRepo, cattleCharacteristicRepository, cattleDeviceHistoryRepository, deviceService, colorCharacteristicsService, lotService, deviceRepo) {
         this.ds = ds;
         this.prRepo = prRepo;
@@ -84,9 +64,9 @@ let ReceptionsService = class ReceptionsService {
         return this.deviceRepo.find({
             take: 20,
             where: [
-                { idTenant, name: (0, typeorm_2.ILike)(`%${query}%`) },
-                { idTenant, deveui: (0, typeorm_2.ILike)(`%${query}%`) }
-            ]
+                { idTenant, name: (0, typeorm_1.ILike)(`%${query}%`) },
+                { idTenant, deveui: (0, typeorm_1.ILike)(`%${query}%`) },
+            ],
         });
     }
     async getSimpleReception(idTenant, idPurchase, manager) {
@@ -96,7 +76,7 @@ let ReceptionsService = class ReceptionsService {
         var reception = this.ds.transaction(async (manager) => {
             var purchase = await this.purchaseRepo.findById(idPurchase, idTenant, manager);
             if (!purchase) {
-                throw new common_2.NotFoundException('Purchase not found');
+                throw new common_1.NotFoundException('Purchase not found');
             }
             var reception = await this.prRepo.findByPurchase(idTenant, idPurchase, manager);
             var massiveEvent;
@@ -147,7 +127,7 @@ let ReceptionsService = class ReceptionsService {
         return this.ds.transaction(async (manager) => {
             let cattle = await this.cattleRepo.findByNumberAndTenantId(idTenant, cattleDto.number, manager);
             if (cattle && (cattle.status === cattle_entity_1.CattleStatus.ACTIVE || cattle.status === cattle_entity_1.CattleStatus.LOST)) {
-                throw new common_2.ConflictException('Cattle with number ' + cattleDto.number + ' already exists');
+                throw new common_1.ConflictException('Cattle with number ' + cattleDto.number + ' already exists');
             }
             var nextCattleSysnumber = await this.configurationsService.getTenantConfiguration(idTenant, 'next_cattle_sysnumber', manager);
             var nextCattleSysnumberValue = parseInt(nextCattleSysnumber.value);
@@ -155,13 +135,13 @@ let ReceptionsService = class ReceptionsService {
             if (cattleDto.eartagLeft) {
                 const existingCattleWithEartag = await this.cattleRepo.findByAnyEartag(idTenant, cattleDto.eartagLeft, manager);
                 if (existingCattleWithEartag) {
-                    throw new common_2.ConflictException(`Eartag ${cattleDto.eartagLeft} already exists for another cattle`);
+                    throw new common_1.ConflictException(`Eartag ${cattleDto.eartagLeft} already exists for another cattle`);
                 }
             }
             if (cattleDto.eartagRight) {
                 const existingCattleWithEartag = await this.cattleRepo.findByAnyEartag(idTenant, cattleDto.eartagRight, manager);
                 if (existingCattleWithEartag) {
-                    throw new common_2.ConflictException(`Eartag ${cattleDto.eartagRight} already exists for another cattle`);
+                    throw new common_1.ConflictException(`Eartag ${cattleDto.eartagRight} already exists for another cattle`);
                 }
             }
             if (cattleDto.idDevice) {
@@ -171,7 +151,7 @@ let ReceptionsService = class ReceptionsService {
             if (cattleDto.idLot) {
                 let lot = await this.lotRepo.findById(idTenant, cattleDto.idLot, manager);
                 if (!lot) {
-                    throw new common_2.NotFoundException('Lot not found ' + cattleDto.idLot);
+                    throw new common_1.NotFoundException('Lot not found ' + cattleDto.idLot);
                 }
                 if (!cattleDto.purchaseWeight) {
                     cattleDto.purchaseWeight = lot.averageWeight;
@@ -205,7 +185,7 @@ let ReceptionsService = class ReceptionsService {
                 idPurchase: cattleDto.idPurchase,
                 gender: cattleDto.gender,
                 birthDateAprx: cattleDto.birthDateAprx ? new Date(cattleDto.birthDateAprx) : null,
-                hasHorn: cattleDto.hasHorn
+                hasHorn: cattleDto.hasHorn,
             };
             cattle = await this.cattleRepo.saveWithManager(manager, cattleData);
             var weightHistory = {
@@ -242,14 +222,14 @@ let ReceptionsService = class ReceptionsService {
                     tags.idDevice = device.id;
                     tags.idTenant = idTenant;
                     const deviceUpdateDto = {
-                        tags: tags
+                        tags: tags,
                     };
                     await this.deviceService.updateWithDevice(device, deviceUpdateDto, manager);
                     await this.cattleDeviceHistoryRepository.assignDeviceToCattle(device.id, cattle.id, idTenant, idCurrentUser, new Date(), undefined, manager);
                     cattle.device = device;
                 }
                 else {
-                    throw new common_2.NotFoundException(`Device ${cattleDto.idDevice} not found`);
+                    throw new common_1.NotFoundException(`Device ${cattleDto.idDevice} not found`);
                 }
             }
             var simpleEventIds = cattleDto.idSimpleEvents ?? [];
@@ -281,7 +261,7 @@ let ReceptionsService = class ReceptionsService {
         return this.ds.transaction(async (manager) => {
             let cattle = await this.cattleRepo.findById(idTenant, dto.idCattle, manager);
             if (!cattle) {
-                throw new common_2.NotFoundException('Cattle not found');
+                throw new common_1.NotFoundException('Cattle not found');
             }
             var oldLot = null;
             if (cattle.idLot) {
@@ -289,7 +269,7 @@ let ReceptionsService = class ReceptionsService {
             }
             let lot = await this.lotRepo.findById(idTenant, dto.idLot, manager);
             if (!lot) {
-                throw new common_2.NotFoundException('Lot not found');
+                throw new common_1.NotFoundException('Lot not found');
             }
             cattle.idLot = dto.idLot;
             cattle.purchaseWeight = lot.averageWeight ?? 0;
@@ -311,7 +291,7 @@ let ReceptionsService = class ReceptionsService {
 exports.ReceptionsService = ReceptionsService;
 exports.ReceptionsService = ReceptionsService = __decorate([
     (0, common_1.Injectable)(),
-    __param(17, (0, typeorm_3.InjectRepository)(device_entity_1.Device)),
+    __param(17, (0, typeorm_2.InjectRepository)(device_entity_1.Device)),
     __metadata("design:paramtypes", [typeorm_1.DataSource,
         purchase_reception_repository_1.PurchaseReceptionRepository,
         purchase_repository_1.PurchaseRepository,
@@ -329,6 +309,6 @@ exports.ReceptionsService = ReceptionsService = __decorate([
         devices_service_1.DevicesService,
         color_characteristics_service_1.ColorCharacteristicsService,
         lot_service_1.LotService,
-        typeorm_2.Repository])
+        typeorm_1.Repository])
 ], ReceptionsService);
 //# sourceMappingURL=receptions.service.js.map

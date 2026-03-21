@@ -14,17 +14,6 @@ const typeorm_1 = require("typeorm");
 const role_entity_1 = require("./role.entity");
 const module_entity_1 = require("./module.entity");
 let RoleModulePermission = class RoleModulePermission {
-    id;
-    id_role;
-    id_module;
-    tenant_id;
-    can_create;
-    can_read;
-    can_update;
-    can_delete;
-    can_list;
-    role;
-    module;
 };
 exports.RoleModulePermission = RoleModulePermission;
 __decorate([

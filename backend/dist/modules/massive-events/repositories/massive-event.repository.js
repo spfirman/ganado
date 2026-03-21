@@ -15,11 +15,9 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
 const massive_events_entity_1 = require("../entities/massive-events.entity");
 let MassiveEventRepository = MassiveEventRepository_1 = class MassiveEventRepository {
-    dataSource;
-    logger = new common_1.Logger(MassiveEventRepository_1.name);
-    repository;
     constructor(dataSource) {
         this.dataSource = dataSource;
+        this.logger = new common_1.Logger(MassiveEventRepository_1.name);
         this.repository = this.dataSource.getRepository(massive_events_entity_1.MassiveEvent);
     }
     createInstance(data) {

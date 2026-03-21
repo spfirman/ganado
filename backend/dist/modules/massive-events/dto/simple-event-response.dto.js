@@ -12,13 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SimpleEventResponseDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 class SimpleEventResponseDto {
-    id;
-    idTenant;
-    type;
-    idMassiveEvent;
-    createdAt;
-    data;
-    isActive;
     static toResponseDto(entity) {
         return {
             id: entity.id,

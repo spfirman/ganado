@@ -26,14 +26,12 @@ var SortOrder;
     SortOrder["DESC"] = "DESC";
 })(SortOrder || (exports.SortOrder = SortOrder = {}));
 class GetSalesQueryDto {
-    skip = 0;
-    take = 10;
-    orderBy = SaleSortField.TRANSACTION_DATE;
-    order = SortOrder.DESC;
-    startDate;
-    endDate;
-    buyerId;
-    status;
+    constructor() {
+        this.skip = 0;
+        this.take = 10;
+        this.orderBy = SaleSortField.TRANSACTION_DATE;
+        this.order = SortOrder.DESC;
+    }
 }
 exports.GetSalesQueryDto = GetSalesQueryDto;
 __decorate([
@@ -52,6 +50,22 @@ __decorate([
     (0, class_validator_1.Min)(1),
     __metadata("design:type", Number)
 ], GetSalesQueryDto.prototype, "take", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ description: 'Page number (alias for skip)', minimum: 1 }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_transformer_1.Type)(() => Number),
+    (0, class_validator_1.IsInt)(),
+    (0, class_validator_1.Min)(1),
+    __metadata("design:type", Number)
+], GetSalesQueryDto.prototype, "page", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ description: 'Items per page (alias for take)', minimum: 1 }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_transformer_1.Type)(() => Number),
+    (0, class_validator_1.IsInt)(),
+    (0, class_validator_1.Min)(1),
+    __metadata("design:type", Number)
+], GetSalesQueryDto.prototype, "limit", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({ enum: SaleSortField, default: SaleSortField.TRANSACTION_DATE }),
     (0, class_validator_1.IsOptional)(),

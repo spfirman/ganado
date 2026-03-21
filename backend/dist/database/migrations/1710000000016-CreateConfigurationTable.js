@@ -2,7 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateConfigurationTable1710000000016 = void 0;
 class CreateConfigurationTable1710000000016 {
-    name = 'CreateConfigurationTable1710000000016';
+    constructor() {
+        this.name = 'CreateConfigurationTable1710000000016';
+    }
     async up(queryRunner) {
         await queryRunner.query(`
        CREATE TABLE IF NOT EXISTS public.configurations (
@@ -23,20 +25,20 @@ class CreateConfigurationTable1710000000016 {
         await queryRunner.query(`CREATE INDEX IF NOT EXISTS idx_configuration_tenant ON public.configurations (id_tenant);`);
         await queryRunner.query(`
       INSERT INTO public.configurations (id_tenant, code, is_system_config, name, description, value, value_type, created_at, updated_at)
-      SELECT t.id, 
-            'next_cattle_sysnumber', 
+      SELECT t.id,
+            'next_cattle_sysnumber',
             true,
-            'Next cattle Sysnumber', 
-            'Next sysnumber assignment for new cattle', 
-            '1', 
+            'Next cattle Sysnumber',
+            'Next sysnumber assignment for new cattle',
+            '1',
             'number',
             now(),
             now()
       FROM public.tenants t
       WHERE NOT EXISTS (
-        SELECT 1 
-        FROM public.configurations c 
-        WHERE c.id_tenant = t.id 
+        SELECT 1
+        FROM public.configurations c
+        WHERE c.id_tenant = t.id
           AND lower(c.code) = 'next_cattle_sysnumber'
       );
     `);

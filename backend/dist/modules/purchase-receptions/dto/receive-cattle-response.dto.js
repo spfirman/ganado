@@ -12,18 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ReceiveCattleResponseDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 class ReceiveCattleResponseDto {
-    id;
-    idTenant;
-    sysnumber;
-    number;
-    idLot;
-    idBrand;
-    color;
-    idDevice;
-    eartagLeft;
-    eartagRight;
-    deviceName;
-    appliedEvents;
     static toResponseDto(cattle, appliedEvents) {
         return {
             id: cattle.id,

@@ -14,23 +14,6 @@ const typeorm_1 = require("typeorm");
 const provider_entity_1 = require("./provider.entity");
 const sale_detail_entity_1 = require("./sale-detail.entity");
 let Sale = class Sale {
-    id;
-    transactionDate;
-    buyerId;
-    buyer;
-    transporterId;
-    transporter;
-    minWeightConfig;
-    valuePerKgConfig;
-    totalAnimalCount;
-    totalWeightKg;
-    totalAmount;
-    notes;
-    details;
-    idTenant;
-    createdBy;
-    createdAt;
-    updatedAt;
 };
 exports.Sale = Sale;
 __decorate([
@@ -84,7 +67,7 @@ __decorate([
     __metadata("design:type", String)
 ], Sale.prototype, "notes", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => sale_detail_entity_1.SaleDetail, detail => detail.sale),
+    (0, typeorm_1.OneToMany)(() => sale_detail_entity_1.SaleDetail, (detail) => detail.sale),
     __metadata("design:type", Array)
 ], Sale.prototype, "details", void 0);
 __decorate([

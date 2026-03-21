@@ -12,16 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CattleMedicationHistory = void 0;
 const typeorm_1 = require("typeorm");
 let CattleMedicationHistory = class CattleMedicationHistory {
-    id;
-    idTenant;
-    idCattle;
-    medicationName;
-    route;
-    dosage;
-    lot;
-    appliedAt;
-    idMassiveEvent;
-    recordedBy;
 };
 exports.CattleMedicationHistory = CattleMedicationHistory;
 __decorate([

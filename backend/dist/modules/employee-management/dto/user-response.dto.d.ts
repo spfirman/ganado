@@ -1,4 +1,3 @@
-import { Role } from '../entities/role.entity';
 import { Tenant } from '../entities/tenant.entity';
 export declare class UserResponseDto {
     id: string;
@@ -8,6 +7,6 @@ export declare class UserResponseDto {
     email: string;
     tenantId: string;
     tenant: Tenant;
-    roles: Role[];
+    roles: any[];
     constructor(partial: Partial<UserResponseDto>);
 }

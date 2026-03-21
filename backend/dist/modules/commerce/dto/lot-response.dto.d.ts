@@ -1,5 +1,4 @@
 import { Lot } from '../entities/lot.entity';
-import { CattleGender } from '../../farm/enums/cattle-gender.enum';
 export declare class LotResponseDto {
     id: string;
     lotNumber: string;
@@ -9,6 +8,6 @@ export declare class LotResponseDto {
     totalWeight: number;
     pricePerKg: number;
     totalValue: number;
-    gender: CattleGender;
+    gender: string;
     static toLotResponse(lot: Lot): LotResponseDto;
 }

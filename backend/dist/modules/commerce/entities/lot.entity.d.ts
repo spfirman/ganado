@@ -1,5 +1,4 @@
 import { Purchase } from './purchase.entity';
-import { CattleGender } from '../../farm/enums/cattle-gender.enum';
 export declare class Lot {
     id: string;
     idTenant: string;
@@ -12,7 +11,7 @@ export declare class Lot {
     receivedTotalWeight: number;
     pricePerKg: number;
     totalValue: number;
-    gender: CattleGender;
+    gender: string;
     idPurchase: string;
     purchase: Purchase;
     created_at: Date;

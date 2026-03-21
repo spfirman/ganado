@@ -2,7 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ModifyCattle1710000000023 = void 0;
 class ModifyCattle1710000000023 {
-    name = 'ModifyCattle1710000000023';
+    constructor() {
+        this.name = 'ModifyCattle1710000000023';
+    }
     async up(queryRunner) {
         await queryRunner.query(`
       ALTER TABLE "cattle"

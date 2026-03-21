@@ -1,43 +1,10 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
@@ -51,7 +18,7 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const class_transformer_1 = require("class-transformer");
-const bcrypt = __importStar(require("bcrypt"));
+const bcrypt = require("bcrypt");
 const user_entity_1 = require("../entities/user.entity");
 const role_entity_1 = require("../entities/role.entity");
 const roles_service_1 = require("./roles.service");
@@ -59,18 +26,13 @@ const user_response_dto_1 = require("../dto/user-response.dto");
 const user_repository_1 = require("../repositories/user.repository");
 const application_permissions_service_1 = require("../../../common/application-permissions/application-permissions.service");
 let UsersService = UsersService_1 = class UsersService {
-    userRepository;
-    userCustomRepository;
-    rolesRepository;
-    rolesService;
-    applicationPermissionsService;
-    logger = new common_1.Logger(UsersService_1.name);
     constructor(userRepository, userCustomRepository, rolesRepository, rolesService, applicationPermissionsService) {
         this.userRepository = userRepository;
         this.userCustomRepository = userCustomRepository;
         this.rolesRepository = rolesRepository;
         this.rolesService = rolesService;
         this.applicationPermissionsService = applicationPermissionsService;
+        this.logger = new common_1.Logger(UsersService_1.name);
     }
     async create(createUserDto) {
         const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
@@ -81,9 +43,9 @@ let UsersService = UsersService_1 = class UsersService {
         const user = await this.userRepository.findOne({
             where: {
                 id,
-                tenantId: sessionUser.tenant_id
+                tenantId: sessionUser.tenant_id,
             },
-            relations: ['roles']
+            relations: ['roles'],
         });
         if (!user) {
             throw new common_1.NotFoundException(`User with ID ${id} not found`);
@@ -102,7 +64,7 @@ let UsersService = UsersService_1 = class UsersService {
         if (updateUserDto.username && updateUserDto.username !== user.username) {
             const existingUser = await this.userCustomRepository.findByUsernameAndTenant(updateUserDto.username, sessionUser.tenant_id);
             if (existingUser) {
-                throw new common_1.ConflictException('El nombre de usuario ya está en uso');
+                throw new common_1.ConflictException('El nombre de usuario ya esta en uso');
             }
         }
         if (updateUserDto.tenantId) {
@@ -135,26 +97,31 @@ let UsersService = UsersService_1 = class UsersService {
     async findByTenant(tenantId) {
         const users = await this.userRepository.find({
             where: { tenantId: tenantId },
-            relations: ['roles']
+            relations: ['roles'],
         });
         return users;
     }
     async findAll(tenantId) {
         return this.userCustomRepository.find({
             where: { tenantId: tenantId },
-            relations: ['roles', 'roles.permissions', 'roles.permissions.module']
+            relations: ['roles', 'roles.permissions', 'roles.permissions.module'],
         });
     }
     async findWithPagination(tenantId, page = 1, limit = 10, filters = {}) {
         const { username, lastName } = filters;
-        const query = this.userRepository.createQueryBuilder('user')
+        const query = this.userRepository
+            .createQueryBuilder('user')
             .leftJoinAndSelect('user.roles', 'roles')
             .where('user.tenantId = :tenantId', { tenantId });
         if (username) {
-            query.andWhere('LOWER(user.username) LIKE :username', { username: `%${username.toLowerCase()}%` });
+            query.andWhere('LOWER(user.username) LIKE :username', {
+                username: `%${username.toLowerCase()}%`,
+            });
         }
         if (lastName) {
-            query.andWhere('LOWER(user.lastName) LIKE :lastName', { lastName: `%${lastName.toLowerCase()}%` });
+            query.andWhere('LOWER(user.lastName) LIKE :lastName', {
+                lastName: `%${lastName.toLowerCase()}%`,
+            });
         }
         query
             .skip((page - 1) * limit)
@@ -162,7 +129,7 @@ let UsersService = UsersService_1 = class UsersService {
             .orderBy('user.username', 'ASC');
         const [users, total] = await query.getManyAndCount();
         return {
-            items: users.map(user => (0, class_transformer_1.plainToInstance)(user_response_dto_1.UserResponseDto, user)),
+            items: users.map((user) => (0, class_transformer_1.plainToInstance)(user_response_dto_1.UserResponseDto, user)),
             total,
         };
     }
@@ -170,13 +137,13 @@ let UsersService = UsersService_1 = class UsersService {
         try {
             const user_db = await this.userCustomRepository.findByUsernameAndCompanyUsername(username, company_username);
             if (!user_db) {
-                throw new common_1.UnauthorizedException('Credenciales inválidas');
+                throw new common_1.UnauthorizedException('Credenciales invalidas');
                 return null;
             }
             var user = null;
             const isPasswordValid = await bcrypt.compare(password, user_db.password);
             if (!isPasswordValid) {
-                throw new common_1.UnauthorizedException('Credenciales inválidas');
+                throw new common_1.UnauthorizedException('Credenciales invalidas');
             }
             user = (0, class_transformer_1.plainToInstance)(user_entity_1.User, user_db);
             return user;
@@ -192,22 +159,24 @@ let UsersService = UsersService_1 = class UsersService {
     async findByUsername(username, tenantId) {
         const user = await this.userRepository.findOne({
             where: { username, tenantId: tenantId },
-            relations: ['roles', 'tenant']
+            relations: ['roles', 'tenant'],
         });
         return user || undefined;
     }
     async validateUser(username, password, tenantId) {
         const user = await this.findByUsername(username, tenantId);
-        if (user && await bcrypt.compare(password, user.password)) {
+        if (user && (await bcrypt.compare(password, user.password))) {
             return (0, class_transformer_1.plainToInstance)(user_response_dto_1.UserResponseDto, user);
         }
         return undefined;
     }
     async createAdminUser(dto, manager) {
-        const userRepository = manager ? manager.getRepository(user_entity_1.User) : this.userRepository;
+        const userRepository = manager
+            ? manager.getRepository(user_entity_1.User)
+            : this.userRepository;
         const where = [
             { username: dto.username, tenantId: dto.tenantId },
-            { email: dto.email, tenantId: dto.tenantId }
+            { email: dto.email, tenantId: dto.tenantId },
         ];
         const existingUser = await userRepository.findOne({ where });
         if (existingUser) {
@@ -225,7 +194,7 @@ let UsersService = UsersService_1 = class UsersService {
             firstName: dto.firstName,
             lastName: dto.lastName,
             tenantId: dto.tenantId,
-            roles: [adminRole]
+            roles: [adminRole],
         });
         const savedUser = await userRepository.save(user);
         return (0, class_transformer_1.plainToInstance)(user_response_dto_1.UserResponseDto, savedUser);

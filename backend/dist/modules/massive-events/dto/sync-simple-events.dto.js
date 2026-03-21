@@ -14,14 +14,6 @@ const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const simple_event_type_enum_1 = require("../enums/simple-event-type.enum");
 class SyncSimpleEventDto {
-    id;
-    idTenant;
-    massiveEventServerId;
-    type;
-    dataJson;
-    isActive;
-    createdAt;
-    createdBy;
 }
 exports.SyncSimpleEventDto = SyncSimpleEventDto;
 __decorate([
@@ -58,7 +50,6 @@ __decorate([
     __metadata("design:type", String)
 ], SyncSimpleEventDto.prototype, "createdBy", void 0);
 class SyncSimpleEventsRequestDto {
-    simpleEvents;
 }
 exports.SyncSimpleEventsRequestDto = SyncSimpleEventsRequestDto;
 __decorate([
@@ -66,10 +57,6 @@ __decorate([
     __metadata("design:type", Array)
 ], SyncSimpleEventsRequestDto.prototype, "simpleEvents", void 0);
 class SyncSimpleEventResultDto {
-    id;
-    status;
-    serverId;
-    message;
 }
 exports.SyncSimpleEventResultDto = SyncSimpleEventResultDto;
 __decorate([
@@ -89,7 +76,6 @@ __decorate([
     __metadata("design:type", String)
 ], SyncSimpleEventResultDto.prototype, "message", void 0);
 class SyncSimpleEventsResponseDto {
-    results;
 }
 exports.SyncSimpleEventsResponseDto = SyncSimpleEventsResponseDto;
 __decorate([

@@ -12,21 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeviceProfile = void 0;
 const typeorm_1 = require("typeorm");
 let DeviceProfile = class DeviceProfile {
-    id;
-    idTenant;
-    name;
-    description;
-    idChipstack;
-    csApplicationId;
-    csJoineui;
-    csAppKey;
-    csNwkKey;
-    fccId;
-    regions;
-    model;
-    input;
-    createdAt;
-    updatedAt;
 };
 exports.DeviceProfile = DeviceProfile;
 __decorate([

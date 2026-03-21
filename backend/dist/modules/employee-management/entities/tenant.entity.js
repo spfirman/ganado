@@ -14,16 +14,11 @@ const typeorm_1 = require("typeorm");
 const user_entity_1 = require("./user.entity");
 const swagger_1 = require("@nestjs/swagger");
 let Tenant = class Tenant {
-    id;
-    name;
-    company_username;
-    status;
-    users;
 };
 exports.Tenant = Tenant;
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'ID único del tenant',
+        description: 'ID unico del tenant',
         example: '123e4567-e89b-12d3-a456-426614174000',
     }),
     (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
@@ -40,7 +35,7 @@ __decorate([
 ], Tenant.prototype, "name", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Nombre de usuario de la compañía',
+        description: 'Nombre de usuario de la compania',
         example: 'finca_alamos',
         required: true,
     }),

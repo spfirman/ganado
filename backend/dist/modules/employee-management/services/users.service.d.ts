@@ -1,21 +1,13 @@
 import { Repository, EntityManager } from 'typeorm';
-import { CreateUserDto } from '../dto/create-user.dto';
 import { User } from '../entities/user.entity';
 import { Role } from '../entities/role.entity';
 import { RoleService } from './roles.service';
-import { UpdateUserDto } from '../dto/update-user.dto';
 import { UserResponseDto } from '../dto/user-response.dto';
 import { UserRepository } from '../repositories/user.repository';
-import { SessionUserDto } from 'src/modules/auth/dto/session-user.dto';
 import { ApplicationPermissionsService } from '../../../common/application-permissions/application-permissions.service';
-interface CreateAdminUserDto {
-    username: string;
-    password: string;
-    email: string;
-    firstName: string;
-    lastName: string;
-    tenantId: string;
-}
+import { CreateUserDto } from '../dto/create-user.dto';
+import { UpdateUserDto } from '../dto/update-user.dto';
+import { SessionUserDto } from '../../auth/dto/session-user.dto';
 export declare class UsersService {
     private readonly userRepository;
     private readonly userCustomRepository;
@@ -41,6 +33,12 @@ export declare class UsersService {
     getHashedPassword(password: string): Promise<string>;
     findByUsername(username: string, tenantId: string): Promise<User | undefined>;
     validateUser(username: string, password: string, tenantId: string): Promise<UserResponseDto | undefined>;
-    createAdminUser(dto: CreateAdminUserDto, manager?: EntityManager): Promise<UserResponseDto>;
+    createAdminUser(dto: {
+        username: string;
+        password: string;
+        email: string;
+        firstName: string;
+        lastName: string;
+        tenantId: string;
+    }, manager?: EntityManager): Promise<UserResponseDto>;
 }
-export {};

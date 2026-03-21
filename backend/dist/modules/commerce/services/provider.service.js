@@ -21,14 +21,11 @@ const provider_repository_1 = require("../repositories/provider.repository");
 const provider_entity_1 = require("../entities/provider.entity");
 const contact_entity_1 = require("../entities/contact.entity");
 let ProviderService = ProviderService_1 = class ProviderService {
-    providerRepository;
-    contactRepository;
-    dataSource;
-    logger = new common_1.Logger(ProviderService_1.name);
     constructor(providerRepository, contactRepository, dataSource) {
         this.providerRepository = providerRepository;
         this.contactRepository = contactRepository;
         this.dataSource = dataSource;
+        this.logger = new common_1.Logger(ProviderService_1.name);
     }
     async createProvider(data) {
         if (!data.name || data.name.trim() === '') {
@@ -105,7 +102,7 @@ let ProviderService = ProviderService_1 = class ProviderService {
             return allProviders;
         }
         const searchTerm = name.toLowerCase();
-        const filtered = allProviders.filter(p => p.name.toLowerCase().includes(searchTerm));
+        const filtered = allProviders.filter((p) => p.name.toLowerCase().includes(searchTerm));
         this.logger.debug(`Filtered to ${filtered.length} providers matching "${searchTerm}"`);
         return filtered;
     }

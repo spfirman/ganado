@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ganado_app/core/config/app_config.dart';
 import 'package:ganado_app/core/sync/sync_engine.dart';
 import 'package:ganado_app/core/network/connectivity_service.dart';
+import 'package:ganado_app/features/settings/presentation/widgets/language_selector.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -48,6 +49,10 @@ class SettingsScreen extends ConsumerWidget {
             ),
           ),
         ),
+        const SizedBox(height: 8),
+
+        // Language selector
+        const LanguageSelector(),
         const SizedBox(height: 8),
 
         // App info

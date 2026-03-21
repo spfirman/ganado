@@ -15,11 +15,9 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
 const animal_simple_event_entity_1 = require("../entities/animal-simple-event.entity");
 let AnimalSimpleEventRepository = AnimalSimpleEventRepository_1 = class AnimalSimpleEventRepository {
-    dataSource;
-    logger = new common_1.Logger(AnimalSimpleEventRepository_1.name);
-    repository;
     constructor(dataSource) {
         this.dataSource = dataSource;
+        this.logger = new common_1.Logger(AnimalSimpleEventRepository_1.name);
         this.repository = this.dataSource.getRepository(animal_simple_event_entity_1.AnimalSimpleEvent);
     }
     createInstance(data) {

@@ -14,21 +14,19 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SimpleEventController = void 0;
 const common_1 = require("@nestjs/common");
+const swagger_1 = require("@nestjs/swagger");
 const simple_event_service_1 = require("../services/simple-event.service");
 const create_simple_event_dto_1 = require("../dto/create-simple-event.dto");
 const sync_simple_events_dto_1 = require("../dto/sync-simple-events.dto");
-const swagger_1 = require("@nestjs/swagger");
-const application_permissions_decorator_1 = require("../../../common/application-permissions/application-permissions.decorator");
+const simple_event_response_dto_1 = require("../dto/simple-event-response.dto");
+const update_simple_events_dto_1 = require("../dto/update-simple-events.dto");
 const animal_simple_event_repository_1 = require("../repositories/animal-simple-event.repository");
+const application_permissions_decorator_1 = require("../../../common/application-permissions/application-permissions.decorator");
 const jwt_auth_guard_1 = require("../../auth/guards/jwt-auth.guard");
 const application_permissions_guard_1 = require("../../../common/application-permissions/application-permissions.guard");
 const session_user_decorator_1 = require("../../../common/decorators/session-user.decorator");
 const session_user_dto_1 = require("../../auth/dto/session-user.dto");
-const simple_event_response_dto_1 = require("../dto/simple-event-response.dto");
-const update_simple_events_dto_1 = require("../dto/update-simple-events.dto");
 let SimpleEventController = class SimpleEventController {
-    simpleEventService;
-    simpleEventCattleRepository;
     constructor(simpleEventService, simpleEventCattleRepository) {
         this.simpleEventService = simpleEventService;
         this.simpleEventCattleRepository = simpleEventCattleRepository;
@@ -48,7 +46,7 @@ let SimpleEventController = class SimpleEventController {
     }
     async getAppliedCattleIdsBySimpleEvent(id) {
         const links = await this.simpleEventCattleRepository.findBySimpleEvent(id);
-        return links.map(link => ({
+        return links.map((link) => ({
             idCattle: link.idAnimal,
             appliedAt: link.appliedAt,
             appliedBy: link.appliedBy,
@@ -71,68 +69,44 @@ __decorate([
         examples: {
             weight: {
                 summary: 'Weight type (data varies per cattle)',
-                value: {
-                    idMassiveEvent: 'uuid-massive-event',
-                    type: 'weight',
-                    data: {}
-                }
+                value: { idMassiveEvent: 'uuid-massive-event', type: 'weight', data: {} },
             },
             eartag: {
                 summary: 'Eartag type (can define left/right values)',
-                value: {
-                    idMassiveEvent: 'uuid-massive-event',
-                    type: 'eartag',
-                    data: { eartagLeft: 'ET-L-001', eartagRight: 'ET-R-001' }
-                }
+                value: { idMassiveEvent: 'uuid-massive-event', type: 'eartag', data: { eartagLeft: 'ET-L-001', eartagRight: 'ET-R-001' } },
             },
             tracker: {
                 summary: 'Tracker type (data varies per cattle)',
-                value: {
-                    idMassiveEvent: 'uuid-massive-event',
-                    type: 'tracker',
-                    data: {}
-                }
+                value: { idMassiveEvent: 'uuid-massive-event', type: 'tracker', data: {} },
             },
             castration: {
                 summary: 'Castration type (data varies per cattle)',
-                value: {
-                    idMassiveEvent: 'uuid-massive-event',
-                    type: 'castration',
-                    data: {}
-                }
+                value: { idMassiveEvent: 'uuid-massive-event', type: 'castration', data: {} },
             },
             brand: {
                 summary: 'Brand type (same brand for all cattle)',
-                value: {
-                    idMassiveEvent: 'uuid-massive-event',
-                    type: 'brand',
-                    data: { brandId: 'uuid-brand', brandName: 'Brand Name' }
-                }
+                value: { idMassiveEvent: 'uuid-massive-event', type: 'brand', data: { brandId: 'uuid-brand', brandName: 'Brand Name' } },
             },
             medication: {
                 summary: 'Medication type (same medication for all cattle)',
                 value: {
                     idMassiveEvent: 'uuid-massive-event',
                     type: 'medication',
-                    data: {
-                        medicationName: 'abc',
-                        dosage: '1ml/50kg',
-                        route: 'oral',
-                        lot: '232adf-asdf'
-                    }
-                }
-            }
-        }
+                    data: { medicationName: 'abc', dosage: '1ml/50kg', route: 'oral', lot: '232adf-asdf' },
+                },
+            },
+        },
     }),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto, create_simple_event_dto_1.CreateSimpleEventDto]),
+    __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto,
+        create_simple_event_dto_1.CreateSimpleEventDto]),
     __metadata("design:returntype", void 0)
 ], SimpleEventController.prototype, "create", null);
 __decorate([
     (0, common_1.Post)('sync'),
-    (0, swagger_1.ApiOperation)({ summary: 'Sync simple events (offline → backend)' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Sync simple events (offline -> backend)' }),
     (0, swagger_1.ApiResponse)({
         status: 201,
         description: 'Simple events synced successfully',
@@ -146,41 +120,12 @@ __decorate([
                 summary: 'Syncing various simple events',
                 value: {
                     simpleEvents: [
-                        {
-                            id: 'uuid-se-weight',
-                            idMassiveEvent: 'uuid-massive',
-                            type: 'weight',
-                            dataJson: '{}',
-                        },
-                        {
-                            id: 'uuid-se-eartag',
-                            idMassiveEvent: 'uuid-massive',
-                            type: 'eartag',
-                            dataJson: '{"eartagLeft":"ET-L-001","eartagRight":"ET-R-001"}',
-                        },
-                        {
-                            id: 'uuid-se-tracker',
-                            idMassiveEvent: 'uuid-massive',
-                            type: 'tracker',
-                            dataJson: '{}',
-                        },
-                        {
-                            id: 'uuid-se-brand',
-                            idMassiveEvent: 'uuid-massive',
-                            type: 'brand',
-                            dataJson: '{"idBrand":"brand-777"}',
-                        },
-                        {
-                            id: 'uuid-se-castration',
-                            idMassiveEvent: 'uuid-massive',
-                            type: 'castration',
-                        },
-                        {
-                            id: 'uuid-se-medication',
-                            idMassiveEvent: 'uuid-massive',
-                            type: 'medication',
-                            dataJson: '{"medicationName":"med-001","dosage":"1ml","route":"oral","lot":"LOT-2025"}',
-                        },
+                        { id: 'uuid-se-weight', idMassiveEvent: 'uuid-massive', type: 'weight', dataJson: '{}' },
+                        { id: 'uuid-se-eartag', idMassiveEvent: 'uuid-massive', type: 'eartag', dataJson: '{"eartagLeft":"ET-L-001","eartagRight":"ET-R-001"}' },
+                        { id: 'uuid-se-tracker', idMassiveEvent: 'uuid-massive', type: 'tracker', dataJson: '{}' },
+                        { id: 'uuid-se-brand', idMassiveEvent: 'uuid-massive', type: 'brand', dataJson: '{"idBrand":"brand-777"}' },
+                        { id: 'uuid-se-castration', idMassiveEvent: 'uuid-massive', type: 'castration' },
+                        { id: 'uuid-se-medication', idMassiveEvent: 'uuid-massive', type: 'medication', dataJson: '{"medicationName":"med-001","dosage":"1ml","route":"oral","lot":"LOT-2025"}' },
                     ],
                 },
             },
@@ -189,7 +134,8 @@ __decorate([
     __param(0, (0, session_user_decorator_1.SessionUser)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto, sync_simple_events_dto_1.SyncSimpleEventsRequestDto]),
+    __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto,
+        sync_simple_events_dto_1.SyncSimpleEventsRequestDto]),
     __metadata("design:returntype", Promise)
 ], SimpleEventController.prototype, "sync", null);
 __decorate([

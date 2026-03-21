@@ -14,16 +14,6 @@ const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const simple_event_type_enum_1 = require("../enums/simple-event-type.enum");
 class ApplySimpleEventsResponseDto {
-    id;
-    idTenant;
-    idAnimal;
-    animalNumber;
-    type;
-    data;
-    appliedBy;
-    appliedAt;
-    idMassiveEvent;
-    idSimpleEvent;
 }
 exports.ApplySimpleEventsResponseDto = ApplySimpleEventsResponseDto;
 __decorate([

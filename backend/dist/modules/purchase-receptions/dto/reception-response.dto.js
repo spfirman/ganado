@@ -14,9 +14,6 @@ const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const simple_event_response_dto_1 = require("../../massive-events/dto/simple-event-response.dto");
 class AnimalSimpleEventReceptionResponseDto {
-    id;
-    data;
-    appliedAt;
     static toResponseDto(entity) {
         return {
             id: entity.id,
@@ -36,19 +33,10 @@ __decorate([
     __metadata("design:type", Object)
 ], AnimalSimpleEventReceptionResponseDto.prototype, "data", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: '2025-01-01', description: 'Fecha de aplicación' }),
+    (0, swagger_1.ApiProperty)({ example: '2025-01-01', description: 'Fecha de aplicacion' }),
     __metadata("design:type", String)
 ], AnimalSimpleEventReceptionResponseDto.prototype, "appliedAt", void 0);
 class CattleReceptionResponseDto {
-    id;
-    number;
-    sysNumber;
-    receivedWeight;
-    idDevice;
-    deviceName;
-    eartagLeft;
-    eartagRight;
-    appliedEvents;
     static toResponseDto(entity, appliedEvents) {
         return {
             id: entity.id,
@@ -70,11 +58,11 @@ __decorate([
     __metadata("design:type", String)
 ], CattleReceptionResponseDto.prototype, "id", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: '1234', description: 'Número de res' }),
+    (0, swagger_1.ApiProperty)({ example: '1234', description: 'Numero de res' }),
     __metadata("design:type", String)
 ], CattleReceptionResponseDto.prototype, "number", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: '1234', description: 'Número de sistema de la res' }),
+    (0, swagger_1.ApiProperty)({ example: '1234', description: 'Numero de sistema de la res' }),
     __metadata("design:type", String)
 ], CattleReceptionResponseDto.prototype, "sysNumber", void 0);
 __decorate([
@@ -98,18 +86,13 @@ __decorate([
     __metadata("design:type", String)
 ], CattleReceptionResponseDto.prototype, "eartagRight", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: [{ id: '1234', type: 'weight', data: { kg: 420 }, appliedAt: '2025-01-01' }], description: 'Eventos simples aplicados' }),
+    (0, swagger_1.ApiProperty)({
+        example: [{ id: '1234', type: 'weight', data: { kg: 420 }, appliedAt: '2025-01-01' }],
+        description: 'Eventos simples aplicados',
+    }),
     __metadata("design:type", Array)
 ], CattleReceptionResponseDto.prototype, "appliedEvents", void 0);
 class LotReceptionResponseDto {
-    id;
-    lotNumber;
-    purchasedCattleCount;
-    pricePerKg;
-    totalWeight;
-    receivedCattleCount;
-    receivedTotalWeight;
-    cattle;
     static toResponseDto(entity, lotCattle, appliedEvents) {
         var cattles = [];
         for (const c of lotCattle) {
@@ -162,9 +145,6 @@ __decorate([
     __metadata("design:type", Array)
 ], LotReceptionResponseDto.prototype, "cattle", void 0);
 class ReceptionMassiveEventResponseDto {
-    id;
-    simpleEvents;
-    status;
     static toResponseDto(entity) {
         return {
             id: entity.id,
@@ -188,29 +168,13 @@ __decorate([
     __metadata("design:type", String)
 ], ReceptionMassiveEventResponseDto.prototype, "status", void 0);
 class PurchaseReceptionResponseDto {
-    id;
-    purchaseId;
-    purchaseStatus;
-    providerId;
-    massEventId;
-    nextCattleNumber;
-    purchaseDate;
-    purchaseProviderName;
-    receivedAt;
-    lots;
-    cattle;
-    massiveEvent;
-    receivedCattleCount;
-    receivedTotalWeight;
-    purchaseCattleCount;
-    purchaseTotalWeight;
     static toResponseDto(entity, purchase, providerName, lots, lotCattle, cattle, appliedEvents, massiveEvent) {
         var receivedCattleCount = 0;
         var receivedTotalWeight = 0;
         var purchaseCattleCount = 0;
         var purchaseTotalWeight = 0;
         var responseLots = [];
-        for (const l of lots) {
+        for (const l of lots ?? []) {
             responseLots.push(LotReceptionResponseDto.toResponseDto(l, lotCattle[l.id], appliedEvents));
             receivedCattleCount += l.receivedCattleCount;
             receivedTotalWeight += l.receivedTotalWeight;
@@ -218,7 +182,7 @@ class PurchaseReceptionResponseDto {
             purchaseTotalWeight += l.totalWeight;
         }
         var responseCattle = [];
-        for (const c of cattle) {
+        for (const c of cattle ?? []) {
             responseCattle.push(CattleReceptionResponseDto.toResponseDto(c, appliedEvents[c.id]));
             receivedCattleCount += 1;
             receivedTotalWeight += c.receivedWeight;
@@ -226,8 +190,8 @@ class PurchaseReceptionResponseDto {
         return {
             id: entity.id,
             purchaseId: entity.idPurchase,
-            providerId: purchase.idProvider,
-            purchaseDate: new Date(purchase.purchaseDate).toISOString(),
+            providerId: purchase?.idProvider,
+            purchaseDate: new Date(purchase?.purchaseDate).toISOString(),
             receivedAt: new Date(entity.receivedAt).toISOString(),
             purchaseProviderName: providerName,
             nextCattleNumber: entity.nextCattleNumber,
@@ -238,18 +202,19 @@ class PurchaseReceptionResponseDto {
             receivedTotalWeight: receivedTotalWeight,
             purchaseCattleCount: purchaseCattleCount,
             purchaseTotalWeight: purchaseTotalWeight,
-            purchaseStatus: purchase.status,
+            purchaseStatus: purchase?.status,
+            massEventId: undefined,
         };
     }
 }
 exports.PurchaseReceptionResponseDto = PurchaseReceptionResponseDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({ format: 'uuid', description: 'ID de la recepción' }),
+    (0, swagger_1.ApiProperty)({ format: 'uuid', description: 'ID de la recepcion' }),
     (0, class_validator_1.IsUUID)(),
     __metadata("design:type", String)
 ], PurchaseReceptionResponseDto.prototype, "id", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ format: 'uuid', description: 'ID de la compra (purchase) a la cual se asocia la recepción' }),
+    (0, swagger_1.ApiProperty)({ format: 'uuid', description: 'ID de la compra (purchase) a la cual se asocia la recepcion' }),
     (0, class_validator_1.IsUUID)(),
     __metadata("design:type", String)
 ], PurchaseReceptionResponseDto.prototype, "purchaseId", void 0);
@@ -259,12 +224,12 @@ __decorate([
     __metadata("design:type", String)
 ], PurchaseReceptionResponseDto.prototype, "purchaseStatus", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ format: 'uuid', description: 'ID del proveedor (provider) a la cual se asocia la recepción' }),
+    (0, swagger_1.ApiProperty)({ format: 'uuid', description: 'ID del proveedor (provider) a la cual se asocia la recepcion' }),
     (0, class_validator_1.IsUUID)(),
     __metadata("design:type", String)
 ], PurchaseReceptionResponseDto.prototype, "providerId", void 0);
 __decorate([
-    (0, swagger_1.ApiPropertyOptional)({ format: 'uuid', description: 'ID del evento masivo a crear junto con la recepción.' }),
+    (0, swagger_1.ApiPropertyOptional)({ format: 'uuid', description: 'ID del evento masivo a crear junto con la recepcion.' }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsUUID)(),
     __metadata("design:type", String)
@@ -277,24 +242,27 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({
         description: 'Fecha/hora efectiva de la compra.',
-        type: String, format: 'date-time'
+        type: String,
+        format: 'date-time',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsDateString)(),
     __metadata("design:type", String)
 ], PurchaseReceptionResponseDto.prototype, "purchaseDate", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: 'Ganadería El Porvenir', description: 'Name of the provider of the purchase' }),
+    (0, swagger_1.ApiProperty)({ example: 'Ganaderia El Porvenir', description: 'Name of the provider of the purchase' }),
     __metadata("design:type", String)
 ], PurchaseReceptionResponseDto.prototype, "purchaseProviderName", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({
-        description: 'Fecha/hora efectiva de la recepción.',
-        type: String, format: 'date-time'
+        description: 'Fecha/hora efectiva de la recepcion.',
+        type: String,
+        format: 'date-time',
     }),
     (0, swagger_1.ApiProperty)({
-        description: 'Fecha/hora efectiva de la recepción.',
-        type: String, format: 'date-time'
+        description: 'Fecha/hora efectiva de la recepcion.',
+        type: String,
+        format: 'date-time',
     }),
     (0, class_validator_1.IsDateString)(),
     __metadata("design:type", String)
@@ -328,16 +296,15 @@ __decorate([
     __metadata("design:type", Number)
 ], PurchaseReceptionResponseDto.prototype, "purchaseTotalWeight", void 0);
 class ReceptionResponseDto {
-    reception;
     static toResponseDto(receptionInfo) {
         return {
-            reception: receptionInfo
+            reception: receptionInfo,
         };
     }
     static toResponseDto_optional(entity, purchase, providerName, lots, lotCattle, cattle, appliedEvents, massiveEvent) {
         var receptionInfo = PurchaseReceptionResponseDto.toResponseDto(entity, purchase, providerName, lots, lotCattle, cattle, appliedEvents, massiveEvent);
         return {
-            reception: receptionInfo
+            reception: receptionInfo,
         };
     }
 }

@@ -8,7 +8,7 @@ export declare class SimpleEventRepository {
     constructor(dataSource: DataSource);
     createInstance(data: Partial<SimpleEvent>): SimpleEvent;
     save(entity: SimpleEvent): Promise<SimpleEvent>;
-    saveWithManager(manager: EntityManager, entity: SimpleEvent): Promise<SimpleEvent>;
+    saveWithManager(manager: EntityManager, entity: Partial<SimpleEvent>): Promise<SimpleEvent>;
     findById(idTenant: string, id: string, manager?: EntityManager): Promise<SimpleEvent | null>;
     findByMassiveEvent(idTenant: string, idMassiveEvent: string, manager?: EntityManager): Promise<SimpleEvent[]>;
     deleteById(id: string): Promise<void>;

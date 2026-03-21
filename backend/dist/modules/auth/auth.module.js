@@ -39,12 +39,17 @@ exports.AuthModule = AuthModule = __decorate([
             }),
             employee_management_module_1.EmployeeManagementModule,
             application_permissions_module_1.ApplicationPermissionsModule,
-            redis_module_1.RedisModule
+            redis_module_1.RedisModule,
         ],
-        providers: [auth_service_1.AuthService, jwt_strategy_1.JwtStrategy, application_permissions_service_1.ApplicationPermissionsService, {
+        providers: [
+            auth_service_1.AuthService,
+            jwt_strategy_1.JwtStrategy,
+            application_permissions_service_1.ApplicationPermissionsService,
+            {
                 provide: core_1.APP_FILTER,
-                useClass: all_exception_filter_1.AllExceptionFilter
-            }],
+                useClass: all_exception_filter_1.AllExceptionFilter,
+            },
+        ],
         controllers: [auth_controller_1.AuthController],
         exports: [auth_service_1.AuthService, application_permissions_service_1.ApplicationPermissionsService],
     })

@@ -2,7 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.InsertDefaultModules1710000000004 = void 0;
 class InsertDefaultModules1710000000004 {
-    name = 'InsertDefaultModules1710000000004';
+    constructor() {
+        this.name = 'InsertDefaultModules1710000000004';
+    }
     async up(queryRunner) {
         await queryRunner.query(`
       INSERT INTO modules (id, name, description) VALUES
@@ -15,7 +17,7 @@ class InsertDefaultModules1710000000004 {
     }
     async down(queryRunner) {
         await queryRunner.query(`
-      DELETE FROM modules 
+      DELETE FROM modules
       WHERE name IN (
         'Accountant',
         'Employee Management',

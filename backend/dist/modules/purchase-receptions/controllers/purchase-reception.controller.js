@@ -34,10 +34,6 @@ const purchase_response_dto_1 = require("../../commerce/dto/purchase-response.dt
 const update_purchase_status_dto_1 = require("../../commerce/dto/update-purchase-status.dto");
 const purchase_service_1 = require("../../commerce/services/purchase.service");
 let ReceptionController = class ReceptionController {
-    receptionsService;
-    cattleService;
-    simpleEventService;
-    purchaseService;
     constructor(receptionsService, cattleService, simpleEventService, purchaseService) {
         this.receptionsService = receptionsService;
         this.cattleService = cattleService;
@@ -49,8 +45,7 @@ let ReceptionController = class ReceptionController {
             throw new common_1.BadRequestException('number is required');
         }
         const cattle = await this.cattleService.findByNumber(sessionUser.tenant_id, number.trim());
-        const exists = !!cattle &&
-            (cattle.status === cattle_entity_1.CattleStatus.ACTIVE || cattle.status === cattle_entity_1.CattleStatus.LOST);
+        const exists = !!cattle && (cattle.status === cattle_entity_1.CattleStatus.ACTIVE || cattle.status === cattle_entity_1.CattleStatus.LOST);
         return { exists };
     }
     async eartagExists(sessionUser, eartag) {
@@ -58,8 +53,7 @@ let ReceptionController = class ReceptionController {
             throw new common_1.BadRequestException('eartag is required');
         }
         var cattle = await this.cattleService.findByAnyEartag(sessionUser.tenant_id, eartag.trim());
-        const exists = !!cattle &&
-            (cattle.status === cattle_entity_1.CattleStatus.ACTIVE || cattle.status === cattle_entity_1.CattleStatus.LOST);
+        const exists = !!cattle && (cattle.status === cattle_entity_1.CattleStatus.ACTIVE || cattle.status === cattle_entity_1.CattleStatus.LOST);
         return { exists };
     }
     async findOrCreateReception(sessionUser, idPurchase) {
@@ -143,7 +137,7 @@ __decorate([
     (0, swagger_1.ApiBody)({
         type: receive_cattle_request_dto_1.ReceiveCattleRequestDto,
         examples: {
-            'ReceiveCattleRequestDto': {
+            ReceiveCattleRequestDto: {
                 value: {
                     number: 'C-001',
                     receivedWeight: 250.5,
@@ -163,15 +157,16 @@ __decorate([
                     gender: 'gender_enum',
                     comments: 'Initial reception check completed.',
                     idProvider: 'uuid-provider-123',
-                    idSimpleEvents: ['uuid-simple-event-1', 'uuid-simple-event-2']
-                }
-            }
-        }
+                    idSimpleEvents: ['uuid-simple-event-1', 'uuid-simple-event-2'],
+                },
+            },
+        },
     }),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto, receive_cattle_request_dto_1.ReceiveCattleRequestDto]),
+    __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto,
+        receive_cattle_request_dto_1.ReceiveCattleRequestDto]),
     __metadata("design:returntype", Promise)
 ], ReceptionController.prototype, "receiveCattle", null);
 __decorate([
@@ -184,18 +179,19 @@ __decorate([
     (0, swagger_1.ApiBody)({
         type: receive_cattle_request_dto_1.UpdateLotCattleRequestDto,
         examples: {
-            'UpdateLotCattleRequestDto': {
+            UpdateLotCattleRequestDto: {
                 value: {
                     idCattle: 'uuid-cattle-123',
                     idLot: 'uuid-lot-456',
-                }
-            }
-        }
+                },
+            },
+        },
     }),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto, receive_cattle_request_dto_1.UpdateLotCattleRequestDto]),
+    __metadata("design:paramtypes", [session_user_dto_1.SessionUserDto,
+        receive_cattle_request_dto_1.UpdateLotCattleRequestDto]),
     __metadata("design:returntype", Promise)
 ], ReceptionController.prototype, "assignLotCattle", null);
 __decorate([
@@ -233,13 +229,13 @@ __decorate([
     (0, swagger_1.ApiBody)({
         type: update_simple_events_dto_1.UpdateSimpleEventDto,
         examples: {
-            'UpdateSimpleEventDto': {
+            UpdateSimpleEventDto: {
                 value: {
                     data: { brandId: 'uuid-brand', brandName: 'Brand Name' },
                     isActive: true,
-                }
-            }
-        }
+                },
+            },
+        },
     }),
     __param(0, (0, session_user_decorator_1.SessionUser)()),
     __param(1, (0, common_1.Param)('id')),

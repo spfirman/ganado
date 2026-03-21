@@ -13,7 +13,6 @@ exports.LogoutDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class LogoutDto {
-    refresh_token;
 }
 exports.LogoutDto = LogoutDto;
 __decorate([

@@ -12,11 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateCattleWeightHistoryDto = void 0;
 const class_validator_1 = require("class-validator");
 class CreateCattleWeightHistoryDto {
-    idCattle;
-    weight;
-    recordedBy;
-    idMassiveEvent;
-    date;
 }
 exports.CreateCattleWeightHistoryDto = CreateCattleWeightHistoryDto;
 __decorate([

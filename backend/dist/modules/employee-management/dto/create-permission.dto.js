@@ -13,18 +13,11 @@ exports.CreatePermissionResponseDto = exports.CreatePermissionDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class CreatePermissionDto {
-    roleId;
-    moduleId;
-    can_create;
-    can_read;
-    can_update;
-    can_delete;
-    can_list;
 }
 exports.CreatePermissionDto = CreatePermissionDto;
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'ID del módulo al que se le asigna el permiso',
+        description: 'ID del modulo al que se le asigna el permiso',
         example: '123e4567-e89b-12d3-a456-426614174002',
         required: true,
     }),
@@ -34,7 +27,7 @@ __decorate([
 ], CreatePermissionDto.prototype, "roleId", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'ID del módulo al que se le asigna el permiso',
+        description: 'ID del modulo al que se le asigna el permiso',
         example: '123e4567-e89b-12d3-a456-426614174002',
         required: true,
     }),
@@ -93,15 +86,6 @@ __decorate([
     __metadata("design:type", Boolean)
 ], CreatePermissionDto.prototype, "can_list", void 0);
 class CreatePermissionResponseDto {
-    id;
-    id_role;
-    id_module;
-    tenant_id;
-    can_create;
-    can_read;
-    can_update;
-    can_delete;
-    can_list;
 }
 exports.CreatePermissionResponseDto = CreatePermissionResponseDto;
 __decorate([
@@ -120,7 +104,7 @@ __decorate([
 ], CreatePermissionResponseDto.prototype, "id_role", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'ID del módulo al que pertenece el permiso',
+        description: 'ID del modulo al que pertenece el permiso',
         example: '123e4567-e89b-12d3-a456-426614174002',
     }),
     __metadata("design:type", String)

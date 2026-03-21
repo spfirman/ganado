@@ -1,12 +1,11 @@
-import { Repository } from 'typeorm';
+import { Repository, DataSource } from 'typeorm';
 import { Tenant } from '../entities/tenant.entity';
-import { CreateTenantDto } from '../dto/create-tenant.dto';
 import { RoleService } from './roles.service';
 import { UsersService } from './users.service';
 import { ModulesService } from './modules.service';
 import { RoleModulePermissionService } from './role-module-permission.services';
-import { DataSource } from 'typeorm';
-import { ConfigurationsService } from 'src/modules/configurations/services/configurations.service';
+import { CreateTenantDto } from '../dto/create-tenant.dto';
+import { ConfigurationsService } from '../../configurations/services/configurations.service';
 export declare class TenantsService {
     private readonly dataSource;
     private readonly tenantRepository;
@@ -19,6 +18,6 @@ export declare class TenantsService {
     create(createTenantDto: CreateTenantDto): Promise<Tenant>;
     findAll(): Promise<Tenant[]>;
     findOne(id: string): Promise<Tenant>;
-    update(id: string, updateTenantDto: Partial<CreateTenantDto>): Promise<Tenant>;
+    update(id: string, updateTenantDto: Partial<Tenant>): Promise<Tenant>;
     findByCompanyUsername(company_username: string): Promise<Tenant>;
 }

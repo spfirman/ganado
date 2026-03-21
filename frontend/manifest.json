@@ -1,11 +1,11 @@
 {
-    "name": "finca_app_frontend",
-    "short_name": "finca_app_frontend",
+    "name": "GPCB Ganado",
+    "short_name": "Ganado",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "GPCB Ganado - Cattle Management System",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

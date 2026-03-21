@@ -2,7 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AddPurchaseStatus1710000000021 = void 0;
 class AddPurchaseStatus1710000000021 {
-    name = 'AddPurchaseStatus1710000000021';
+    constructor() {
+        this.name = 'AddPurchaseStatus1710000000021';
+    }
     async up(queryRunner) {
         await queryRunner.query(`CREATE TYPE "public"."purchases_status_enum" AS ENUM('OPEN', 'RECEIVED')`);
         await queryRunner.query(`ALTER TABLE "purchases" ADD "status" "public"."purchases_status_enum" NOT NULL DEFAULT 'OPEN'`);

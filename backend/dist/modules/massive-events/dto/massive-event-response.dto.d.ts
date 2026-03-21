@@ -1,5 +1,3 @@
-import { MassiveEvent } from '../entities/massive-events.entity';
-import { SimpleEvent } from '../entities/simple-event.entity';
 import { SimpleEventResponseDto } from './simple-event-response.dto';
 export declare class MassiveEventResponseDto {
     id: string;
@@ -9,5 +7,5 @@ export declare class MassiveEventResponseDto {
     createdAt: Date;
     updatedAt: Date;
     simpleEvents: SimpleEventResponseDto[];
-    static toResponseDto(entity: MassiveEvent, simpleEvents?: SimpleEvent[]): MassiveEventResponseDto;
+    static toResponseDto(entity: any, simpleEvents?: any[]): MassiveEventResponseDto;
 }

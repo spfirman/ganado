@@ -12,20 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeviceResponseDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 class DeviceResponseDto {
-    id;
-    idDeviceProfile;
-    deveui;
-    name;
-    description;
-    csApplicationId;
-    csJoineui;
-    csAppKey;
-    csNwkKey;
-    tags;
-    variables;
-    isActive;
-    createdAt;
-    updatedAt;
 }
 exports.DeviceResponseDto = DeviceResponseDto;
 __decorate([
@@ -45,11 +31,11 @@ __decorate([
     __metadata("design:type", String)
 ], DeviceResponseDto.prototype, "name", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Descripción del dispositivo' }),
+    (0, swagger_1.ApiProperty)({ description: 'Descripcion del dispositivo' }),
     __metadata("design:type", String)
 ], DeviceResponseDto.prototype, "description", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'ID de la aplicación de ChipStack' }),
+    (0, swagger_1.ApiProperty)({ description: 'ID de la aplicacion de ChipStack' }),
     __metadata("design:type", String)
 ], DeviceResponseDto.prototype, "csApplicationId", void 0);
 __decorate([
@@ -77,11 +63,11 @@ __decorate([
     __metadata("design:type", Boolean)
 ], DeviceResponseDto.prototype, "isActive", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Fecha de creación del dispositivo' }),
+    (0, swagger_1.ApiProperty)({ description: 'Fecha de creacion del dispositivo' }),
     __metadata("design:type", Date)
 ], DeviceResponseDto.prototype, "createdAt", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Fecha de actualización del dispositivo' }),
+    (0, swagger_1.ApiProperty)({ description: 'Fecha de actualizacion del dispositivo' }),
     __metadata("design:type", Date)
 ], DeviceResponseDto.prototype, "updatedAt", void 0);
 //# sourceMappingURL=device-response.dto.js.map

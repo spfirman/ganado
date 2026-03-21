@@ -1,6 +1,6 @@
 export declare class CreateCattleEartagHistoryDto {
     idCattle: string;
-    data: Record<string, any>;
+    data: any;
     assignedBy?: string;
     idMassiveEvent?: string;
 }

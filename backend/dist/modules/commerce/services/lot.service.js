@@ -15,8 +15,6 @@ const lot_repository_1 = require("../repositories/lot.repository");
 const lot_entity_1 = require("../entities/lot.entity");
 const cattle_repository_1 = require("../../farm/repositories/cattle.repository");
 let LotService = class LotService {
-    lotRepository;
-    cattleRepository;
     constructor(lotRepository, cattleRepository) {
         this.lotRepository = lotRepository;
         this.cattleRepository = cattleRepository;
