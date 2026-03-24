@@ -17,6 +17,7 @@ class AuthRepository {
     final response = await _apiClient.post(
       '/auth/login',
       data: {
+        'company_username': 'gpcb_ranch',
         'username': username,
         'password': password,
       },

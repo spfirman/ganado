@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:ganado_app/core/network/api_client.dart';
 import 'package:ganado_app/features/commerce/sales/models/sale.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:ganado_app/l10n/app_localizations.dart';
 
 final saleListProvider = FutureProvider<List<Sale>>((ref) async {
   final api = ref.read(apiClientProvider);

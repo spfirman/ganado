@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ganado_app/core/network/api_client.dart';
 import 'package:ganado_app/features/events/providers/event_provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:ganado_app/l10n/app_localizations.dart';
 
 class MassiveEventDetailScreen extends ConsumerWidget {
   final String eventId;

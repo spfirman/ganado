@@ -16,6 +16,7 @@ export declare class UsersService {
     private readonly applicationPermissionsService;
     private readonly logger;
     constructor(userRepository: Repository<User>, userCustomRepository: UserRepository, rolesRepository: Repository<Role>, rolesService: RoleService, applicationPermissionsService: ApplicationPermissionsService);
+    findById(id: string): Promise<User | null>;
     create(createUserDto: CreateUserDto): Promise<UserResponseDto>;
     findOne(id: string, sessionUser: SessionUserDto): Promise<UserResponseDto>;
     update(id: string, updateUserDto: UpdateUserDto, sessionUser: SessionUserDto): Promise<UserResponseDto>;

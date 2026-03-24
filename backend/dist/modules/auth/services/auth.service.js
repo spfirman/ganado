@@ -18,13 +18,15 @@ const config_1 = require("@nestjs/config");
 const users_service_1 = require("../../employee-management/services/users.service");
 const application_permissions_service_1 = require("../../../common/application-permissions/application-permissions.service");
 const role_module_permission_services_1 = require("../../employee-management/services/role-module-permission.services");
+const otp_service_1 = require("../otp/otp.service");
 let AuthService = AuthService_1 = class AuthService {
-    constructor(usersService, jwtService, configService, applicationPermissionsService, roleModulePermissionsService) {
+    constructor(usersService, jwtService, configService, applicationPermissionsService, roleModulePermissionsService, otpService) {
         this.usersService = usersService;
         this.jwtService = jwtService;
         this.configService = configService;
         this.applicationPermissionsService = applicationPermissionsService;
         this.roleModulePermissionsService = roleModulePermissionsService;
+        this.otpService = otpService;
         this.logger = new common_1.Logger(AuthService_1.name);
     }
     parseDurationToSeconds(raw) {
@@ -75,6 +77,43 @@ let AuthService = AuthService_1 = class AuthService {
         return user;
     }
     async login(user) {
+        const otpEnabled = await this.otpService.isEnabled(user.id);
+        if (otpEnabled) {
+            const tempPayload = {
+                sub: user.id,
+                purpose: 'otp-verify',
+            };
+            const tempToken = this.jwtService.sign(tempPayload, { expiresIn: '5m' });
+            return {
+                requiresOtp: true,
+                tempToken,
+                message: 'Se requiere código de autenticación de dos factores.',
+            };
+        }
+        return this.issueFullLogin(user);
+    }
+    async loginWithOtp(tempToken, code) {
+        let payload;
+        try {
+            payload = this.jwtService.verify(tempToken);
+        }
+        catch {
+            throw new common_1.UnauthorizedException('Token temporal inválido o expirado.');
+        }
+        if (payload.purpose !== 'otp-verify') {
+            throw new common_1.UnauthorizedException('Token temporal inválido.');
+        }
+        const isValid = await this.otpService.verifyLogin(payload.sub, code);
+        if (!isValid) {
+            throw new common_1.UnauthorizedException('Código OTP inválido.');
+        }
+        const user = await this.usersService.findById(payload.sub);
+        if (!user) {
+            throw new common_1.UnauthorizedException('Usuario no encontrado.');
+        }
+        return this.issueFullLogin(user);
+    }
+    async issueFullLogin(user) {
         const roleIds = user.roles.map((role) => role.id);
         const roleModulePermissions = await this.roleModulePermissionsService.getByRolesAndTenant(roleIds, user.tenantId);
         const permissions = this.applicationPermissionsService.getSimplefiedModulePermissionsByRolesAndModuleAndTenant(roleModulePermissions);
@@ -152,6 +191,7 @@ exports.AuthService = AuthService = AuthService_1 = __decorate([
         jwt_1.JwtService,
         config_1.ConfigService,
         application_permissions_service_1.ApplicationPermissionsService,
-        role_module_permission_services_1.RoleModulePermissionService])
+        role_module_permission_services_1.RoleModulePermissionService,
+        otp_service_1.OtpService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

@@ -81,6 +81,13 @@ services:
       MQTT_BROKER_PORT: "${MQTT_BROKER_PORT:-1883}"
       MQTT_BROKER_PROTOCOL: ${MQTT_BROKER_PROTOCOL:-mqtt}
       AI_TEST_TOKENS: "${AI_TEST_TOKENS:-}"
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_SES_REGION: ${AWS_SES_REGION:-us-east-1}
+      EMAIL_FROM: ${EMAIL_FROM:-noreply@ganado.gpcb.com.co}
+      EMAIL_APP_NAME: ${EMAIL_APP_NAME:-GPCB Ganado}
+      APP_URL: ${APP_URL:-https://ganado.gpcb.com.co}
+      OTP_ENCRYPTION_KEY: ${OTP_ENCRYPTION_KEY:-ganado-otp-default-key-change-me}
     volumes:
       - ganado-uploads:/app/uploads
     networks:
@@ -106,11 +113,19 @@ services:
 
   ganado-frontend:
     build:
-      context: ./frontend
+      context: ./web
       dockerfile: Dockerfile
+      args:
+        BACKEND_URL: http://ganado-backend:3000
+        NEXT_PUBLIC_API_URL: ""
     container_name: ganado-frontend
+    expose:
+      - "3000"
     environment:
-      API_BASE_URL: ${API_BASE_URL}
+      NODE_ENV: production
+      PORT: "3000"
+      HOSTNAME: "0.0.0.0"
+      BACKEND_URL: http://ganado-backend:3000
       VIRTUAL_HOST: ganado.gpcb.com.co
       LETSENCRYPT_HOST: ganado.gpcb.com.co
       LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL:-steve@gpcb.com.co}
@@ -120,18 +135,18 @@ services:
       ganado-backend:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1/health"]
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1:3000/"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 20s
+      start_period: 30s
     restart: unless-stopped
     deploy:
       resources:
         limits:
-          memory: 96M
+          memory: 256M
         reservations:
-          memory: 48M
+          memory: 128M
 
 volumes:
   ganado-pgdata:

@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { UsersService } from '../../employee-management/services/users.service';
 import { ApplicationPermissionsService } from '../../../common/application-permissions/application-permissions.service';
 import { RoleModulePermissionService } from '../../employee-management/services/role-module-permission.services';
+import { OtpService } from '../otp/otp.service';
 
 @Injectable()
 export class AuthService {
@@ -16,6 +17,7 @@ export class AuthService {
     private readonly configService: ConfigService,
     private readonly applicationPermissionsService: ApplicationPermissionsService,
     private readonly roleModulePermissionsService: RoleModulePermissionService,
+    private readonly otpService: OtpService,
   ) {}
 
   private parseDurationToSeconds(raw: string | undefined): number | null {
@@ -81,6 +83,53 @@ export class AuthService {
   }
 
   async login(user: any) {
+    // Verificar si el usuario tiene 2FA habilitado
+    const otpEnabled = await this.otpService.isEnabled(user.id);
+    if (otpEnabled) {
+      // Generar token temporal (corta duración) para completar el flujo OTP
+      const tempPayload = {
+        sub: user.id,
+        purpose: 'otp-verify',
+      };
+      const tempToken = this.jwtService.sign(tempPayload, { expiresIn: '5m' });
+      return {
+        requiresOtp: true,
+        tempToken,
+        message: 'Se requiere código de autenticación de dos factores.',
+      };
+    }
+
+    return this.issueFullLogin(user);
+  }
+
+  /**
+   * Completa el login tras verificar OTP.
+   */
+  async loginWithOtp(tempToken: string, code: string) {
+    let payload: any;
+    try {
+      payload = this.jwtService.verify(tempToken);
+    } catch {
+      throw new UnauthorizedException('Token temporal inválido o expirado.');
+    }
+    if (payload.purpose !== 'otp-verify') {
+      throw new UnauthorizedException('Token temporal inválido.');
+    }
+
+    const isValid = await this.otpService.verifyLogin(payload.sub, code);
+    if (!isValid) {
+      throw new UnauthorizedException('Código OTP inválido.');
+    }
+
+    const user = await this.usersService.findById(payload.sub);
+    if (!user) {
+      throw new UnauthorizedException('Usuario no encontrado.');
+    }
+
+    return this.issueFullLogin(user);
+  }
+
+  private async issueFullLogin(user: any) {
     const roleIds = user.roles.map((role) => role.id);
     const roleModulePermissions =
       await this.roleModulePermissionsService.getByRolesAndTenant(

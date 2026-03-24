@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ganado_app/core/network/api_client.dart';
 import 'package:ganado_app/core/network/connectivity_service.dart';
@@ -12,6 +13,8 @@ final syncEngineProvider = Provider<SyncEngine>((ref) {
 });
 
 final pendingSyncCountProvider = StreamProvider<int>((ref) {
+  // On web, there's no local database for offline sync — always return 0
+  if (kIsWeb) return Stream.value(0);
   return ref.read(syncQueueServiceProvider).watchPendingCount();
 });
 
@@ -22,6 +25,9 @@ class SyncEngine {
   bool _isSyncing = false;
 
   SyncEngine(this._ref) {
+    // On web, there's no local database — sync is a no-op
+    if (kIsWeb) return;
+
     // Listen for connectivity changes and trigger sync
     _ref.listen<bool>(isOnlineProvider, (prev, isOnline) {
       if (isOnline && !(prev ?? false)) {
@@ -31,7 +37,7 @@ class SyncEngine {
   }
 
   Future<void> syncAll() async {
-    if (_isSyncing) return;
+    if (kIsWeb || _isSyncing) return;
     _isSyncing = true;
 
     try {

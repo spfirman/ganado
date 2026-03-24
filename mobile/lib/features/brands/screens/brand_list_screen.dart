@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ganado_app/features/brands/providers/brand_provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:ganado_app/l10n/app_localizations.dart';
 
 class BrandListScreen extends ConsumerWidget {
   const BrandListScreen({super.key});

@@ -1,9 +1,12 @@
 import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final connectivityProvider = StreamProvider<bool>((ref) {
+  // On web, assume always online — connectivity_plus can hang in some browsers
+  if (kIsWeb) return Stream.value(true);
   return ConnectivityService().onConnectivityChanged;
 });
 

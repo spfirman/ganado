@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthService } from './services/auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './strategies/jwt.strategy';
@@ -11,6 +12,12 @@ import { APP_FILTER } from '@nestjs/core';
 import { AllExceptionFilter } from '../../common/filters/all-exception.filter';
 import { ApplicationPermissionsModule } from '../../common/application-permissions/application-permissions.module';
 import { RedisModule } from './redis/redis.module';
+import { PasswordResetToken } from './entities/password-reset-token.entity';
+import { LoginPasscode } from './entities/login-passcode.entity';
+import { User } from '../employee-management/entities/user.entity';
+import { EmailService } from './services/email.service';
+import { PasswordRecoveryService } from './services/password-recovery.service';
+import { OtpService } from './otp/otp.service';
 
 @Module({
   imports: [
@@ -25,6 +32,7 @@ import { RedisModule } from './redis/redis.module';
       }),
       inject: [ConfigService],
     }),
+    TypeOrmModule.forFeature([PasswordResetToken, LoginPasscode, User]),
     EmployeeManagementModule,
     ApplicationPermissionsModule,
     RedisModule,
@@ -33,6 +41,9 @@ import { RedisModule } from './redis/redis.module';
     AuthService,
     JwtStrategy,
     ApplicationPermissionsService,
+    EmailService,
+    PasswordRecoveryService,
+    OtpService,
     {
       provide: APP_FILTER,
       useClass: AllExceptionFilter,

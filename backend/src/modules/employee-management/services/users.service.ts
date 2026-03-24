@@ -34,6 +34,13 @@ export class UsersService {
     private readonly applicationPermissionsService: ApplicationPermissionsService,
   ) {}
 
+  /**
+   * Busca un usuario por ID con sus roles (uso interno, sin restricción de tenant).
+   */
+  async findById(id: string): Promise<User | null> {
+    return this.userCustomRepository.findById(id);
+  }
+
   async create(createUserDto: CreateUserDto): Promise<UserResponseDto> {
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
     const savedUser = await this.userCustomRepository.createUserWithRoles(

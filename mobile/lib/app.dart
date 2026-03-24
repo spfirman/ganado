@@ -3,7 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ganado_app/core/router/app_router.dart';
 import 'package:ganado_app/core/l10n/locale_provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:ganado_app/l10n/app_localizations.dart';
 
 class GanadoApp extends ConsumerWidget {
   const GanadoApp({super.key});
@@ -40,7 +40,7 @@ class GanadoApp extends ConsumerWidget {
         centerTitle: true,
         elevation: 0,
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 2,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
@@ -64,7 +64,7 @@ class GanadoApp extends ConsumerWidget {
         centerTitle: true,
         elevation: 0,
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 2,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),

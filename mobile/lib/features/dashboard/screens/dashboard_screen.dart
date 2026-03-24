@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ganado_app/core/sync/sync_engine.dart';
 import 'package:ganado_app/shared/widgets/sync_status_banner.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:ganado_app/l10n/app_localizations.dart';
 
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});

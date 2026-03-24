@@ -34,6 +34,9 @@ let UsersService = UsersService_1 = class UsersService {
         this.applicationPermissionsService = applicationPermissionsService;
         this.logger = new common_1.Logger(UsersService_1.name);
     }
+    async findById(id) {
+        return this.userCustomRepository.findById(id);
+    }
     async create(createUserDto) {
         const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
         const savedUser = await this.userCustomRepository.createUserWithRoles(createUserDto, hashedPassword);

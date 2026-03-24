@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ganado_app/core/network/connectivity_service.dart';
 import 'package:ganado_app/features/cattle/models/cattle.dart';
@@ -26,19 +27,21 @@ class CattleListNotifier
     state = const AsyncValue.loading();
     try {
       final isOnline = _ref.read(isOnlineProvider);
-      if (isOnline) {
+      if (isOnline || kIsWeb) {
         final result = await _ref.read(cattleApiRepositoryProvider).list(
               page: _page,
               search: _search.isNotEmpty ? _search : null,
             );
-        // Cache to local DB
-        await _ref.read(cattleLocalRepositoryProvider).upsertMany(result.items);
+        // Cache to local DB (skip on web — no SQLite)
+        if (!kIsWeb) {
+          await _ref.read(cattleLocalRepositoryProvider).upsertMany(result.items);
+        }
         state = AsyncValue.data(result);
       } else {
-        // Offline: load from local DB
+        // Offline: load from local DB (mobile only)
         final local = await _ref.read(cattleLocalRepositoryProvider).getAll();
         state = AsyncValue.data(PagedResponse(
-          items: [], // TODO: convert local data to Cattle models
+          items: [],
           total: local.length,
           page: 1,
           limit: 50,
@@ -70,9 +73,11 @@ class CattleListNotifier
 final cattleDetailProvider =
     FutureProvider.family<Cattle, String>((ref, id) async {
   final isOnline = ref.read(isOnlineProvider);
-  if (isOnline) {
+  if (isOnline || kIsWeb) {
     final cattle = await ref.read(cattleApiRepositoryProvider).getById(id);
-    await ref.read(cattleLocalRepositoryProvider).upsert(cattle);
+    if (!kIsWeb) {
+      await ref.read(cattleLocalRepositoryProvider).upsert(cattle);
+    }
     return cattle;
   }
   // Offline fallback would need model conversion
@@ -83,14 +88,13 @@ final cattleDetailProvider =
 final createCattleProvider =
     FutureProvider.family<Cattle, Map<String, dynamic>>((ref, data) async {
   final isOnline = ref.read(isOnlineProvider);
-  final localRepo = ref.read(cattleLocalRepositoryProvider);
 
-  if (isOnline) {
+  if (isOnline || kIsWeb) {
     return ref.read(cattleApiRepositoryProvider).create(data);
   } else {
+    final localRepo = ref.read(cattleLocalRepositoryProvider);
     final id = const Uuid().v4();
     await localRepo.createOffline(data, id);
-    // Return a placeholder cattle
     return Cattle(
       id: id,
       idTenant: '',

@@ -1,10 +1,13 @@
+export 'package:ganado_app/features/cattle/models/cattle.dart' show CattleStatus;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ganado_app/features/cattle/models/cattle.dart';
 import 'package:ganado_app/features/cattle/providers/cattle_provider.dart';
 import 'package:ganado_app/features/cattle/widgets/weight_chart.dart';
 import 'package:ganado_app/features/cattle/widgets/medication_list.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:ganado_app/l10n/app_localizations.dart';
 
 class CattleDetailScreen extends ConsumerWidget {
   final String cattleId;
@@ -237,5 +240,3 @@ class CattleDetailScreen extends ConsumerWidget {
   }
 }
 
-// Re-export for use in status check
-export 'package:ganado_app/features/cattle/models/cattle.dart' show CattleStatus;

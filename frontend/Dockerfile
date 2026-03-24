@@ -9,15 +9,19 @@ RUN rm /etc/nginx/conf.d/default.conf
 # Copy custom nginx config
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copy Flutter web app static files
+# Copy Flutter web app static files (excluding canvaskit — HTML renderer is used)
 COPY index.html favicon.png flutter.js flutter_bootstrap.js flutter_service_worker.js \
      manifest.json version.json 50x.html .last_build_id \
      /usr/share/nginx/html/
 COPY assets/ /usr/share/nginx/html/assets/
-COPY canvaskit/ /usr/share/nginx/html/canvaskit/
 COPY icons/ /usr/share/nginx/html/icons/
 COPY main.dart.js /usr/share/nginx/html/
 COPY i18n-overlay.js /usr/share/nginx/html/
+
+# Pre-compress large assets for gzip_static (serves .gz directly, no CPU cost)
+RUN apk add --no-cache gzip \
+    && gzip -k -9 /usr/share/nginx/html/main.dart.js \
+    && gzip -k -9 /usr/share/nginx/html/flutter_bootstrap.js
 
 # Copy entrypoint script
 COPY docker-entrypoint.sh /

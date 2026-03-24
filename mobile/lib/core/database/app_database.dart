@@ -1,11 +1,6 @@
-import 'dart:io';
-
 import 'package:drift/drift.dart';
-import 'package:drift/native.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
+import 'database_connection.dart' as connection;
 
 part 'app_database.g.dart';
 
@@ -246,24 +241,15 @@ class AnimalSimpleEventTable extends Table {
   AnimalSimpleEventTable,
 ])
 class AppDatabase extends _$AppDatabase {
-  AppDatabase() : super(_openConnection());
+  AppDatabase() : super(connection.openConnection());
 
   @override
   int get schemaVersion => 1;
-
-  static LazyDatabase _openConnection() {
-    return LazyDatabase(() async {
-      if (kIsWeb) {
-        // Web uses in-memory or IndexedDB via drift
-        return NativeDatabase.memory();
-      }
-      final dbFolder = await getApplicationDocumentsDirectory();
-      final file = File(p.join(dbFolder.path, 'ganado.db'));
-      return NativeDatabase.createInBackground(file);
-    });
-  }
 }
 
+/// On web, the database provider is lazy — it won't initialize SQLite WASM
+/// until a feature that actually needs offline storage accesses it.
+/// This prevents the ~800KB WASM download from blocking app startup.
 final appDatabaseProvider = Provider<AppDatabase>((ref) {
   final db = AppDatabase();
   ref.onDispose(() => db.close());

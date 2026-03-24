@@ -108,40 +108,68 @@ async function bootstrap() {
   const AUTH_RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000; // 15 minutes
   const AUTH_RATE_LIMIT_MAX = 10; // max 10 failed auth attempts per 15 min per IP
 
-  expressApp.use('/api/v1/auth/login', (req: any, res: any, next: any) => {
-    if (req.method !== 'POST') return next();
-    const ip = req.ip || req.connection?.remoteAddress || 'unknown';
-    const now = Date.now();
-    let entry = authRateLimitMap.get(ip);
+  // Rate limiter middleware factory
+  const createRateLimiter = (
+    limitMap: Map<string, { count: number; resetAt: number }>,
+    windowMs: number,
+    maxRequests: number,
+    message: string,
+  ) => {
+    return (req: any, res: any, next: any) => {
+      if (req.method !== 'POST') return next();
+      const ip = req.ip || req.connection?.remoteAddress || 'unknown';
+      const now = Date.now();
+      let entry = limitMap.get(ip);
 
-    // Clean up expired entries periodically
-    if (authRateLimitMap.size > 10000) {
-      for (const [key, val] of authRateLimitMap) {
-        if (val.resetAt < now) authRateLimitMap.delete(key);
+      if (limitMap.size > 10000) {
+        for (const [key, val] of limitMap) {
+          if (val.resetAt < now) limitMap.delete(key);
+        }
       }
-    }
 
-    if (!entry || entry.resetAt < now) {
-      entry = { count: 0, resetAt: now + AUTH_RATE_LIMIT_WINDOW_MS };
-      authRateLimitMap.set(ip, entry);
-    }
+      if (!entry || entry.resetAt < now) {
+        entry = { count: 0, resetAt: now + windowMs };
+        limitMap.set(ip, entry);
+      }
 
-    entry.count++;
+      entry.count++;
 
-    res.setHeader('X-RateLimit-Limit', AUTH_RATE_LIMIT_MAX);
-    res.setHeader('X-RateLimit-Remaining', Math.max(0, AUTH_RATE_LIMIT_MAX - entry.count));
-    res.setHeader('X-RateLimit-Reset', Math.ceil(entry.resetAt / 1000));
+      res.setHeader('X-RateLimit-Limit', maxRequests);
+      res.setHeader('X-RateLimit-Remaining', Math.max(0, maxRequests - entry.count));
+      res.setHeader('X-RateLimit-Reset', Math.ceil(entry.resetAt / 1000));
 
-    if (entry.count > AUTH_RATE_LIMIT_MAX) {
-      return res.status(429).json({
-        success: false,
-        message: 'Too many login attempts. Please try again later.',
-        error: 'RATE_LIMIT_EXCEEDED',
-        retryAfter: Math.ceil((entry.resetAt - now) / 1000),
-      });
-    }
-    next();
-  });
+      if (entry.count > maxRequests) {
+        return res.status(429).json({
+          success: false,
+          message,
+          error: 'RATE_LIMIT_EXCEEDED',
+          retryAfter: Math.ceil((entry.resetAt - now) / 1000),
+        });
+      }
+      next();
+    };
+  };
+
+  const loginLimiter = createRateLimiter(
+    authRateLimitMap,
+    AUTH_RATE_LIMIT_WINDOW_MS,
+    AUTH_RATE_LIMIT_MAX,
+    'Demasiados intentos de inicio de sesión. Intenta de nuevo más tarde.',
+  );
+
+  const recoveryRateLimitMap = new Map<string, { count: number; resetAt: number }>();
+  const recoveryLimiter = createRateLimiter(
+    recoveryRateLimitMap,
+    AUTH_RATE_LIMIT_WINDOW_MS,
+    5,
+    'Demasiadas solicitudes. Intenta de nuevo más tarde.',
+  );
+
+  expressApp.use('/api/v1/auth/login', loginLimiter);
+  expressApp.use('/api/v1/auth/forgot-password', recoveryLimiter);
+  expressApp.use('/api/v1/auth/reset-password', recoveryLimiter);
+  expressApp.use('/api/v1/auth/passcode/request', recoveryLimiter);
+  expressApp.use('/api/v1/auth/passcode/verify', recoveryLimiter);
 
   const port = configService.get('APP_PORT') ?? 3000;
 
