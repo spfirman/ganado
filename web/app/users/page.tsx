@@ -2,6 +2,11 @@
 
 import { useEffect, useState, FormEvent } from 'react';
 import { apiFetch } from '../lib/api';
+import DataTable from '../components/ui/DataTable';
+import Modal from '../components/ui/Modal';
+import Input from '../components/ui/Input';
+import Button from '../components/ui/Button';
+import Badge from '../components/ui/Badge';
 
 interface Role {
   id: number;
@@ -125,143 +130,62 @@ export default function UsersPage() {
     }));
   }
 
-  if (loading) {
-    return (
-      <div style={s.wrapper}>
-        <div style={s.spinner} />
-        <p style={{ color: '#6b7280', marginTop: '1rem' }}>Cargando usuarios...</p>
-      </div>
-    );
-  }
+  const columns = [
+    { key: 'username', label: 'Usuario' },
+    { key: 'name', label: 'Nombre', render: (u: UserRecord) => [u.first_name, u.last_name].filter(Boolean).join(' ') || '—' },
+    { key: 'email', label: 'Email', render: (u: UserRecord) => u.email || '—' },
+    { key: 'is_active', label: 'Activo', render: (u: UserRecord) => (
+      <button
+        className="cursor-pointer border-none px-0 bg-transparent"
+        onClick={() => toggleActive(u)}
+      >
+        <Badge label={u.is_active ? 'Activo' : 'Inactivo'} variant={u.is_active ? 'success' : 'error'} />
+      </button>
+    )},
+    { key: '_actions', label: 'Acciones', render: (u: UserRecord) => (
+      <Button size="sm" variant="ghost" onClick={() => openEdit(u)}>Editar</Button>
+    )},
+  ];
 
   return (
-    <div style={s.container}>
-      <div style={s.header}>
-        <h1 style={s.title}>Usuarios</h1>
-        <button style={s.btnPrimary} onClick={openNew}>+ Nuevo Usuario</button>
+    <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+      <div className="flex justify-between items-center mb-6 flex-wrap gap-4">
+        <h1 className="font-heading text-3xl font-bold text-on-surface m-0">Usuarios</h1>
+        <Button onClick={openNew}>+ Nuevo Usuario</Button>
       </div>
 
-      {error && <div style={s.alert}>{error}</div>}
-
-      {/* Modal / Form */}
-      {showForm && (
-        <div style={s.overlay} onClick={() => setShowForm(false)}>
-          <div style={s.modal} onClick={e => e.stopPropagation()}>
-            <h2 style={s.modalTitle}>{editingId ? 'Editar Usuario' : 'Nuevo Usuario'}</h2>
-            <form onSubmit={handleSubmit} style={s.form}>
-              <div style={s.fieldGrid}>
-                <div style={s.field}>
-                  <label style={s.label}>Usuario</label>
-                  <input style={s.input} value={form.username} onChange={e => setForm(p => ({ ...p, username: e.target.value }))} required />
-                </div>
-                <div style={s.field}>
-                  <label style={s.label}>Email</label>
-                  <input style={s.input} type="email" value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))} />
-                </div>
-                <div style={s.field}>
-                  <label style={s.label}>Nombre</label>
-                  <input style={s.input} value={form.firstName} onChange={e => setForm(p => ({ ...p, firstName: e.target.value }))} />
-                </div>
-                <div style={s.field}>
-                  <label style={s.label}>Apellido</label>
-                  <input style={s.input} value={form.lastName} onChange={e => setForm(p => ({ ...p, lastName: e.target.value }))} />
-                </div>
-                <div style={s.field}>
-                  <label style={s.label}>Contraseña{editingId ? ' (dejar vacío para no cambiar)' : ''}</label>
-                  <input style={s.input} type="password" value={form.password} onChange={e => setForm(p => ({ ...p, password: e.target.value }))} required={!editingId} />
-                </div>
-              </div>
-              <div style={s.field}>
-                <label style={s.label}>Roles</label>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                  {roles.map(r => (
-                    <label key={r.id} style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.875rem', cursor: 'pointer' }}>
-                      <input type="checkbox" checked={form.roleIds.includes(r.id)} onChange={() => toggleRole(r.id)} />
-                      {r.name}
-                    </label>
-                  ))}
-                </div>
-              </div>
-              <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end', marginTop: '1rem' }}>
-                <button type="button" style={s.btnSecondary} onClick={() => setShowForm(false)}>Cancelar</button>
-                <button type="submit" style={s.btnPrimary} disabled={submitting}>{submitting ? 'Guardando...' : 'Guardar'}</button>
-              </div>
-            </form>
-          </div>
-        </div>
+      {error && (
+        <div className="bg-error/10 border border-error/30 text-error rounded-lg px-4 py-3 text-sm mb-4">{error}</div>
       )}
 
-      {/* Table */}
-      <div style={s.card}>
-        <div style={{ overflowX: 'auto' }}>
-          <table style={s.table}>
-            <thead>
-              <tr>
-                <th style={s.th}>Usuario</th>
-                <th style={s.th}>Nombre</th>
-                <th style={s.th}>Email</th>
-                <th style={s.th}>Activo</th>
-                <th style={s.th}>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.length === 0 ? (
-                <tr><td colSpan={5} style={{ ...s.td, textAlign: 'center', color: '#9ca3af' }}>No hay usuarios registrados</td></tr>
-              ) : users.map(u => (
-                <tr key={u.id}>
-                  <td style={s.td}>{u.username}</td>
-                  <td style={s.td}>{[u.first_name, u.last_name].filter(Boolean).join(' ') || '—'}</td>
-                  <td style={s.td}>{u.email || '—'}</td>
-                  <td style={s.td}>
-                    <button
-                      style={{
-                        ...s.badge,
-                        background: u.is_active ? '#dcfce7' : '#fee2e2',
-                        color: u.is_active ? '#166534' : '#991b1b',
-                        cursor: 'pointer',
-                        border: 'none',
-                      }}
-                      onClick={() => toggleActive(u)}
-                    >
-                      {u.is_active ? 'Activo' : 'Inactivo'}
-                    </button>
-                  </td>
-                  <td style={s.td}>
-                    <button style={s.btnSmall} onClick={() => openEdit(u)}>Editar</button>
-                  </td>
-                </tr>
+      <Modal isOpen={showForm} onClose={() => setShowForm(false)} title={editingId ? 'Editar Usuario' : 'Nuevo Usuario'} maxWidth="540px">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <div className="grid grid-cols-2 gap-4">
+            <Input label="Usuario" value={form.username} onChange={e => setForm(p => ({ ...p, username: e.target.value }))} required />
+            <Input label="Email" type="email" value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))} />
+            <Input label="Nombre" value={form.firstName} onChange={e => setForm(p => ({ ...p, firstName: e.target.value }))} />
+            <Input label="Apellido" value={form.lastName} onChange={e => setForm(p => ({ ...p, lastName: e.target.value }))} />
+            <Input label={`Contraseña${editingId ? ' (dejar vacío para no cambiar)' : ''}`} type="password" value={form.password} onChange={e => setForm(p => ({ ...p, password: e.target.value }))} required={!editingId} />
+          </div>
+          <div>
+            <label className="text-xs font-semibold text-on-surface-muted uppercase tracking-wide block mb-1">Roles</label>
+            <div className="flex flex-wrap gap-2">
+              {roles.map(r => (
+                <label key={r.id} className="flex items-center gap-1 text-sm cursor-pointer text-on-surface">
+                  <input type="checkbox" checked={form.roleIds.includes(r.id)} onChange={() => toggleRole(r.id)} className="accent-primary" />
+                  {r.name}
+                </label>
               ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+            </div>
+          </div>
+          <div className="flex gap-3 justify-end mt-4">
+            <Button type="button" variant="ghost" onClick={() => setShowForm(false)}>Cancelar</Button>
+            <Button type="submit" disabled={submitting}>{submitting ? 'Guardando...' : 'Guardar'}</Button>
+          </div>
+        </form>
+      </Modal>
+
+      <DataTable columns={columns} data={users} loading={loading} emptyMessage="No hay usuarios registrados" />
     </div>
   );
 }
-
-const PRIMARY = '#16a34a';
-
-const s: Record<string, React.CSSProperties> = {
-  wrapper: { display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh' },
-  spinner: { width: 40, height: 40, border: '4px solid #e5e7eb', borderTopColor: PRIMARY, borderRadius: '50%', animation: 'spin 0.8s linear infinite' },
-  container: { padding: '2rem', maxWidth: 1100, margin: '0 auto' },
-  header: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' },
-  title: { fontSize: '2rem', fontWeight: 700, margin: 0, color: 'var(--foreground)' },
-  alert: { background: '#fef2f2', border: '1px solid #fecaca', color: '#991b1b', borderRadius: 8, padding: '0.75rem 1rem', fontSize: '0.875rem', marginBottom: '1rem' },
-  card: { background: 'var(--background, #fff)', border: '1px solid #e5e7eb', borderRadius: 12, boxShadow: '0 1px 3px rgba(0,0,0,0.08)', overflow: 'hidden' },
-  table: { width: '100%', borderCollapse: 'collapse' as const, fontSize: '0.875rem' },
-  th: { textAlign: 'left' as const, padding: '0.75rem 1rem', borderBottom: '2px solid #e5e7eb', fontWeight: 600, color: '#374151', background: '#f9fafb' },
-  td: { padding: '0.75rem 1rem', borderBottom: '1px solid #f3f4f6', color: 'var(--foreground)' },
-  badge: { display: 'inline-block', padding: '0.25rem 0.75rem', borderRadius: 9999, fontSize: '0.75rem', fontWeight: 600 },
-  btnPrimary: { padding: '0.625rem 1.25rem', background: PRIMARY, color: '#fff', border: 'none', borderRadius: 8, fontWeight: 600, fontSize: '0.875rem', cursor: 'pointer' },
-  btnSecondary: { padding: '0.625rem 1.25rem', background: '#f3f4f6', color: '#374151', border: '1px solid #d1d5db', borderRadius: 8, fontWeight: 600, fontSize: '0.875rem', cursor: 'pointer' },
-  btnSmall: { padding: '0.375rem 0.75rem', background: '#f3f4f6', color: '#374151', border: '1px solid #d1d5db', borderRadius: 6, fontSize: '0.8125rem', cursor: 'pointer' },
-  overlay: { position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50, padding: '1rem' },
-  modal: { background: 'var(--background, #fff)', borderRadius: 12, padding: '2rem', width: '100%', maxWidth: 540, boxShadow: '0 20px 60px rgba(0,0,0,0.15)', maxHeight: '90vh', overflowY: 'auto' as const },
-  modalTitle: { fontSize: '1.25rem', fontWeight: 700, margin: '0 0 1.25rem', color: 'var(--foreground)' },
-  form: { display: 'flex', flexDirection: 'column' as const, gap: '1rem' },
-  fieldGrid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' },
-  field: { display: 'flex', flexDirection: 'column' as const, gap: '0.375rem' },
-  label: { fontSize: '0.875rem', fontWeight: 500, color: '#374151' },
-  input: { padding: '0.625rem 0.75rem', fontSize: '0.875rem', border: '1px solid #d1d5db', borderRadius: 8, outline: 'none', width: '100%', boxSizing: 'border-box' as const },
-};

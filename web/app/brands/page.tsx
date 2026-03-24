@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { apiFetch } from '../lib/api';
+import Card from '../components/ui/Card';
+import Input from '../components/ui/Input';
+import Button from '../components/ui/Button';
 
 interface Brand {
   id: number;
@@ -63,88 +66,59 @@ export default function BrandsPage() {
     }
   }
 
-  const inputStyle: React.CSSProperties = {
-    width: '100%', padding: '0.625rem 0.75rem', border: '1px solid #d1d5db', borderRadius: 8,
-    fontSize: '0.875rem', fontFamily: "'Manrope', sans-serif", outline: 'none', boxSizing: 'border-box',
-  };
-
   return (
-    <div style={{ padding: '2rem', maxWidth: 1100, margin: '0 auto', fontFamily: "'Manrope', sans-serif" }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-        <h1 style={{ fontFamily: "'Noto Serif', serif", fontSize: '2rem', fontWeight: 700, margin: 0 }}>Hierros</h1>
-        <button onClick={() => setShowForm(!showForm)} style={{
-          display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
-          padding: '0.625rem 1.25rem', background: '#16a34a', color: '#fff',
-          borderRadius: 8, fontSize: '0.875rem', fontWeight: 600, border: 'none', cursor: 'pointer',
-        }}>
-          + Nuevo Hierro
-        </button>
+    <div className="font-body" style={{ maxWidth: 1100, margin: '0 auto' }}>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="font-heading text-3xl font-bold text-on-surface m-0">Hierros</h1>
+        <Button onClick={() => setShowForm(!showForm)}>+ Nuevo Hierro</Button>
       </div>
 
       {showForm && (
-        <form onSubmit={handleCreate} style={{
-          background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12,
-          padding: '1.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.08)', marginBottom: '1.5rem',
-          display: 'flex', flexDirection: 'column', gap: '1rem',
-        }}>
-          <div>
-            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.375rem', color: '#374151' }}>Nombre</label>
-            <input type="text" value={formName} onChange={(e) => setFormName(e.target.value)} required style={inputStyle} placeholder="Nombre del hierro" />
-          </div>
-          <div>
-            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.375rem', color: '#374151' }}>Imagen</label>
-            <input type="file" accept="image/*" onChange={(e) => setFormImage(e.target.files?.[0] ?? null)} style={inputStyle} />
-          </div>
-          <div style={{ display: 'flex', gap: '0.75rem' }}>
-            <button type="submit" disabled={submitting} style={{
-              padding: '0.625rem 1.25rem', background: submitting ? '#9ca3af' : '#16a34a', color: '#fff',
-              border: 'none', borderRadius: 8, fontSize: '0.875rem', fontWeight: 600, cursor: submitting ? 'not-allowed' : 'pointer',
-            }}>
-              {submitting ? 'Creando...' : 'Crear Hierro'}
-            </button>
-            <button type="button" onClick={() => setShowForm(false)} style={{
-              padding: '0.625rem 1.25rem', background: '#f3f4f6', color: '#374151',
-              border: '1px solid #d1d5db', borderRadius: 8, fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer',
-            }}>
-              Cancelar
-            </button>
-          </div>
-        </form>
+        <Card className="mb-6">
+          <form onSubmit={handleCreate} className="flex flex-col gap-4">
+            <Input label="Nombre" type="text" value={formName} onChange={(e) => setFormName(e.target.value)} required placeholder="Nombre del hierro" />
+            <div>
+              <label className="text-xs font-semibold text-on-surface-muted uppercase tracking-wide block mb-1">Imagen</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setFormImage(e.target.files?.[0] ?? null)}
+                className="w-full px-3.5 py-2.5 text-sm rounded-md border border-border bg-surface text-on-surface outline-none"
+              />
+            </div>
+            <div className="flex gap-3">
+              <Button type="submit" disabled={submitting}>
+                {submitting ? 'Creando...' : 'Crear Hierro'}
+              </Button>
+              <Button type="button" variant="ghost" onClick={() => setShowForm(false)}>
+                Cancelar
+              </Button>
+            </div>
+          </form>
+        </Card>
       )}
 
       {loading && (
-        <div style={{ textAlign: 'center', padding: '3rem' }}>
-          <div style={{ width: 36, height: 36, border: '3px solid #e5e7eb', borderTopColor: '#16a34a', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto' }} />
-          <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
+        <div className="text-center py-12">
+          <div className="w-9 h-9 border-3 border-border rounded-full border-t-primary animate-spin mx-auto" />
         </div>
       )}
 
       {error && (
-        <div style={{ padding: '1rem', background: '#fef2f2', color: '#b91c1c', borderRadius: 8, marginBottom: '1rem' }}>
-          {error}
-        </div>
+        <div className="bg-error/10 border border-error/30 text-error rounded-lg px-4 py-3 text-sm mb-4">{error}</div>
       )}
 
       {!loading && !error && brands.length === 0 && (
-        <div style={{ textAlign: 'center', padding: '3rem', color: '#6b7280' }}>
+        <div className="text-center py-12 text-on-surface-muted">
           No hay hierros registrados
         </div>
       )}
 
       {!loading && brands.length > 0 && (
-        <div style={{
-          display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1.25rem',
-        }}>
+        <div className="grid gap-5" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))' }}>
           {brands.map((b) => (
-            <div key={b.id} style={{
-              background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12,
-              boxShadow: '0 1px 3px rgba(0,0,0,0.08)', overflow: 'hidden',
-              display: 'flex', flexDirection: 'column', alignItems: 'center',
-            }}>
-              <div style={{
-                width: '100%', height: 160, background: '#f9fafb',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden',
-              }}>
+            <Card key={b.id} padding="none" className="flex flex-col items-center overflow-hidden">
+              <div className="w-full bg-surface flex items-center justify-center overflow-hidden" style={{ height: 160 }}>
                 {(b.imageUrl || b.image) ? (
                   <img
                     src={b.imageUrl || b.image}
@@ -152,13 +126,13 @@ export default function BrandsPage() {
                     style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
                   />
                 ) : (
-                  <span style={{ fontSize: '3rem', color: '#d1d5db' }}>&#9678;</span>
+                  <span className="text-5xl text-border">&#9678;</span>
                 )}
               </div>
-              <div style={{ padding: '1rem', textAlign: 'center', fontWeight: 600, fontSize: '0.875rem' }}>
+              <div className="p-4 text-center font-semibold text-sm text-on-surface">
                 {b.name}
               </div>
-            </div>
+            </Card>
           ))}
         </div>
       )}

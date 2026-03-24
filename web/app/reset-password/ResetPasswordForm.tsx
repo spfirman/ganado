@@ -3,6 +3,8 @@
 import { FormEvent, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { apiFetch } from "../lib/api";
+import Button from "../components/ui/Button";
+import Input from "../components/ui/Input";
 
 export default function ResetPasswordForm() {
   const searchParams = useSearchParams();
@@ -66,96 +68,72 @@ export default function ResetPasswordForm() {
 
   if (success) {
     return (
-      <div style={styles.wrapper}>
-        <div style={styles.card}>
-          <div style={styles.header}>
-            <h1 style={styles.title}>Ganado</h1>
+      <div className="flex items-center justify-center min-h-screen p-4 bg-primary-light/30">
+        <div className="w-full bg-surface-alt rounded-lg shadow-lg p-10" style={{ maxWidth: 400 }}>
+          <div className="text-center mb-6">
+            <h1 className="font-heading text-3xl font-bold text-primary-dark m-0 tracking-tight">Ganado</h1>
           </div>
-          <div style={styles.success}>
-            <p style={{ margin: 0, fontWeight: 600 }}>
-              Contraseña restablecida
-            </p>
-            <p style={{ margin: "0.5rem 0 0", fontSize: "0.875rem" }}>
-              Tu contraseña ha sido actualizada exitosamente.
-            </p>
+          <div className="bg-success/10 border border-success/30 text-success rounded-lg px-4 py-3 text-sm mb-4">
+            <p className="m-0 font-semibold">Contraseña restablecida</p>
+            <p className="mt-2 mb-0 text-sm">Tu contraseña ha sido actualizada exitosamente.</p>
           </div>
-          <button
-            onClick={() => router.push("/login")}
-            style={styles.button}
-          >
+          <Button onClick={() => router.push("/login")} size="lg" className="w-full">
             Iniciar sesión
-          </button>
+          </Button>
         </div>
       </div>
     );
   }
 
   return (
-    <div style={styles.wrapper}>
-      <div style={styles.card}>
-        <div style={styles.header}>
-          <h1 style={styles.title}>Ganado</h1>
-          <p style={styles.subtitle}>Restablecer contraseña</p>
+    <div className="flex items-center justify-center min-h-screen p-4 bg-primary-light/30">
+      <div className="w-full bg-surface-alt rounded-lg shadow-lg p-10" style={{ maxWidth: 400 }}>
+        <div className="text-center mb-6">
+          <h1 className="font-heading text-3xl font-bold text-primary-dark m-0 tracking-tight">Ganado</h1>
+          <p className="text-on-surface-muted text-sm mt-1 mb-0">Restablecer contraseña</p>
         </div>
 
         {error && (
-          <div style={styles.error} role="alert">
+          <div className="bg-error/10 border border-error/30 text-error rounded-lg px-4 py-3 text-sm mb-4" role="alert">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} style={styles.form}>
-          <div style={styles.fieldGroup}>
-            <label htmlFor="password" style={styles.label}>
-              Nueva contraseña
-            </label>
-            <input
-              id="password"
-              type="password"
-              required
-              autoComplete="new-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              style={styles.input}
-              placeholder="Mínimo 8 caracteres"
-            />
-          </div>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+          <Input
+            label="Nueva contraseña"
+            id="password"
+            type="password"
+            required
+            autoComplete="new-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Mínimo 8 caracteres"
+          />
 
-          <div style={styles.fieldGroup}>
-            <label htmlFor="confirmPassword" style={styles.label}>
-              Confirmar contraseña
-            </label>
-            <input
-              id="confirmPassword"
-              type="password"
-              required
-              autoComplete="new-password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              style={styles.input}
-              placeholder="Repite tu contraseña"
-            />
-          </div>
+          <Input
+            label="Confirmar contraseña"
+            id="confirmPassword"
+            type="password"
+            required
+            autoComplete="new-password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="Repite tu contraseña"
+          />
 
-          <p style={styles.hint}>
+          <p className="text-xs text-on-surface-muted m-0">
             Debe tener al menos 8 caracteres, una mayúscula, una minúscula y un
             número.
           </p>
 
-          <button
-            type="submit"
-            disabled={submitting}
-            style={{
-              ...styles.button,
-              ...(submitting ? styles.buttonDisabled : {}),
-            }}
-          >
+          <Button type="submit" disabled={submitting} size="lg" className="w-full mt-1">
             {submitting ? "Restableciendo..." : "Restablecer contraseña"}
-          </button>
+          </Button>
         </form>
 
-        <div style={{ textAlign: "center", marginTop: "1rem" }}>
-          <a href="/login" style={styles.link}>
+        <div className="text-center mt-4">
+          <a href="/login" className="text-primary text-sm no-underline hover:underline">
             Volver al inicio de sesión
           </a>
         </div>
@@ -163,112 +141,3 @@ export default function ResetPasswordForm() {
     </div>
   );
 }
-
-const PRIMARY = "#2E7D32";
-const PRIMARY_DARK = "#1B5E20";
-
-const styles: Record<string, React.CSSProperties> = {
-  wrapper: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    minHeight: "100vh",
-    padding: "1rem",
-    background: "linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%)",
-  },
-  card: {
-    width: "100%",
-    maxWidth: 400,
-    background: "#fff",
-    borderRadius: 12,
-    padding: "2.5rem 2rem 2rem",
-    boxShadow:
-      "0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1)",
-  },
-  header: {
-    textAlign: "center" as const,
-    marginBottom: "1.5rem",
-  },
-  title: {
-    margin: 0,
-    fontSize: "1.75rem",
-    fontWeight: 700,
-    color: PRIMARY_DARK,
-    letterSpacing: "-0.02em",
-  },
-  subtitle: {
-    margin: "0.25rem 0 0",
-    fontSize: "0.875rem",
-    color: "#6B7280",
-  },
-  error: {
-    background: "#FEF2F2",
-    border: "1px solid #FECACA",
-    color: "#991B1B",
-    borderRadius: 8,
-    padding: "0.75rem 1rem",
-    fontSize: "0.875rem",
-    marginBottom: "1rem",
-  },
-  success: {
-    background: "#F0FDF4",
-    border: "1px solid #BBF7D0",
-    color: "#166534",
-    borderRadius: 8,
-    padding: "0.75rem 1rem",
-    fontSize: "0.875rem",
-    marginBottom: "1rem",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column" as const,
-    gap: "1.25rem",
-  },
-  fieldGroup: {
-    display: "flex",
-    flexDirection: "column" as const,
-    gap: "0.375rem",
-  },
-  label: {
-    fontSize: "0.875rem",
-    fontWeight: 500,
-    color: "#374151",
-  },
-  input: {
-    padding: "0.625rem 0.75rem",
-    fontSize: "0.9375rem",
-    border: "1px solid #D1D5DB",
-    borderRadius: 8,
-    outline: "none",
-    transition: "border-color 0.15s, box-shadow 0.15s",
-    width: "100%",
-    boxSizing: "border-box" as const,
-  },
-  hint: {
-    margin: 0,
-    fontSize: "0.75rem",
-    color: "#9CA3AF",
-  },
-  button: {
-    padding: "0.75rem",
-    fontSize: "0.9375rem",
-    fontWeight: 600,
-    color: "#fff",
-    background: PRIMARY,
-    border: "none",
-    borderRadius: 8,
-    cursor: "pointer",
-    transition: "background 0.15s",
-    marginTop: "0.25rem",
-    width: "100%",
-  },
-  buttonDisabled: {
-    opacity: 0.6,
-    cursor: "not-allowed",
-  },
-  link: {
-    color: PRIMARY,
-    fontSize: "0.875rem",
-    textDecoration: "none",
-  },
-};

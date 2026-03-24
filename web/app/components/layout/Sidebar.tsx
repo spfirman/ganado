@@ -174,40 +174,49 @@ export default function Sidebar() {
     pathname === href || pathname.startsWith(href + '/');
 
   return (
-    <aside style={styles.sidebar}>
+    <aside className="fixed top-0 left-0 bottom-0 flex flex-col z-40 overflow-y-auto overflow-x-hidden bg-sidebar-bg" style={{ width: 256 }}>
       {/* Brand */}
-      <div style={styles.brand}>
-        <div style={styles.brandIcon}>
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <div className="flex items-center gap-3 border-b border-white/8" style={{ padding: '24px 20px 20px' }}>
+        <div className="flex items-center justify-center shrink-0 rounded-lg" style={{ width: 40, height: 40, background: 'rgba(201,168,76,0.12)' }}>
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gold-accent, #C9A84C)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <ellipse cx="12" cy="14" rx="8" ry="6" />
             <path d="M6 8c-2-1.5-3-4-2-6" />
             <path d="M18 8c2-1.5 3-4 2-6" />
           </svg>
         </div>
         <div>
-          <div style={styles.brandName}>Ganado</div>
-          <div style={styles.brandSub}>RANCH MANAGEMENT</div>
+          <div className="font-heading text-xl font-bold text-white leading-tight">Ganado</div>
+          <div className="text-[0.6rem] font-semibold tracking-widest mt-0.5" style={{ color: 'var(--gold-accent)' }}>RANCH MANAGEMENT</div>
         </div>
       </div>
 
       {/* Nav sections */}
-      <nav style={styles.nav}>
+      <nav className="flex-1 py-3 overflow-y-auto">
         {navSections.map((section) => (
-          <div key={section.title} style={styles.section}>
-            <div style={styles.sectionTitle}>{section.title}</div>
+          <div key={section.title} className="mb-2 px-3">
+            <div className="font-body text-[0.65rem] font-bold tracking-wider text-white/35 px-2 pt-4 pb-1.5">
+              {section.title}
+            </div>
             {section.items.map((item) => {
               const active = isActive(item.href);
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  style={{
-                    ...styles.navItem,
-                    ...(active ? styles.navItemActive : {}),
-                  }}
+                  className={`
+                    relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
+                    no-underline transition-all duration-150 mb-0.5 font-body
+                    ${active
+                      ? 'bg-sidebar-active text-white font-semibold'
+                      : 'text-white/65 hover:bg-white/5'}
+                  `}
                 >
-                  {active && <span style={styles.activeBar} />}
-                  <span style={styles.navIcon}>{item.icon}</span>
+                  {active && (
+                    <span className="absolute left-0 top-1.5 bottom-1.5 rounded-sm" style={{ width: 3, background: 'var(--gold-accent)' }} />
+                  )}
+                  <span className="flex items-center justify-center shrink-0 opacity-85" style={{ width: 20, height: 20 }}>
+                    {item.icon}
+                  </span>
                   <span>{item.label}</span>
                 </Link>
               );
@@ -217,127 +226,26 @@ export default function Sidebar() {
       </nav>
 
       {/* Bottom settings */}
-      <div style={styles.bottomSection}>
+      <div className="px-3 pb-5 pt-2 border-t border-white/8">
         <Link
           href="/settings"
-          style={{
-            ...styles.navItem,
-            ...(isActive('/settings') ? styles.navItemActive : {}),
-          }}
+          className={`
+            relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
+            no-underline transition-all duration-150 font-body
+            ${isActive('/settings')
+              ? 'bg-sidebar-active text-white font-semibold'
+              : 'text-white/65 hover:bg-white/5'}
+          `}
         >
-          {isActive('/settings') && <span style={styles.activeBar} />}
-          <span style={styles.navIcon}><IconSettings /></span>
+          {isActive('/settings') && (
+            <span className="absolute left-0 top-1.5 bottom-1.5 rounded-sm" style={{ width: 3, background: 'var(--gold-accent)' }} />
+          )}
+          <span className="flex items-center justify-center shrink-0 opacity-85" style={{ width: 20, height: 20 }}>
+            <IconSettings />
+          </span>
           <span>Configuraci&oacute;n</span>
         </Link>
       </div>
     </aside>
   );
 }
-
-/* ─── Inline styles ─── */
-
-const styles: Record<string, React.CSSProperties> = {
-  sidebar: {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    width: 256,
-    background: 'var(--sidebar-bg)',
-    display: 'flex',
-    flexDirection: 'column',
-    zIndex: 40,
-    overflowY: 'auto',
-    overflowX: 'hidden',
-  },
-  brand: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 12,
-    padding: '24px 20px 20px',
-    borderBottom: '1px solid rgba(255,255,255,0.08)',
-  },
-  brandIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 10,
-    background: 'rgba(201,168,76,0.12)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexShrink: 0,
-  },
-  brandName: {
-    fontFamily: 'var(--font-heading)',
-    fontSize: '1.25rem',
-    fontWeight: 700,
-    color: '#FFFFFF',
-    lineHeight: 1.2,
-  },
-  brandSub: {
-    fontSize: '0.6rem',
-    fontWeight: 600,
-    letterSpacing: '0.12em',
-    color: 'var(--gold-accent)',
-    marginTop: 2,
-  },
-  nav: {
-    flex: 1,
-    padding: '12px 0',
-    overflowY: 'auto',
-  },
-  section: {
-    marginBottom: 8,
-    padding: '0 12px',
-  },
-  sectionTitle: {
-    fontSize: '0.65rem',
-    fontWeight: 700,
-    letterSpacing: '0.1em',
-    color: 'rgba(255,255,255,0.35)',
-    padding: '16px 8px 6px',
-    fontFamily: 'var(--font-body)',
-  },
-  navItem: {
-    position: 'relative',
-    display: 'flex',
-    alignItems: 'center',
-    gap: 12,
-    padding: '9px 12px',
-    borderRadius: 8,
-    fontSize: '0.875rem',
-    fontWeight: 500,
-    color: 'rgba(255,255,255,0.65)',
-    textDecoration: 'none',
-    transition: 'background 150ms, color 150ms',
-    fontFamily: 'var(--font-body)',
-    marginBottom: 2,
-  },
-  navItemActive: {
-    background: 'var(--sidebar-active)',
-    color: '#FFFFFF',
-    fontWeight: 600,
-  },
-  activeBar: {
-    position: 'absolute',
-    left: 0,
-    top: 6,
-    bottom: 6,
-    width: 3,
-    borderRadius: 2,
-    background: 'var(--gold-accent)',
-  },
-  navIcon: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 20,
-    height: 20,
-    flexShrink: 0,
-    opacity: 0.85,
-  },
-  bottomSection: {
-    padding: '8px 12px 20px',
-    borderTop: '1px solid rgba(255,255,255,0.08)',
-  },
-};

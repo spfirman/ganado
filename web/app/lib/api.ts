@@ -1,9 +1,52 @@
+import { getRefreshToken, setToken, setRefreshToken } from "./auth";
+
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
 const API_PREFIX = "/api/v1";
 
 interface ApiFetchOptions extends RequestInit {
   /** Skip automatic JSON parsing of the response. */
   raw?: boolean;
+  /** Internal flag to prevent infinite refresh loops. */
+  _isRetry?: boolean;
+}
+
+let refreshPromise: Promise<boolean> | null = null;
+
+async function tryRefreshToken(): Promise<boolean> {
+  // Deduplicate concurrent refresh attempts
+  if (refreshPromise) return refreshPromise;
+
+  refreshPromise = (async () => {
+    try {
+      const refreshToken = getRefreshToken();
+      if (!refreshToken) return false;
+
+      const url = `${BASE_URL}${API_PREFIX}/auth/refresh`;
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ refresh_token: refreshToken }),
+      });
+
+      if (!res.ok) return false;
+
+      const data = await res.json();
+      if (data.access_token) {
+        setToken(data.access_token);
+        if (data.refresh_token) {
+          setRefreshToken(data.refresh_token);
+        }
+        return true;
+      }
+      return false;
+    } catch {
+      return false;
+    } finally {
+      refreshPromise = null;
+    }
+  })();
+
+  return refreshPromise;
 }
 
 /**
@@ -12,13 +55,13 @@ interface ApiFetchOptions extends RequestInit {
  * - Prefixes every path with `/api/v1`
  * - Attaches the stored JWT as a Bearer token
  * - Returns the parsed JSON body (or raw `Response` when `raw: true`)
- * - On 401 clears auth tokens and redirects to `/login`
+ * - On 401, attempts to refresh the token before falling back to logout
  */
 export async function apiFetch<T = unknown>(
   path: string,
   options: ApiFetchOptions = {},
 ): Promise<T> {
-  const { raw, ...fetchOptions } = options;
+  const { raw, _isRetry, ...fetchOptions } = options;
 
   const url = `${BASE_URL}${API_PREFIX}${path}`;
 
@@ -42,6 +85,16 @@ export async function apiFetch<T = unknown>(
 
   if (response.status === 401) {
     if (typeof window !== "undefined") {
+      // If this is not already a retry, attempt to refresh the token
+      if (!_isRetry) {
+        const refreshed = await tryRefreshToken();
+        if (refreshed) {
+          // Retry the original request with the new token
+          return apiFetch<T>(path, { ...options, _isRetry: true });
+        }
+      }
+
+      // Refresh failed or this was already a retry — clear everything and redirect
       localStorage.removeItem("ganado_access_token");
       localStorage.removeItem("ganado_refresh_token");
       localStorage.removeItem("ganado_user");

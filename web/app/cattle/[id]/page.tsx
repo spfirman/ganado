@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { apiFetch } from '../../lib/api';
 import Link from 'next/link';
+import Card from '../../components/ui/Card';
+import Button from '../../components/ui/Button';
+import DataTable from '../../components/ui/DataTable';
 
 interface WeightRecord {
   id?: number | string;
@@ -77,7 +80,7 @@ export default function CattleDetailPage() {
 
   if (loading) {
     return (
-      <div style={{ padding: '2rem', textAlign: 'center', fontFamily: "'Manrope', sans-serif", color: '#9ca3af' }}>
+      <div className="p-8 text-center font-body text-on-surface-muted">
         Cargando...
       </div>
     );
@@ -85,11 +88,11 @@ export default function CattleDetailPage() {
 
   if (error || !cattle) {
     return (
-      <div style={{ padding: '2rem', maxWidth: 800, margin: '0 auto', fontFamily: "'Manrope', sans-serif" }}>
-        <Link href="/cattle" style={{ color: '#16a34a', textDecoration: 'none', fontSize: '0.875rem' }}>
+      <div className="font-body" style={{ maxWidth: 800, margin: '0 auto' }}>
+        <Link href="/cattle" className="text-primary no-underline text-sm">
           ← Volver a Ganado
         </Link>
-        <p style={{ color: '#ef4444', marginTop: '1rem' }}>{error || 'No se encontró el registro'}</p>
+        <p className="text-error mt-4">{error || 'No se encontró el registro'}</p>
       </div>
     );
   }
@@ -112,123 +115,69 @@ export default function CattleDetailPage() {
   const weights = cattle.weightHistory ?? cattle.weights ?? [];
   const medications = cattle.medicationHistory ?? cattle.medications ?? [];
 
-  const sectionHeading: React.CSSProperties = {
-    fontFamily: "'Noto Serif', serif",
-    fontSize: '1.125rem',
-    fontWeight: 600,
-    marginBottom: '0.75rem',
-    color: 'var(--foreground)',
-  };
-
   return (
-    <div style={{ padding: '2rem', maxWidth: 900, margin: '0 auto', fontFamily: "'Manrope', sans-serif" }}>
-      <Link href="/cattle" style={{ color: '#16a34a', textDecoration: 'none', fontSize: '0.875rem', fontWeight: 500 }}>
+    <div className="font-body" style={{ maxWidth: 900, margin: '0 auto' }}>
+      <Link href="/cattle" className="text-primary no-underline text-sm font-medium">
         ← Volver a Ganado
       </Link>
 
       {/* Title */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '0.75rem' }}>
-        <h1 style={{
-          fontFamily: "'Noto Serif', serif",
-          fontSize: '1.75rem',
-          fontWeight: 700,
-          margin: 0,
-          color: 'var(--foreground)',
-        }}>
+      <div className="flex justify-between items-center mt-4 mb-6 flex-wrap gap-3">
+        <h1 className="font-heading text-2xl font-bold text-on-surface m-0">
           Animal #{cattle.number ?? id}
         </h1>
-        <Link href={`/cattle/${id}/edit`} style={{
-          padding: '0.5rem 1.25rem',
-          background: '#16a34a',
-          color: '#fff',
-          borderRadius: 8,
-          fontWeight: 600,
-          fontSize: '0.875rem',
-          textDecoration: 'none',
-        }}>
-          Editar
+        <Link href={`/cattle/${id}/edit`} className="no-underline">
+          <Button>Editar</Button>
         </Link>
       </div>
 
       {/* Info Grid */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-        gap: '1rem',
-        background: 'var(--background, #fff)',
-        border: '1px solid #e5e7eb',
-        borderRadius: 12,
-        padding: '1.5rem',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
-        marginBottom: '2rem',
-      }}>
-        {infoFields.map((f) => (
-          <div key={f.label}>
-            <div style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: 500, marginBottom: '0.125rem' }}>
-              {f.label}
+      <Card className="mb-8">
+        <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))' }}>
+          {infoFields.map((f) => (
+            <div key={f.label}>
+              <div className="text-xs text-on-surface-muted font-medium mb-0.5">
+                {f.label}
+              </div>
+              <div className="text-[0.9375rem] font-semibold text-on-surface">
+                {f.value}
+              </div>
             </div>
-            <div style={{ fontSize: '0.9375rem', fontWeight: 600, color: 'var(--foreground)' }}>
-              {f.value}
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      </Card>
 
       {/* Weight History */}
-      <div style={{ marginBottom: '2rem' }}>
-        <h2 style={sectionHeading}>Historial de Peso</h2>
+      <div className="mb-8">
+        <h2 className="font-heading text-lg font-semibold text-on-surface mb-3">Historial de Peso</h2>
         {weights.length === 0 ? (
-          <p style={{ color: '#9ca3af', fontSize: '0.875rem' }}>Sin registros de peso</p>
+          <p className="text-on-surface-muted text-sm">Sin registros de peso</p>
         ) : (
-          <div style={{ border: '1px solid #e5e7eb', borderRadius: 10, overflow: 'hidden' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
-              <thead>
-                <tr style={{ background: '#f9fafb', borderBottom: '2px solid #e5e7eb' }}>
-                  <th style={{ padding: '0.625rem 1rem', textAlign: 'left', fontWeight: 600 }}>Fecha</th>
-                  <th style={{ padding: '0.625rem 1rem', textAlign: 'left', fontWeight: 600 }}>Peso</th>
-                </tr>
-              </thead>
-              <tbody>
-                {weights.map((w, idx) => (
-                  <tr key={w.id ?? idx} style={{ background: idx % 2 === 0 ? 'var(--background, #fff)' : '#f9fafb', borderBottom: '1px solid #f3f4f6' }}>
-                    <td style={{ padding: '0.5rem 1rem' }}>{w.date ?? w.createdAt ?? '—'}</td>
-                    <td style={{ padding: '0.5rem 1rem', fontWeight: 600 }}>{w.weight} kg</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <DataTable
+            columns={[
+              { key: 'date', label: 'Fecha', render: (w: WeightRecord) => w.date ?? w.createdAt ?? '—' },
+              { key: 'weight', label: 'Peso', render: (w: WeightRecord) => <span className="font-semibold">{w.weight} kg</span> },
+            ]}
+            data={weights}
+          />
         )}
       </div>
 
       {/* Medication History */}
-      <div style={{ marginBottom: '2rem' }}>
-        <h2 style={sectionHeading}>Historial de Medicamentos</h2>
+      <div className="mb-8">
+        <h2 className="font-heading text-lg font-semibold text-on-surface mb-3">Historial de Medicamentos</h2>
         {medications.length === 0 ? (
-          <p style={{ color: '#9ca3af', fontSize: '0.875rem' }}>Sin registros de medicamentos</p>
+          <p className="text-on-surface-muted text-sm">Sin registros de medicamentos</p>
         ) : (
-          <div style={{ border: '1px solid #e5e7eb', borderRadius: 10, overflow: 'hidden' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
-              <thead>
-                <tr style={{ background: '#f9fafb', borderBottom: '2px solid #e5e7eb' }}>
-                  <th style={{ padding: '0.625rem 1rem', textAlign: 'left', fontWeight: 600 }}>Fecha</th>
-                  <th style={{ padding: '0.625rem 1rem', textAlign: 'left', fontWeight: 600 }}>Medicamento</th>
-                  <th style={{ padding: '0.625rem 1rem', textAlign: 'left', fontWeight: 600 }}>Dosis</th>
-                  <th style={{ padding: '0.625rem 1rem', textAlign: 'left', fontWeight: 600 }}>Notas</th>
-                </tr>
-              </thead>
-              <tbody>
-                {medications.map((m, idx) => (
-                  <tr key={m.id ?? idx} style={{ background: idx % 2 === 0 ? 'var(--background, #fff)' : '#f9fafb', borderBottom: '1px solid #f3f4f6' }}>
-                    <td style={{ padding: '0.5rem 1rem' }}>{m.date ?? m.createdAt ?? '—'}</td>
-                    <td style={{ padding: '0.5rem 1rem', fontWeight: 600 }}>{m.name ?? m.medication ?? '—'}</td>
-                    <td style={{ padding: '0.5rem 1rem' }}>{m.dose ?? '—'}</td>
-                    <td style={{ padding: '0.5rem 1rem' }}>{m.notes ?? '—'}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <DataTable
+            columns={[
+              { key: 'date', label: 'Fecha', render: (m: MedicationRecord) => m.date ?? m.createdAt ?? '—' },
+              { key: 'name', label: 'Medicamento', render: (m: MedicationRecord) => <span className="font-semibold">{m.name ?? m.medication ?? '—'}</span> },
+              { key: 'dose', label: 'Dosis', render: (m: MedicationRecord) => m.dose ?? '—' },
+              { key: 'notes', label: 'Notas', render: (m: MedicationRecord) => m.notes ?? '—' },
+            ]}
+            data={medications}
+          />
         )}
       </div>
     </div>

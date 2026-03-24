@@ -4,49 +4,15 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer style={styles.footer}>
-      <span style={styles.copyright}>
+    <footer className="flex items-center justify-between px-8 py-4 border-t border-border bg-surface-alt font-body text-[0.6875rem] text-on-surface-muted shrink-0">
+      <span className="tracking-wide font-medium">
         &copy; 2026 GANADO &mdash; GPCB RANCH MANAGEMENT
       </span>
-      <div style={styles.links}>
-        <Link href="/privacy" style={styles.link}>PRIVACIDAD</Link>
-        <span style={styles.separator}>|</span>
-        <Link href="/terms" style={styles.link}>T&Eacute;RMINOS</Link>
+      <div className="flex items-center gap-2">
+        <Link href="/privacy" className="text-on-surface-muted no-underline font-semibold tracking-wider transition-colors duration-150 hover:text-on-surface">PRIVACIDAD</Link>
+        <span className="text-border">|</span>
+        <Link href="/terms" className="text-on-surface-muted no-underline font-semibold tracking-wider transition-colors duration-150 hover:text-on-surface">T&Eacute;RMINOS</Link>
       </div>
     </footer>
   );
 }
-
-const styles: Record<string, React.CSSProperties> = {
-  footer: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: '16px 32px',
-    borderTop: '1px solid var(--outline-variant)',
-    background: 'var(--surface-container-lowest)',
-    fontFamily: 'var(--font-body)',
-    fontSize: '0.6875rem',
-    color: 'var(--on-surface-variant)',
-    flexShrink: 0,
-  },
-  copyright: {
-    letterSpacing: '0.04em',
-    fontWeight: 500,
-  },
-  links: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 8,
-  },
-  link: {
-    color: 'var(--on-surface-variant)',
-    textDecoration: 'none',
-    fontWeight: 600,
-    letterSpacing: '0.06em',
-    transition: 'color 150ms',
-  },
-  separator: {
-    color: 'var(--outline-variant)',
-  },
-};

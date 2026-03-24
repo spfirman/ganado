@@ -4,6 +4,8 @@ import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../lib/auth-context";
 import { OtpRequiredError } from "../../lib/auth";
+import Button from "../../components/ui/Button";
+import Input from "../../components/ui/Input";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -68,13 +70,13 @@ export default function LoginPage() {
   }
 
   return (
-    <div style={styles.wrapper}>
-      <div style={styles.card}>
+    <div className="flex items-center justify-center min-h-screen p-4 bg-primary-light/30">
+      <div className="w-full bg-surface-alt rounded-lg shadow-lg p-10" style={{ maxWidth: 400 }}>
         {/* Header */}
-        <div style={styles.header}>
-          <div style={styles.iconCircle}>
+        <div className="text-center mb-6">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary mb-3">
             <svg
-              style={styles.icon}
+              className="w-8 h-8"
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -87,12 +89,12 @@ export default function LoginPage() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <circle cx="8.5" cy="12" r="1" fill="#2E7D32" />
-              <circle cx="15.5" cy="12" r="1" fill="#2E7D32" />
+              <circle cx="8.5" cy="12" r="1" fill="var(--color-primary-dark)" />
+              <circle cx="15.5" cy="12" r="1" fill="var(--color-primary-dark)" />
             </svg>
           </div>
-          <h1 style={styles.title}>Ganado</h1>
-          <p style={styles.subtitle}>
+          <h1 className="font-heading text-3xl font-bold text-primary-dark m-0 tracking-tight">Ganado</h1>
+          <p className="text-on-surface-muted text-sm mt-1 mb-0">
             {otpRequired
               ? "Ingresa el código de tu app autenticadora"
               : "Inicia sesión en tu cuenta"}
@@ -101,107 +103,75 @@ export default function LoginPage() {
 
         {/* Error */}
         {error && (
-          <div style={styles.error} role="alert">
+          <div className="bg-error/10 border border-error/30 text-error rounded-lg px-4 py-3 text-sm mb-4" role="alert">
             {error}
           </div>
         )}
 
         {/* OTP Form */}
         {otpRequired ? (
-          <form onSubmit={handleOtpSubmit} style={styles.form}>
-            <div style={styles.otpInfo}>
+          <form onSubmit={handleOtpSubmit} className="flex flex-col gap-5">
+            <div className="bg-success/10 border border-success/30 text-success rounded-lg px-4 py-3 text-[0.8125rem] leading-relaxed">
               Se requiere autenticación de dos factores. Ingresa el código de 6 dígitos
               de tu aplicación autenticadora o un código de respaldo.
             </div>
 
-            <div style={styles.fieldGroup}>
-              <label htmlFor="otpCode" style={styles.label}>
-                Código de verificación
-              </label>
-              <input
-                id="otpCode"
-                type="text"
-                required
-                autoComplete="one-time-code"
-                autoFocus
-                value={otpCode}
-                onChange={(e) => setOtpCode(e.target.value)}
-                style={{ ...styles.input, textAlign: "center" as const, fontSize: "1.25rem", letterSpacing: "0.3em" }}
-                placeholder="000000"
-                maxLength={8}
-              />
-            </div>
+            <Input
+              label="Código de verificación"
+              id="otpCode"
+              type="text"
+              required
+              autoComplete="one-time-code"
+              autoFocus
+              value={otpCode}
+              onChange={(e) => setOtpCode(e.target.value)}
+              placeholder="000000"
+              maxLength={8}
+              className="[&_input]:text-center [&_input]:text-xl [&_input]:tracking-widest"
+            />
 
-            <button
-              type="submit"
-              disabled={submitting}
-              style={{
-                ...styles.button,
-                ...(submitting ? styles.buttonDisabled : {}),
-              }}
-            >
+            <Button type="submit" disabled={submitting} size="lg" className="w-full mt-1">
               {submitting ? "Verificando..." : "Verificar"}
-            </button>
+            </Button>
 
-            <button
-              type="button"
-              onClick={handleBackToLogin}
-              style={styles.backButton}
-            >
+            <Button type="button" variant="ghost" onClick={handleBackToLogin} className="w-full">
               Volver al inicio de sesión
-            </button>
+            </Button>
           </form>
         ) : (
           <>
             {/* Login Form */}
-            <form onSubmit={handleSubmit} style={styles.form}>
-              <div style={styles.fieldGroup}>
-                <label htmlFor="username" style={styles.label}>
-                  Usuario
-                </label>
-                <input
-                  id="username"
-                  type="text"
-                  required
-                  autoComplete="username"
-                  autoFocus
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  style={styles.input}
-                  placeholder="Ingresa tu usuario"
-                />
-              </div>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+              <Input
+                label="Usuario"
+                id="username"
+                type="text"
+                required
+                autoComplete="username"
+                autoFocus
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Ingresa tu usuario"
+              />
 
-              <div style={styles.fieldGroup}>
-                <label htmlFor="password" style={styles.label}>
-                  Contraseña
-                </label>
-                <input
-                  id="password"
-                  type="password"
-                  required
-                  autoComplete="current-password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  style={styles.input}
-                  placeholder="Ingresa tu contraseña"
-                />
-              </div>
+              <Input
+                label="Contraseña"
+                id="password"
+                type="password"
+                required
+                autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Ingresa tu contraseña"
+              />
 
-              <button
-                type="submit"
-                disabled={submitting}
-                style={{
-                  ...styles.button,
-                  ...(submitting ? styles.buttonDisabled : {}),
-                }}
-              >
+              <Button type="submit" disabled={submitting} size="lg" className="w-full mt-1">
                 {submitting ? "Iniciando sesión..." : "Iniciar sesión"}
-              </button>
+              </Button>
             </form>
 
-            <div style={{ textAlign: "center", marginTop: "1rem" }}>
-              <a href="/forgot-password" style={styles.forgotLink}>
+            <div className="text-center mt-4">
+              <a href="/forgot-password" className="text-primary text-sm no-underline hover:underline">
                 ¿Olvidaste tu contraseña?
               </a>
             </div>
@@ -211,134 +181,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
-// ---------------------------------------------------------------------------
-// Inline styles
-// ---------------------------------------------------------------------------
-
-const PRIMARY = "#2E7D32";
-const PRIMARY_DARK = "#1B5E20";
-
-const styles: Record<string, React.CSSProperties> = {
-  wrapper: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    minHeight: "100vh",
-    padding: "1rem",
-    background: "linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%)",
-  },
-  card: {
-    width: "100%",
-    maxWidth: 400,
-    background: "#fff",
-    borderRadius: 12,
-    padding: "2.5rem 2rem 2rem",
-    boxShadow:
-      "0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1)",
-  },
-  header: {
-    textAlign: "center" as const,
-    marginBottom: "1.5rem",
-  },
-  iconCircle: {
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: 56,
-    height: 56,
-    borderRadius: "50%",
-    background: PRIMARY,
-    marginBottom: "0.75rem",
-  },
-  icon: {
-    width: 32,
-    height: 32,
-  },
-  title: {
-    margin: 0,
-    fontSize: "1.75rem",
-    fontWeight: 700,
-    color: PRIMARY_DARK,
-    letterSpacing: "-0.02em",
-  },
-  subtitle: {
-    margin: "0.25rem 0 0",
-    fontSize: "0.875rem",
-    color: "#6B7280",
-  },
-  error: {
-    background: "#FEF2F2",
-    border: "1px solid #FECACA",
-    color: "#991B1B",
-    borderRadius: 8,
-    padding: "0.75rem 1rem",
-    fontSize: "0.875rem",
-    marginBottom: "1rem",
-  },
-  otpInfo: {
-    background: "#F0FDF4",
-    border: "1px solid #BBF7D0",
-    color: "#166534",
-    borderRadius: 8,
-    padding: "0.75rem 1rem",
-    fontSize: "0.8125rem",
-    lineHeight: "1.5",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column" as const,
-    gap: "1.25rem",
-  },
-  fieldGroup: {
-    display: "flex",
-    flexDirection: "column" as const,
-    gap: "0.375rem",
-  },
-  label: {
-    fontSize: "0.875rem",
-    fontWeight: 500,
-    color: "#374151",
-  },
-  input: {
-    padding: "0.625rem 0.75rem",
-    fontSize: "0.9375rem",
-    border: "1px solid #D1D5DB",
-    borderRadius: 8,
-    outline: "none",
-    transition: "border-color 0.15s, box-shadow 0.15s",
-    width: "100%",
-    boxSizing: "border-box" as const,
-  },
-  button: {
-    padding: "0.75rem",
-    fontSize: "0.9375rem",
-    fontWeight: 600,
-    color: "#fff",
-    background: PRIMARY,
-    border: "none",
-    borderRadius: 8,
-    cursor: "pointer",
-    transition: "background 0.15s",
-    marginTop: "0.25rem",
-  },
-  buttonDisabled: {
-    opacity: 0.6,
-    cursor: "not-allowed",
-  },
-  backButton: {
-    padding: "0.625rem",
-    fontSize: "0.875rem",
-    fontWeight: 500,
-    color: "#6B7280",
-    background: "transparent",
-    border: "1px solid #D1D5DB",
-    borderRadius: 8,
-    cursor: "pointer",
-  },
-  forgotLink: {
-    color: PRIMARY,
-    fontSize: "0.875rem",
-    textDecoration: "none",
-  },
-};

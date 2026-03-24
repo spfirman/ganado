@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { apiFetch } from '../../../lib/api';
 import CattleForm, { CattleFormData } from '../../../components/CattleForm';
+import Card from '../../../components/ui/Card';
 
 interface CattleDetail {
   id: number | string;
@@ -63,7 +64,7 @@ export default function EditCattlePage() {
 
   if (loading) {
     return (
-      <div style={{ padding: '2rem', textAlign: 'center', fontFamily: "'Manrope', sans-serif", color: '#9ca3af' }}>
+      <div className="p-8 text-center font-body text-on-surface-muted">
         Cargando...
       </div>
     );
@@ -71,38 +72,26 @@ export default function EditCattlePage() {
 
   if (error || !initialData) {
     return (
-      <div style={{ padding: '2rem', maxWidth: 900, margin: '0 auto', fontFamily: "'Manrope', sans-serif" }}>
-        <Link href="/cattle" style={{ color: '#16a34a', textDecoration: 'none', fontSize: '0.875rem' }}>
+      <div className="font-body" style={{ maxWidth: 900, margin: '0 auto' }}>
+        <Link href="/cattle" className="text-primary no-underline text-sm">
           ← Volver a Ganado
         </Link>
-        <p style={{ color: '#ef4444', marginTop: '1rem' }}>{error || 'No se encontró el registro'}</p>
+        <p className="text-error mt-4">{error || 'No se encontró el registro'}</p>
       </div>
     );
   }
 
   return (
-    <div style={{ padding: '2rem', maxWidth: 900, margin: '0 auto' }}>
-      <Link href={`/cattle/${id}`} style={{ color: '#16a34a', textDecoration: 'none', fontSize: '0.875rem', fontFamily: "'Manrope', sans-serif", fontWeight: 500 }}>
+    <div style={{ maxWidth: 900, margin: '0 auto' }}>
+      <Link href={`/cattle/${id}`} className="text-primary no-underline text-sm font-body font-medium">
         ← Volver al Detalle
       </Link>
-      <h1 style={{
-        fontFamily: "'Noto Serif', serif",
-        fontSize: '1.75rem',
-        fontWeight: 700,
-        margin: '1rem 0 1.5rem',
-        color: 'var(--foreground)',
-      }}>
+      <h1 className="font-heading text-2xl font-bold text-on-surface mt-4 mb-6">
         Editar Animal #{initialData.number || id}
       </h1>
-      <div style={{
-        background: 'var(--background, #fff)',
-        border: '1px solid #e5e7eb',
-        borderRadius: 12,
-        padding: '1.5rem',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
-      }}>
+      <Card>
         <CattleForm cattleId={id} initialData={initialData} />
-      </div>
+      </Card>
     </div>
   );
 }

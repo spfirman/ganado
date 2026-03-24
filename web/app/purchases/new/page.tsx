@@ -4,6 +4,10 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { apiFetch } from '../../lib/api';
 import Link from 'next/link';
+import Card from '../../components/ui/Card';
+import Input from '../../components/ui/Input';
+import Select from '../../components/ui/Select';
+import Button from '../../components/ui/Button';
 
 interface Provider {
   id: number;
@@ -52,61 +56,51 @@ export default function NewPurchasePage() {
     }
   }
 
-  const inputStyle: React.CSSProperties = {
-    width: '100%', padding: '0.625rem 0.75rem', border: '1px solid #d1d5db', borderRadius: 8,
-    fontSize: '0.875rem', fontFamily: "'Manrope', sans-serif", outline: 'none', boxSizing: 'border-box',
-  };
-  const labelStyle: React.CSSProperties = {
-    display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.375rem', color: '#374151',
-  };
-
   return (
-    <div style={{ padding: '2rem', maxWidth: 600, margin: '0 auto', fontFamily: "'Manrope', sans-serif" }}>
-      <Link href="/purchases" style={{ color: '#16a34a', textDecoration: 'none', fontWeight: 600, fontSize: '0.875rem' }}>
+    <div className="font-body" style={{ maxWidth: 600, margin: '0 auto' }}>
+      <Link href="/purchases" className="text-primary no-underline font-semibold text-sm">
         &larr; Volver a Compras
       </Link>
-      <h1 style={{ fontFamily: "'Noto Serif', serif", fontSize: '2rem', fontWeight: 700, marginTop: '1rem', marginBottom: '1.5rem' }}>
+      <h1 className="font-heading text-3xl font-bold text-on-surface mt-4 mb-6">
         Nueva Compra
       </h1>
 
       {error && (
-        <div style={{ padding: '1rem', background: '#fef2f2', color: '#b91c1c', borderRadius: 8, marginBottom: '1rem' }}>
-          {error}
-        </div>
+        <div className="bg-error/10 border border-error/30 text-error rounded-lg px-4 py-3 text-sm mb-4">{error}</div>
       )}
 
-      <form onSubmit={handleSubmit} style={{
-        background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12,
-        padding: '1.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
-        display: 'flex', flexDirection: 'column', gap: '1.25rem',
-      }}>
-        <div>
-          <label style={labelStyle}>Proveedor</label>
-          <select value={providerId} onChange={(e) => setProviderId(e.target.value)} required style={inputStyle}>
-            <option value="">Seleccionar proveedor...</option>
-            {providers.map((p) => (
-              <option key={p.id} value={p.id}>{p.name}</option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label style={labelStyle}>Fecha de Compra</label>
-          <input type="date" value={purchaseDate} onChange={(e) => setPurchaseDate(e.target.value)} required style={inputStyle} />
-        </div>
-
-        <div>
-          <label style={labelStyle}>Comentarios</label>
-          <textarea value={comments} onChange={(e) => setComments(e.target.value)} rows={3} style={{ ...inputStyle, resize: 'vertical' }} />
-        </div>
-
-        <button type="submit" disabled={submitting} style={{
-          padding: '0.75rem 1.5rem', background: submitting ? '#9ca3af' : '#16a34a', color: '#fff',
-          border: 'none', borderRadius: 8, fontSize: '0.875rem', fontWeight: 600, cursor: submitting ? 'not-allowed' : 'pointer',
-        }}>
-          {submitting ? 'Guardando...' : 'Crear Compra'}
-        </button>
-      </form>
+      <Card>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+          <Select
+            label="Proveedor"
+            options={providers.map((p) => ({ value: String(p.id), label: p.name }))}
+            placeholder="Seleccionar proveedor..."
+            value={providerId}
+            onChange={(e) => setProviderId(e.target.value)}
+            required
+          />
+          <Input
+            label="Fecha de Compra"
+            type="date"
+            value={purchaseDate}
+            onChange={(e) => setPurchaseDate(e.target.value)}
+            required
+          />
+          <div>
+            <label className="text-xs font-semibold text-on-surface-muted uppercase tracking-wide block mb-1">Comentarios</label>
+            <textarea
+              value={comments}
+              onChange={(e) => setComments(e.target.value)}
+              rows={3}
+              className="w-full px-3.5 py-2.5 text-sm rounded-md border border-border bg-surface text-on-surface outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-150"
+              style={{ resize: 'vertical' }}
+            />
+          </div>
+          <Button type="submit" disabled={submitting}>
+            {submitting ? 'Guardando...' : 'Crear Compra'}
+          </Button>
+        </form>
+      </Card>
     </div>
   );
 }

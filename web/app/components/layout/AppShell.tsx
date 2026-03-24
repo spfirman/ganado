@@ -6,32 +6,13 @@ import Footer from './Footer';
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   return (
-    <div style={styles.shell}>
+    <div className="flex min-h-screen bg-background">
       <Sidebar />
-      <div style={styles.main}>
+      <div className="flex-1 flex flex-col min-h-screen" style={{ marginLeft: 256 }}>
         <TopBar />
-        <main style={styles.content}>{children}</main>
+        <main className="flex-1 px-8 py-6">{children}</main>
         <Footer />
       </div>
     </div>
   );
 }
-
-const styles: Record<string, React.CSSProperties> = {
-  shell: {
-    display: 'flex',
-    minHeight: '100vh',
-    background: 'var(--surface)',
-  },
-  main: {
-    marginLeft: 256,
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    minHeight: '100vh',
-  },
-  content: {
-    flex: 1,
-    padding: '24px 32px',
-  },
-};

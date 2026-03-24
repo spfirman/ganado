@@ -4,6 +4,9 @@ import { useState, FormEvent, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { apiFetch } from '../lib/api';
 import { useAuth } from '../lib/auth-context';
+import Card from '../components/ui/Card';
+import Input from '../components/ui/Input';
+import Button from '../components/ui/Button';
 
 function OtpSetupContent() {
   const router = useRouter();
@@ -60,115 +63,118 @@ function OtpSetupContent() {
 
   if (!user) {
     return (
-      <div style={s.wrapper}>
-        <p style={{ color: '#6b7280' }}>Cargando...</p>
+      <div className="flex flex-col items-center justify-center min-h-[60vh]">
+        <p className="text-on-surface-muted">Cargando...</p>
       </div>
     );
   }
 
   return (
-    <div style={s.container}>
-      <h1 style={s.title}>Configurar Autenticación de Dos Factores</h1>
-      <p style={s.subtitle}>
+    <div style={{ maxWidth: 640, margin: '0 auto' }}>
+      <h1 className="font-heading text-2xl font-bold text-on-surface m-0">Configurar Autenticación de Dos Factores</h1>
+      <p className="text-on-surface-muted mt-1 mb-8 text-[0.9375rem]">
         Protege tu cuenta con un segundo paso de verificación usando una aplicación autenticadora.
       </p>
 
-      {error && <div style={s.errorMsg}>{error}</div>}
+      {error && (
+        <div className="bg-error/10 border border-error/30 text-error rounded-lg px-4 py-3 text-sm mb-4">{error}</div>
+      )}
 
       {/* Paso inicial */}
       {!started && (
-        <div style={s.card}>
-          <h2 style={s.sectionTitle}>¿Cómo funciona?</h2>
-          <ol style={{ margin: '1rem 0', paddingLeft: '1.25rem', color: '#374151', lineHeight: '1.8' }}>
+        <Card>
+          <h2 className="text-[1.0625rem] font-bold text-on-surface m-0 mb-2">¿Cómo funciona?</h2>
+          <ol className="my-4 pl-5 text-on-surface leading-loose">
             <li>Instala una aplicación autenticadora (Google Authenticator, Authy, etc.)</li>
             <li>Escanea el código QR que se generará</li>
             <li>Ingresa el código de 6 dígitos para verificar</li>
             <li>Guarda tus códigos de respaldo en un lugar seguro</li>
           </ol>
-          <button onClick={handleStartSetup} style={s.btnPrimary} disabled={submitting}>
+          <Button onClick={handleStartSetup} disabled={submitting}>
             {submitting ? 'Configurando...' : 'Comenzar Configuración'}
-          </button>
-        </div>
+          </Button>
+        </Card>
       )}
 
       {/* Paso QR */}
       {step === 'qr' && (
-        <div style={s.card}>
-          <h2 style={s.sectionTitle}>Paso 1: Escanea el Código QR</h2>
-          <p style={{ color: '#6b7280', fontSize: '0.875rem', marginBottom: '1rem' }}>
+        <Card>
+          <h2 className="text-[1.0625rem] font-bold text-on-surface m-0 mb-2">Paso 1: Escanea el Código QR</h2>
+          <p className="text-on-surface-muted text-sm mb-4">
             Abre tu aplicación autenticadora y escanea este código QR.
           </p>
-          <div style={{ textAlign: 'center', margin: '1.5rem 0' }}>
+          <div className="text-center my-6">
             {qrCodeUrl && (
               <img
                 src={qrCodeUrl}
                 alt="Código QR para 2FA"
-                style={{ width: 220, height: 220, borderRadius: 8, border: '1px solid #e5e7eb' }}
+                className="rounded-lg border border-border-light"
+                style={{ width: 220, height: 220 }}
               />
             )}
           </div>
-          <div style={s.secretBox}>
-            <span style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: 600 }}>
+          <div className="bg-surface border border-border-light rounded-lg px-4 py-3 flex flex-col gap-1.5">
+            <span className="text-xs text-on-surface-muted font-semibold">
               CLAVE MANUAL (si no puedes escanear):
             </span>
-            <code style={{ fontSize: '0.9375rem', fontFamily: 'monospace', wordBreak: 'break-all' }}>
+            <code className="text-[0.9375rem] font-mono break-all text-on-surface">
               {secret}
             </code>
           </div>
 
-          <h2 style={{ ...s.sectionTitle, marginTop: '2rem' }}>Paso 2: Códigos de Respaldo</h2>
-          <p style={{ color: '#6b7280', fontSize: '0.875rem', marginBottom: '0.75rem' }}>
+          <h2 className="text-[1.0625rem] font-bold text-on-surface mt-8 mb-2">Paso 2: Códigos de Respaldo</h2>
+          <p className="text-on-surface-muted text-sm mb-3">
             Guarda estos códigos en un lugar seguro. Puedes usarlos si pierdes acceso a tu app autenticadora.
           </p>
-          <div style={s.backupGrid}>
+          <div className="grid grid-cols-4 gap-2">
             {backupCodes.map((c, i) => (
-              <code key={i} style={s.backupCode}>{c}</code>
+              <code key={i} className="bg-surface rounded-md p-2 text-center font-mono text-[0.8125rem] text-on-surface">{c}</code>
             ))}
           </div>
 
-          <h2 style={{ ...s.sectionTitle, marginTop: '2rem' }}>Paso 3: Verifica</h2>
-          <form onSubmit={handleVerify} style={{ marginTop: '0.75rem' }}>
-            <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-end' }}>
-              <div style={{ flex: 1 }}>
-                <label style={s.label}>Código de 6 dígitos</label>
-                <input
+          <h2 className="text-[1.0625rem] font-bold text-on-surface mt-8 mb-2">Paso 3: Verifica</h2>
+          <form onSubmit={handleVerify} className="mt-3">
+            <div className="flex gap-3 items-end">
+              <div className="flex-1">
+                <Input
+                  label="Código de 6 dígitos"
                   type="text"
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
                   placeholder="000000"
                   maxLength={6}
-                  style={{ ...s.input, textAlign: 'center', fontSize: '1.125rem', letterSpacing: '0.2em' }}
                   autoFocus
                   required
+                  className="[&_input]:text-center [&_input]:text-lg [&_input]:tracking-widest"
                 />
               </div>
-              <button type="submit" style={s.btnPrimary} disabled={submitting}>
+              <Button type="submit" disabled={submitting}>
                 {submitting ? 'Verificando...' : 'Activar 2FA'}
-              </button>
+              </Button>
             </div>
           </form>
-        </div>
+        </Card>
       )}
 
       {/* Paso completado */}
       {step === 'done' && (
-        <div style={s.card}>
-          <div style={s.successMsg}>
+        <Card>
+          <div className="bg-success/10 border border-success/30 text-success rounded-lg px-4 py-3 text-[0.9375rem] font-semibold">
             Autenticación de dos factores activada correctamente.
           </div>
-          <p style={{ color: '#374151', marginTop: '1rem', fontSize: '0.875rem' }}>
+          <p className="text-on-surface mt-4 text-sm">
             A partir de ahora, cada vez que inicies sesión se te pedirá un código de tu aplicación autenticadora.
             Asegúrate de tener tus códigos de respaldo guardados.
           </p>
-          <div style={{ marginTop: '1.5rem', display: 'flex', gap: '0.75rem' }}>
-            <button onClick={() => router.push('/profile')} style={s.btnPrimary}>
+          <div className="mt-6 flex gap-3">
+            <Button onClick={() => router.push('/profile')}>
               Ir a Mi Perfil
-            </button>
-            <button onClick={() => router.push('/dashboard')} style={s.btnSecondary}>
+            </Button>
+            <Button variant="ghost" onClick={() => router.push('/dashboard')}>
               Ir al Dashboard
-            </button>
+            </Button>
           </div>
-        </div>
+        </Card>
       )}
     </div>
   );
@@ -176,28 +182,8 @@ function OtpSetupContent() {
 
 export default function OtpSetupPage() {
   return (
-    <Suspense fallback={<div style={{ padding: '2rem', textAlign: 'center', color: '#6b7280' }}>Cargando...</div>}>
+    <Suspense fallback={<div className="p-8 text-center text-on-surface-muted">Cargando...</div>}>
       <OtpSetupContent />
     </Suspense>
   );
 }
-
-const PRIMARY = '#16a34a';
-
-const s: Record<string, React.CSSProperties> = {
-  wrapper: { display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh' },
-  container: { padding: '2rem', maxWidth: 640, margin: '0 auto' },
-  title: { fontSize: '1.75rem', fontWeight: 700, margin: 0, color: 'var(--foreground)' },
-  subtitle: { color: '#6b7280', marginTop: '0.25rem', marginBottom: '2rem', fontSize: '0.9375rem' },
-  card: { background: 'var(--background, #fff)', border: '1px solid #e5e7eb', borderRadius: 12, boxShadow: '0 1px 3px rgba(0,0,0,0.08)', padding: '1.5rem' },
-  sectionTitle: { fontSize: '1.0625rem', fontWeight: 700, margin: '0 0 0.5rem', color: 'var(--foreground)' },
-  label: { fontSize: '0.875rem', fontWeight: 500, color: '#374151', display: 'block', marginBottom: '0.375rem' },
-  input: { padding: '0.625rem 0.75rem', fontSize: '0.875rem', border: '1px solid #d1d5db', borderRadius: 8, outline: 'none', width: '100%', boxSizing: 'border-box' as const },
-  btnPrimary: { padding: '0.625rem 1.5rem', background: PRIMARY, color: '#fff', border: 'none', borderRadius: 8, fontWeight: 600, fontSize: '0.875rem', cursor: 'pointer' },
-  btnSecondary: { padding: '0.625rem 1.5rem', background: 'transparent', color: '#374151', border: '1px solid #d1d5db', borderRadius: 8, fontWeight: 500, fontSize: '0.875rem', cursor: 'pointer' },
-  successMsg: { background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#166534', borderRadius: 8, padding: '0.75rem 1rem', fontSize: '0.9375rem', fontWeight: 600 },
-  errorMsg: { background: '#fef2f2', border: '1px solid #fecaca', color: '#991b1b', borderRadius: 8, padding: '0.75rem 1rem', fontSize: '0.875rem', marginBottom: '1rem' },
-  secretBox: { background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 8, padding: '0.75rem 1rem', display: 'flex', flexDirection: 'column' as const, gap: '0.375rem' },
-  backupGrid: { display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.5rem' },
-  backupCode: { background: '#f3f4f6', borderRadius: 6, padding: '0.5rem', textAlign: 'center' as const, fontFamily: 'monospace', fontSize: '0.8125rem', color: '#1f2937' },
-};

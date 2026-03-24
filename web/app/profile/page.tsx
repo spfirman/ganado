@@ -4,6 +4,10 @@ import { useState, useEffect, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../lib/auth-context';
 import { apiFetch } from '../lib/api';
+import Card from '../components/ui/Card';
+import Input from '../components/ui/Input';
+import Button from '../components/ui/Button';
+import ThemePicker from '../components/ui/ThemePicker';
 
 export default function ProfilePage() {
   const { user } = useAuth();
@@ -49,13 +53,8 @@ export default function ProfilePage() {
     try {
       await apiFetch(`/users/${user?.id}`, {
         method: 'PUT',
-        body: JSON.stringify({
-          first_name: firstName,
-          last_name: lastName,
-          email,
-        }),
+        body: JSON.stringify({ first_name: firstName, last_name: lastName, email }),
       });
-      // Update localStorage user
       if (typeof window !== 'undefined') {
         const stored = localStorage.getItem('ganado_user');
         if (stored) {
@@ -79,7 +78,6 @@ export default function ProfilePage() {
   async function handlePasswordChange(e: FormEvent) {
     e.preventDefault();
     setPwMsg(null);
-
     if (newPassword !== confirmPassword) {
       setPwMsg({ type: 'err', text: 'Las contraseñas no coinciden.' });
       return;
@@ -88,15 +86,11 @@ export default function ProfilePage() {
       setPwMsg({ type: 'err', text: 'La contraseña debe tener al menos 6 caracteres.' });
       return;
     }
-
     setChangingPw(true);
     try {
       await apiFetch('/auth/change-password', {
         method: 'POST',
-        body: JSON.stringify({
-          current_password: currentPassword,
-          new_password: newPassword,
-        }),
+        body: JSON.stringify({ current_password: currentPassword, new_password: newPassword }),
       });
       setCurrentPassword('');
       setNewPassword('');
@@ -111,121 +105,109 @@ export default function ProfilePage() {
 
   if (!user) {
     return (
-      <div style={s.wrapper}>
-        <p style={{ color: '#6b7280' }}>Cargando perfil...</p>
+      <div className="flex flex-col items-center justify-center min-h-[60vh]">
+        <p className="text-on-surface-muted">Cargando perfil...</p>
       </div>
     );
   }
 
   return (
-    <div style={s.container}>
-      <h1 style={s.title}>Mi Perfil</h1>
-      <p style={s.subtitle}>Administra tu información personal y contraseña.</p>
+    <div style={{ maxWidth: 700, margin: '0 auto' }}>
+      <h1 className="font-heading text-3xl font-bold text-on-surface m-0">Mi Perfil</h1>
+      <p className="text-on-surface-muted mt-1 mb-8 text-base">Administra tu información personal y contraseña.</p>
 
       {/* User info card */}
-      <div style={{ ...s.card, padding: '1.5rem', marginBottom: '1.5rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-          <div style={s.avatar}>
+      <Card className="mb-6">
+        <div className="flex items-center gap-4 mb-6">
+          <div className="w-14 h-14 rounded-full bg-primary text-on-primary flex items-center justify-center text-2xl font-bold shrink-0">
             {(user.first_name?.[0] ?? user.username[0]).toUpperCase()}
           </div>
           <div>
-            <div style={{ fontWeight: 700, fontSize: '1.125rem', color: 'var(--foreground)' }}>
+            <div className="font-bold text-lg text-on-surface">
               {[user.first_name, user.last_name].filter(Boolean).join(' ') || user.username}
             </div>
-            <div style={{ fontSize: '0.875rem', color: '#6b7280' }}>@{user.username}</div>
-            {user.role && <div style={{ fontSize: '0.75rem', color: '#16a34a', fontWeight: 600, marginTop: '0.25rem' }}>{user.role}</div>}
+            <div className="text-sm text-on-surface-muted">@{user.username}</div>
+            {user.role && <div className="text-xs text-primary font-semibold mt-1">{user.role}</div>}
           </div>
         </div>
 
         <form onSubmit={handleProfileSave}>
-          <div style={s.fieldGrid}>
-            <div style={s.field}>
-              <label style={s.label}>Nombre</label>
-              <input style={s.input} value={firstName} onChange={e => setFirstName(e.target.value)} />
-            </div>
-            <div style={s.field}>
-              <label style={s.label}>Apellido</label>
-              <input style={s.input} value={lastName} onChange={e => setLastName(e.target.value)} />
-            </div>
-            <div style={s.field}>
-              <label style={s.label}>Email</label>
-              <input style={s.input} type="email" value={email} onChange={e => setEmail(e.target.value)} />
-            </div>
+          <div className="grid grid-cols-2 gap-4">
+            <Input label="Nombre" value={firstName} onChange={e => setFirstName(e.target.value)} />
+            <Input label="Apellido" value={lastName} onChange={e => setLastName(e.target.value)} />
+            <Input label="Email" type="email" value={email} onChange={e => setEmail(e.target.value)} />
           </div>
 
           {profileMsg && (
-            <div style={profileMsg.type === 'ok' ? s.successMsg : s.errorMsg}>
+            <div className={`rounded-lg px-4 py-3 text-sm mt-4 ${profileMsg.type === 'ok' ? 'bg-success/10 border border-success/30 text-success' : 'bg-error/10 border border-error/30 text-error'}`}>
               {profileMsg.text}
             </div>
           )}
 
-          <div style={{ marginTop: '1.25rem' }}>
-            <button type="submit" style={s.btnPrimary} disabled={saving}>
+          <div className="mt-5">
+            <Button type="submit" disabled={saving}>
               {saving ? 'Guardando...' : 'Guardar Cambios'}
-            </button>
+            </Button>
           </div>
         </form>
-      </div>
+      </Card>
+
+      {/* Theme Preferences */}
+      <Card className="mb-6">
+        <h2 className="text-[1.0625rem] font-bold text-on-surface m-0 mb-3">Preferencias de Apariencia</h2>
+        <p className="text-sm text-on-surface-muted mb-4 mt-0">Selecciona un tema para personalizar la apariencia.</p>
+        <ThemePicker />
+      </Card>
 
       {/* Password change */}
-      <div style={{ ...s.card, padding: '1.5rem', marginBottom: '1.5rem' }}>
-        <h2 style={{ fontSize: '1.0625rem', fontWeight: 700, margin: '0 0 1rem', color: 'var(--foreground)' }}>
+      <Card className="mb-6">
+        <h2 className="text-[1.0625rem] font-bold text-on-surface m-0 mb-4">
           Cambiar Contraseña
         </h2>
         <form onSubmit={handlePasswordChange}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: 360 }}>
-            <div style={s.field}>
-              <label style={s.label}>Contraseña Actual</label>
-              <input style={s.input} type="password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} required />
-            </div>
-            <div style={s.field}>
-              <label style={s.label}>Nueva Contraseña</label>
-              <input style={s.input} type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} required />
-            </div>
-            <div style={s.field}>
-              <label style={s.label}>Confirmar Nueva Contraseña</label>
-              <input style={s.input} type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} required />
-            </div>
+          <div className="flex flex-col gap-4" style={{ maxWidth: 360 }}>
+            <Input label="Contraseña Actual" type="password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} required />
+            <Input label="Nueva Contraseña" type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} required />
+            <Input label="Confirmar Nueva Contraseña" type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} required />
           </div>
 
           {pwMsg && (
-            <div style={pwMsg.type === 'ok' ? s.successMsg : s.errorMsg}>
+            <div className={`rounded-lg px-4 py-3 text-sm mt-4 ${pwMsg.type === 'ok' ? 'bg-success/10 border border-success/30 text-success' : 'bg-error/10 border border-error/30 text-error'}`}>
               {pwMsg.text}
             </div>
           )}
 
-          <div style={{ marginTop: '1.25rem' }}>
-            <button type="submit" style={s.btnPrimary} disabled={changingPw}>
+          <div className="mt-5">
+            <Button type="submit" disabled={changingPw}>
               {changingPw ? 'Actualizando...' : 'Cambiar Contraseña'}
-            </button>
+            </Button>
           </div>
         </form>
-      </div>
+      </Card>
 
-      {/* Autenticación de Dos Factores */}
-      <div style={{ ...s.card, padding: '1.5rem' }}>
-        <h2 style={{ fontSize: '1.0625rem', fontWeight: 700, margin: '0 0 0.5rem', color: 'var(--foreground)' }}>
+      {/* 2FA */}
+      <Card>
+        <h2 className="text-[1.0625rem] font-bold text-on-surface m-0 mb-2">
           Autenticación de Dos Factores (2FA)
         </h2>
-        <p style={{ fontSize: '0.8125rem', color: '#6b7280', margin: '0 0 1rem' }}>
+        <p className="text-[0.8125rem] text-on-surface-muted mb-4 mt-0">
           Agrega una capa adicional de seguridad a tu cuenta usando una aplicación autenticadora.
         </p>
 
         {otpLoading ? (
-          <p style={{ color: '#9ca3af', fontSize: '0.875rem' }}>Cargando estado de 2FA...</p>
+          <p className="text-on-surface-muted text-sm">Cargando estado de 2FA...</p>
         ) : otpStatus?.isEnabled ? (
           <>
-            <div style={s.successMsg}>
+            <div className="bg-success/10 border border-success/30 text-success rounded-lg px-4 py-3 text-sm">
               2FA está activado. Códigos de respaldo restantes: {otpStatus.backupCodesRemaining}
             </div>
-            <div style={{ marginTop: '1rem', maxWidth: 360 }}>
-              <p style={{ fontSize: '0.8125rem', color: '#6b7280', margin: '0 0 0.75rem' }}>
+            <div className="mt-4" style={{ maxWidth: 360 }}>
+              <p className="text-[0.8125rem] text-on-surface-muted mb-3 mt-0">
                 Para desactivar 2FA, ingresa un código de tu app autenticadora o un código de respaldo:
               </p>
-              <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-end' }}>
-                <div style={{ flex: 1 }}>
-                  <input
-                    style={s.input}
+              <div className="flex gap-3 items-end">
+                <div className="flex-1">
+                  <Input
                     type="text"
                     value={disableCode}
                     onChange={e => setDisableCode(e.target.value)}
@@ -233,8 +215,8 @@ export default function ProfilePage() {
                     maxLength={8}
                   />
                 </div>
-                <button
-                  style={{ ...s.btnPrimary, background: '#dc2626' }}
+                <Button
+                  variant="danger"
                   disabled={disabling2fa || !disableCode}
                   onClick={async () => {
                     setOtpMsg(null);
@@ -255,48 +237,27 @@ export default function ProfilePage() {
                   }}
                 >
                   {disabling2fa ? 'Desactivando...' : 'Desactivar 2FA'}
-                </button>
+                </Button>
               </div>
             </div>
           </>
         ) : (
           <div>
-            <p style={{ fontSize: '0.875rem', color: '#6b7280', margin: '0 0 1rem' }}>
+            <p className="text-sm text-on-surface-muted mb-4 mt-0">
               2FA no está activado. Actívalo para mayor seguridad.
             </p>
-            <button
-              style={s.btnPrimary}
-              onClick={() => router.push('/otp-setup')}
-            >
+            <Button onClick={() => router.push('/otp-setup')}>
               Activar 2FA
-            </button>
+            </Button>
           </div>
         )}
 
         {otpMsg && (
-          <div style={{ ...(otpMsg.type === 'ok' ? s.successMsg : s.errorMsg), marginTop: '1rem' }}>
+          <div className={`rounded-lg px-4 py-3 text-sm mt-4 ${otpMsg.type === 'ok' ? 'bg-success/10 border border-success/30 text-success' : 'bg-error/10 border border-error/30 text-error'}`}>
             {otpMsg.text}
           </div>
         )}
-      </div>
+      </Card>
     </div>
   );
 }
-
-const PRIMARY = '#16a34a';
-
-const s: Record<string, React.CSSProperties> = {
-  wrapper: { display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh' },
-  container: { padding: '2rem', maxWidth: 700, margin: '0 auto' },
-  title: { fontSize: '2rem', fontWeight: 700, margin: 0, color: 'var(--foreground)' },
-  subtitle: { color: '#6b7280', marginTop: '0.25rem', marginBottom: '2rem', fontSize: '1rem' },
-  card: { background: 'var(--background, #fff)', border: '1px solid #e5e7eb', borderRadius: 12, boxShadow: '0 1px 3px rgba(0,0,0,0.08)' },
-  avatar: { width: 56, height: 56, borderRadius: '50%', background: PRIMARY, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', fontWeight: 700, flexShrink: 0 },
-  fieldGrid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' },
-  field: { display: 'flex', flexDirection: 'column' as const, gap: '0.375rem' },
-  label: { fontSize: '0.875rem', fontWeight: 500, color: '#374151' },
-  input: { padding: '0.625rem 0.75rem', fontSize: '0.875rem', border: '1px solid #d1d5db', borderRadius: 8, outline: 'none', width: '100%', boxSizing: 'border-box' as const },
-  btnPrimary: { padding: '0.625rem 1.5rem', background: PRIMARY, color: '#fff', border: 'none', borderRadius: 8, fontWeight: 600, fontSize: '0.875rem', cursor: 'pointer' },
-  successMsg: { background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#166534', borderRadius: 8, padding: '0.75rem 1rem', fontSize: '0.875rem', marginTop: '1rem' },
-  errorMsg: { background: '#fef2f2', border: '1px solid #fecaca', color: '#991b1b', borderRadius: 8, padding: '0.75rem 1rem', fontSize: '0.875rem', marginTop: '1rem' },
-};

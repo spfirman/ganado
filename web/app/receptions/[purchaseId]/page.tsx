@@ -3,6 +3,11 @@
 import { useEffect, useState, FormEvent } from 'react';
 import { useParams } from 'next/navigation';
 import { apiFetch } from '../../lib/api';
+import Card from '../../components/ui/Card';
+import Input from '../../components/ui/Input';
+import Select from '../../components/ui/Select';
+import Button from '../../components/ui/Button';
+import DataTable from '../../components/ui/DataTable';
 
 interface Purchase {
   id: number;
@@ -108,165 +113,100 @@ export default function ReceptionPage() {
 
   if (loading) {
     return (
-      <div style={s.wrapper}>
-        <div style={s.spinner} />
-        <p style={{ color: '#6b7280', marginTop: '1rem' }}>Cargando recepción...</p>
+      <div className="flex flex-col items-center justify-center min-h-[60vh]">
+        <div className="w-10 h-10 border-4 border-border rounded-full border-t-primary animate-spin" />
+        <p className="text-on-surface-muted mt-4">Cargando recepción...</p>
       </div>
     );
   }
 
   return (
-    <div style={s.container}>
-      <h1 style={s.title}>Recepción de Compra</h1>
+    <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+      <h1 className="font-heading text-3xl font-bold text-on-surface m-0 mb-6">Recepción de Compra</h1>
 
-      {error && <div style={s.alert}>{error}</div>}
+      {error && (
+        <div className="bg-error/10 border border-error/30 text-error rounded-lg px-4 py-3 text-sm mb-4">{error}</div>
+      )}
 
       {/* Purchase info */}
       {purchase && (
-        <div style={{ ...s.card, padding: '1.25rem 1.5rem', marginBottom: '1.5rem' }}>
-          <h2 style={{ fontSize: '1rem', fontWeight: 700, margin: '0 0 0.75rem', color: 'var(--foreground)' }}>Información de la Compra</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '0.75rem', fontSize: '0.875rem' }}>
-            <div><span style={s.infoLabel}>ID:</span> {purchase.id}</div>
-            <div><span style={s.infoLabel}>Proveedor:</span> {purchase.supplier_name ?? '—'}</div>
-            <div><span style={s.infoLabel}>Fecha:</span> {purchase.purchase_date ?? '—'}</div>
-            <div><span style={s.infoLabel}>Total Cabezas:</span> {purchase.total_cattle ?? '—'}</div>
-            <div><span style={s.infoLabel}>Estado:</span> {purchase.status ?? '—'}</div>
-            <div><span style={s.infoLabel}>Recibidos:</span> {received.length}</div>
+        <Card className="mb-6">
+          <h2 className="text-base font-bold text-on-surface m-0 mb-3">Información de la Compra</h2>
+          <div className="grid gap-3 text-sm" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))' }}>
+            <div><span className="font-semibold text-on-surface">ID:</span> {purchase.id}</div>
+            <div><span className="font-semibold text-on-surface">Proveedor:</span> {purchase.supplier_name ?? '—'}</div>
+            <div><span className="font-semibold text-on-surface">Fecha:</span> {purchase.purchase_date ?? '—'}</div>
+            <div><span className="font-semibold text-on-surface">Total Cabezas:</span> {purchase.total_cattle ?? '—'}</div>
+            <div><span className="font-semibold text-on-surface">Estado:</span> {purchase.status ?? '—'}</div>
+            <div><span className="font-semibold text-on-surface">Recibidos:</span> {received.length}</div>
           </div>
-        </div>
+        </Card>
       )}
 
       {/* Reception form */}
-      <div style={{ ...s.card, padding: '1.5rem', marginBottom: '1.5rem' }}>
-        <h2 style={{ fontSize: '1rem', fontWeight: 700, margin: '0 0 1rem', color: 'var(--foreground)' }}>Registrar Animal</h2>
+      <Card className="mb-6">
+        <h2 className="text-base font-bold text-on-surface m-0 mb-4">Registrar Animal</h2>
         <form onSubmit={handleSubmit}>
-          <div style={s.fieldGrid}>
-            <div style={s.field}>
-              <label style={s.label}>Número</label>
-              <input style={s.input} type="number" value={form.number} onChange={e => setForm(p => ({ ...p, number: e.target.value }))} required />
-            </div>
-            <div style={s.field}>
-              <label style={s.label}>Peso Recibido (kg)</label>
-              <input style={s.input} type="number" step="0.01" value={form.receivedWeight} onChange={e => setForm(p => ({ ...p, receivedWeight: e.target.value }))} required />
-            </div>
-            <div style={s.field}>
-              <label style={s.label}>Peso Compra (kg)</label>
-              <input style={s.input} type="number" step="0.01" value={form.purchaseWeight} onChange={e => setForm(p => ({ ...p, purchaseWeight: e.target.value }))} required />
-            </div>
-            <div style={s.field}>
-              <label style={s.label}>Precio Compra</label>
-              <input style={s.input} type="number" step="0.01" value={form.purchasePrice} onChange={e => setForm(p => ({ ...p, purchasePrice: e.target.value }))} required />
-            </div>
-            <div style={s.field}>
-              <label style={s.label}>Lote</label>
-              <input style={s.input} value={form.lot} onChange={e => setForm(p => ({ ...p, lot: e.target.value }))} />
-            </div>
-            <div style={s.field}>
-              <label style={s.label}>Fierro / Marca</label>
-              <input style={s.input} value={form.brand} onChange={e => setForm(p => ({ ...p, brand: e.target.value }))} />
-            </div>
-            <div style={s.field}>
-              <label style={s.label}>Color</label>
-              <input style={s.input} value={form.color} onChange={e => setForm(p => ({ ...p, color: e.target.value }))} />
-            </div>
-            <div style={s.field}>
-              <label style={s.label}>Género</label>
-              <select style={s.input} value={form.gender} onChange={e => setForm(p => ({ ...p, gender: e.target.value }))}>
-                <option value="macho">Macho</option>
-                <option value="hembra">Hembra</option>
-              </select>
-            </div>
-            <div style={s.field}>
-              <label style={s.label}>Arete Izquierdo</label>
-              <input style={s.input} value={form.eartagLeft} onChange={e => setForm(p => ({ ...p, eartagLeft: e.target.value }))} />
-            </div>
-            <div style={s.field}>
-              <label style={s.label}>Arete Derecho</label>
-              <input style={s.input} value={form.eartagRight} onChange={e => setForm(p => ({ ...p, eartagRight: e.target.value }))} />
-            </div>
-            <div style={s.field}>
-              <label style={{ ...s.label, display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-                <input type="checkbox" checked={form.castrated} onChange={e => setForm(p => ({ ...p, castrated: e.target.checked }))} />
+          <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))' }}>
+            <Input label="Número" type="number" value={form.number} onChange={e => setForm(p => ({ ...p, number: e.target.value }))} required />
+            <Input label="Peso Recibido (kg)" type="number" step="0.01" value={form.receivedWeight} onChange={e => setForm(p => ({ ...p, receivedWeight: e.target.value }))} required />
+            <Input label="Peso Compra (kg)" type="number" step="0.01" value={form.purchaseWeight} onChange={e => setForm(p => ({ ...p, purchaseWeight: e.target.value }))} required />
+            <Input label="Precio Compra" type="number" step="0.01" value={form.purchasePrice} onChange={e => setForm(p => ({ ...p, purchasePrice: e.target.value }))} required />
+            <Input label="Lote" value={form.lot} onChange={e => setForm(p => ({ ...p, lot: e.target.value }))} />
+            <Input label="Fierro / Marca" value={form.brand} onChange={e => setForm(p => ({ ...p, brand: e.target.value }))} />
+            <Input label="Color" value={form.color} onChange={e => setForm(p => ({ ...p, color: e.target.value }))} />
+            <Select
+              label="Género"
+              options={[{ value: 'macho', label: 'Macho' }, { value: 'hembra', label: 'Hembra' }]}
+              value={form.gender}
+              onChange={e => setForm(p => ({ ...p, gender: e.target.value }))}
+            />
+            <Input label="Arete Izquierdo" value={form.eartagLeft} onChange={e => setForm(p => ({ ...p, eartagLeft: e.target.value }))} />
+            <Input label="Arete Derecho" value={form.eartagRight} onChange={e => setForm(p => ({ ...p, eartagRight: e.target.value }))} />
+            <div className="flex items-center">
+              <label className="flex items-center gap-2 text-sm font-medium text-on-surface cursor-pointer">
+                <input type="checkbox" checked={form.castrated} onChange={e => setForm(p => ({ ...p, castrated: e.target.checked }))} className="accent-primary" />
                 Castrado
               </label>
             </div>
-            <div style={s.field}>
-              <label style={{ ...s.label, display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-                <input type="checkbox" checked={form.hasHorn} onChange={e => setForm(p => ({ ...p, hasHorn: e.target.checked }))} />
+            <div className="flex items-center">
+              <label className="flex items-center gap-2 text-sm font-medium text-on-surface cursor-pointer">
+                <input type="checkbox" checked={form.hasHorn} onChange={e => setForm(p => ({ ...p, hasHorn: e.target.checked }))} className="accent-primary" />
                 Con Cuernos
               </label>
             </div>
           </div>
-          <div style={{ marginTop: '1.25rem' }}>
-            <button type="submit" style={s.btnPrimary} disabled={submitting}>
+          <div className="mt-5">
+            <Button type="submit" disabled={submitting}>
               {submitting ? 'Registrando...' : 'Registrar Animal'}
-            </button>
+            </Button>
           </div>
         </form>
-      </div>
+      </Card>
 
       {/* Received cattle list */}
-      <div style={s.card}>
-        <div style={{ padding: '1rem 1.5rem', borderBottom: '1px solid #e5e7eb' }}>
-          <h2 style={{ fontSize: '1rem', fontWeight: 700, margin: 0, color: 'var(--foreground)' }}>
+      <Card padding="none">
+        <div className="px-6 py-4 border-b border-border-light">
+          <h2 className="text-base font-bold text-on-surface m-0">
             Animales Recibidos ({received.length})
           </h2>
         </div>
-        <div style={{ overflowX: 'auto' }}>
-          <table style={s.table}>
-            <thead>
-              <tr>
-                <th style={s.th}>#</th>
-                <th style={s.th}>Peso Recibido</th>
-                <th style={s.th}>Peso Compra</th>
-                <th style={s.th}>Precio</th>
-                <th style={s.th}>Lote</th>
-                <th style={s.th}>Color</th>
-                <th style={s.th}>Género</th>
-                <th style={s.th}>Arete Izq.</th>
-                <th style={s.th}>Arete Der.</th>
-              </tr>
-            </thead>
-            <tbody>
-              {received.length === 0 ? (
-                <tr><td colSpan={9} style={{ ...s.td, textAlign: 'center', color: '#9ca3af' }}>No se han recibido animales aún</td></tr>
-              ) : received.map((c, i) => (
-                <tr key={c.id ?? i}>
-                  <td style={s.td}>{c.number ?? i + 1}</td>
-                  <td style={s.td}>{c.received_weight ?? '—'}</td>
-                  <td style={s.td}>{c.purchase_weight ?? '—'}</td>
-                  <td style={s.td}>{c.purchase_price != null ? `$${c.purchase_price}` : '—'}</td>
-                  <td style={s.td}>{c.lot || '—'}</td>
-                  <td style={s.td}>{c.color || '—'}</td>
-                  <td style={s.td}>{c.gender || '—'}</td>
-                  <td style={s.td}>{c.eartag_left || '—'}</td>
-                  <td style={s.td}>{c.eartag_right || '—'}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+        <DataTable
+          columns={[
+            { key: 'number', label: '#', render: (c: ReceivedCattle, i?: number) => c.number ?? (i != null ? i + 1 : '—') },
+            { key: 'received_weight', label: 'Peso Recibido', render: (c: ReceivedCattle) => c.received_weight ?? '—' },
+            { key: 'purchase_weight', label: 'Peso Compra', render: (c: ReceivedCattle) => c.purchase_weight ?? '—' },
+            { key: 'purchase_price', label: 'Precio', render: (c: ReceivedCattle) => c.purchase_price != null ? `$${c.purchase_price}` : '—' },
+            { key: 'lot', label: 'Lote', render: (c: ReceivedCattle) => c.lot || '—' },
+            { key: 'color', label: 'Color', render: (c: ReceivedCattle) => c.color || '—' },
+            { key: 'gender', label: 'Género', render: (c: ReceivedCattle) => c.gender || '—' },
+            { key: 'eartag_left', label: 'Arete Izq.', render: (c: ReceivedCattle) => c.eartag_left || '—' },
+            { key: 'eartag_right', label: 'Arete Der.', render: (c: ReceivedCattle) => c.eartag_right || '—' },
+          ]}
+          data={received}
+          emptyMessage="No se han recibido animales aún"
+        />
+      </Card>
     </div>
   );
 }
-
-const PRIMARY = '#16a34a';
-
-const s: Record<string, React.CSSProperties> = {
-  wrapper: { display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh' },
-  spinner: { width: 40, height: 40, border: '4px solid #e5e7eb', borderTopColor: PRIMARY, borderRadius: '50%', animation: 'spin 0.8s linear infinite' },
-  container: { padding: '2rem', maxWidth: 1200, margin: '0 auto' },
-  title: { fontSize: '2rem', fontWeight: 700, margin: '0 0 1.5rem', color: 'var(--foreground)' },
-  alert: { background: '#fef2f2', border: '1px solid #fecaca', color: '#991b1b', borderRadius: 8, padding: '0.75rem 1rem', fontSize: '0.875rem', marginBottom: '1rem' },
-  card: { background: 'var(--background, #fff)', border: '1px solid #e5e7eb', borderRadius: 12, boxShadow: '0 1px 3px rgba(0,0,0,0.08)', overflow: 'hidden' },
-  fieldGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem' },
-  field: { display: 'flex', flexDirection: 'column' as const, gap: '0.375rem' },
-  label: { fontSize: '0.875rem', fontWeight: 500, color: '#374151' },
-  input: { padding: '0.625rem 0.75rem', fontSize: '0.875rem', border: '1px solid #d1d5db', borderRadius: 8, outline: 'none', width: '100%', boxSizing: 'border-box' as const },
-  infoLabel: { fontWeight: 600, color: '#374151' },
-  table: { width: '100%', borderCollapse: 'collapse' as const, fontSize: '0.8125rem' },
-  th: { textAlign: 'left' as const, padding: '0.625rem 0.75rem', borderBottom: '2px solid #e5e7eb', fontWeight: 600, color: '#374151', background: '#f9fafb', fontSize: '0.75rem', whiteSpace: 'nowrap' as const },
-  td: { padding: '0.625rem 0.75rem', borderBottom: '1px solid #f3f4f6', color: 'var(--foreground)' },
-  btnPrimary: { padding: '0.625rem 1.5rem', background: PRIMARY, color: '#fff', border: 'none', borderRadius: 8, fontWeight: 600, fontSize: '0.875rem', cursor: 'pointer' },
-};

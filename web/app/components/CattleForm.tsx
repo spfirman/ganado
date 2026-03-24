@@ -3,6 +3,9 @@
 import { useState, FormEvent } from 'react';
 import { apiFetch } from '../lib/api';
 import { useRouter } from 'next/navigation';
+import Button from './ui/Button';
+import Input from './ui/Input';
+import Select from './ui/Select';
 
 export interface CattleFormData {
   number: string;
@@ -38,7 +41,17 @@ const EMPTY_FORM: CattleFormData = {
   eartagRight: '',
 };
 
-const COLOR_OPTIONS = ['', 'Negro', 'Blanco', 'Café', 'Rojo', 'Amarillo', 'Pinto', 'Gris', 'Otro'];
+const COLOR_OPTIONS = [
+  { value: '', label: 'Seleccionar...' },
+  { value: 'Negro', label: 'Negro' },
+  { value: 'Blanco', label: 'Blanco' },
+  { value: 'Café', label: 'Café' },
+  { value: 'Rojo', label: 'Rojo' },
+  { value: 'Amarillo', label: 'Amarillo' },
+  { value: 'Pinto', label: 'Pinto' },
+  { value: 'Gris', label: 'Gris' },
+  { value: 'Otro', label: 'Otro' },
+];
 const GENDER_OPTIONS = [
   { value: '', label: 'Seleccionar...' },
   { value: 'MALE', label: 'Macho' },
@@ -51,7 +64,6 @@ const STATUS_OPTIONS = [
 ];
 
 interface CattleFormProps {
-  /** When provided, the form acts as edit mode. */
   cattleId?: string;
   initialData?: Partial<CattleFormData>;
 }
@@ -124,262 +136,131 @@ export default function CattleForm({ cattleId, initialData }: CattleFormProps) {
     }
   }
 
-  const labelStyle: React.CSSProperties = {
-    display: 'block',
-    fontFamily: "'Manrope', sans-serif",
-    fontSize: '0.8125rem',
-    fontWeight: 600,
-    color: '#374151',
-    marginBottom: '0.25rem',
-  };
-
-  const inputStyle: React.CSSProperties = {
-    width: '100%',
-    fontFamily: "'Manrope', sans-serif",
-    fontSize: '0.875rem',
-    padding: '0.5rem 0.75rem',
-    border: '1px solid #d1d5db',
-    borderRadius: 6,
-    outline: 'none',
-    background: 'var(--background, #fff)',
-    color: 'var(--foreground, #111)',
-    boxSizing: 'border-box',
-  };
-
-  const fieldWrap: React.CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-  };
-
   return (
     <form onSubmit={handleSubmit}>
       {error && (
-        <div style={{
-          background: '#fef2f2',
-          border: '1px solid #fecaca',
-          borderRadius: 8,
-          padding: '0.75rem 1rem',
-          color: '#991b1b',
-          fontSize: '0.875rem',
-          fontFamily: "'Manrope', sans-serif",
-          marginBottom: '1.25rem',
-        }}>
+        <div className="bg-error/10 border border-error/30 rounded-lg px-4 py-3 text-error text-sm font-body mb-5">
           {error}
         </div>
       )}
 
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
-        gap: '1rem',
-        marginBottom: '1.5rem',
-      }}>
-        {/* Number */}
-        <div style={fieldWrap}>
-          <label style={labelStyle}>Número *</label>
-          <input
-            type="text"
-            value={form.number}
-            onChange={(e) => set('number', e.target.value)}
-            style={inputStyle}
-            required
-          />
-        </div>
-
-        {/* Received Weight */}
-        <div style={fieldWrap}>
-          <label style={labelStyle}>Peso Recibido (kg)</label>
-          <input
-            type="number"
-            step="0.01"
-            value={form.receivedWeight}
-            onChange={(e) => set('receivedWeight', e.target.value)}
-            style={inputStyle}
-          />
-        </div>
-
-        {/* Purchase Weight */}
-        <div style={fieldWrap}>
-          <label style={labelStyle}>Peso de Compra (kg)</label>
-          <input
-            type="number"
-            step="0.01"
-            value={form.purchaseWeight}
-            onChange={(e) => set('purchaseWeight', e.target.value)}
-            style={inputStyle}
-          />
-        </div>
-
-        {/* Purchase Price */}
-        <div style={fieldWrap}>
-          <label style={labelStyle}>Precio de Compra</label>
-          <input
-            type="number"
-            step="0.01"
-            value={form.purchasePrice}
-            onChange={(e) => set('purchasePrice', e.target.value)}
-            style={inputStyle}
-          />
-        </div>
-
-        {/* Last Weight */}
-        <div style={fieldWrap}>
-          <label style={labelStyle}>Último Peso (kg)</label>
-          <input
-            type="number"
-            step="0.01"
-            value={form.lastWeight}
-            onChange={(e) => set('lastWeight', e.target.value)}
-            style={inputStyle}
-          />
-        </div>
-
-        {/* Color */}
-        <div style={fieldWrap}>
-          <label style={labelStyle}>Color</label>
-          <select
-            value={form.color}
-            onChange={(e) => set('color', e.target.value)}
-            style={inputStyle}
-          >
-            {COLOR_OPTIONS.map((c) => (
-              <option key={c} value={c}>{c || 'Seleccionar...'}</option>
-            ))}
-          </select>
-        </div>
-
-        {/* Gender */}
-        <div style={fieldWrap}>
-          <label style={labelStyle}>Género *</label>
-          <select
-            value={form.gender}
-            onChange={(e) => set('gender', e.target.value)}
-            style={inputStyle}
-            required
-          >
-            {GENDER_OPTIONS.map((g) => (
-              <option key={g.value} value={g.value}>{g.label}</option>
-            ))}
-          </select>
-        </div>
-
-        {/* Status */}
-        <div style={fieldWrap}>
-          <label style={labelStyle}>Estado</label>
-          <select
-            value={form.status}
-            onChange={(e) => set('status', e.target.value)}
-            style={inputStyle}
-          >
-            {STATUS_OPTIONS.map((s) => (
-              <option key={s.value} value={s.value}>{s.label}</option>
-            ))}
-          </select>
-        </div>
-
-        {/* Birth date */}
-        <div style={fieldWrap}>
-          <label style={labelStyle}>Fecha Nacimiento Aprox.</label>
-          <input
-            type="date"
-            value={form.birthDateAprx}
-            onChange={(e) => set('birthDateAprx', e.target.value)}
-            style={inputStyle}
-          />
-        </div>
-
-        {/* Eartag Left */}
-        <div style={fieldWrap}>
-          <label style={labelStyle}>Arete Izquierdo</label>
-          <input
-            type="text"
-            value={form.eartagLeft}
-            onChange={(e) => set('eartagLeft', e.target.value)}
-            style={inputStyle}
-          />
-        </div>
-
-        {/* Eartag Right */}
-        <div style={fieldWrap}>
-          <label style={labelStyle}>Arete Derecho</label>
-          <input
-            type="text"
-            value={form.eartagRight}
-            onChange={(e) => set('eartagRight', e.target.value)}
-            style={inputStyle}
-          />
-        </div>
+      <div className="grid gap-4 mb-6" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))' }}>
+        <Input
+          label="Número *"
+          type="text"
+          value={form.number}
+          onChange={(e) => set('number', e.target.value)}
+          required
+        />
+        <Input
+          label="Peso Recibido (kg)"
+          type="number"
+          step="0.01"
+          value={form.receivedWeight}
+          onChange={(e) => set('receivedWeight', e.target.value)}
+        />
+        <Input
+          label="Peso de Compra (kg)"
+          type="number"
+          step="0.01"
+          value={form.purchaseWeight}
+          onChange={(e) => set('purchaseWeight', e.target.value)}
+        />
+        <Input
+          label="Precio de Compra"
+          type="number"
+          step="0.01"
+          value={form.purchasePrice}
+          onChange={(e) => set('purchasePrice', e.target.value)}
+        />
+        <Input
+          label="Último Peso (kg)"
+          type="number"
+          step="0.01"
+          value={form.lastWeight}
+          onChange={(e) => set('lastWeight', e.target.value)}
+        />
+        <Select
+          label="Color"
+          options={COLOR_OPTIONS}
+          value={form.color}
+          onChange={(e) => set('color', e.target.value)}
+        />
+        <Select
+          label="Género *"
+          options={GENDER_OPTIONS}
+          value={form.gender}
+          onChange={(e) => set('gender', e.target.value)}
+          required
+        />
+        <Select
+          label="Estado"
+          options={STATUS_OPTIONS}
+          value={form.status}
+          onChange={(e) => set('status', e.target.value)}
+        />
+        <Input
+          label="Fecha Nacimiento Aprox."
+          type="date"
+          value={form.birthDateAprx}
+          onChange={(e) => set('birthDateAprx', e.target.value)}
+        />
+        <Input
+          label="Arete Izquierdo"
+          type="text"
+          value={form.eartagLeft}
+          onChange={(e) => set('eartagLeft', e.target.value)}
+        />
+        <Input
+          label="Arete Derecho"
+          type="text"
+          value={form.eartagRight}
+          onChange={(e) => set('eartagRight', e.target.value)}
+        />
       </div>
 
       {/* Checkboxes */}
-      <div style={{ display: 'flex', gap: '2rem', marginBottom: '1.25rem', flexWrap: 'wrap' }}>
-        <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontFamily: "'Manrope', sans-serif", fontSize: '0.875rem', fontWeight: 500, color: '#374151', cursor: 'pointer' }}>
+      <div className="flex gap-8 mb-5 flex-wrap">
+        <label className="flex items-center gap-2 font-body text-sm font-medium text-on-surface cursor-pointer">
           <input
             type="checkbox"
             checked={form.castrated}
             onChange={(e) => set('castrated', e.target.checked)}
-            style={{ width: 16, height: 16, accentColor: '#16a34a' }}
+            className="w-4 h-4 accent-primary"
           />
           Castrado
         </label>
-        <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontFamily: "'Manrope', sans-serif", fontSize: '0.875rem', fontWeight: 500, color: '#374151', cursor: 'pointer' }}>
+        <label className="flex items-center gap-2 font-body text-sm font-medium text-on-surface cursor-pointer">
           <input
             type="checkbox"
             checked={form.hasHorn}
             onChange={(e) => set('hasHorn', e.target.checked)}
-            style={{ width: 16, height: 16, accentColor: '#16a34a' }}
+            className="w-4 h-4 accent-primary"
           />
           Tiene Cuernos
         </label>
       </div>
 
       {/* Comments */}
-      <div style={{ marginBottom: '1.5rem' }}>
-        <label style={labelStyle}>Comentarios</label>
+      <div className="mb-6">
+        <label className="text-xs font-semibold text-on-surface-muted uppercase tracking-wide block mb-1">Comentarios</label>
         <textarea
           value={form.comments}
           onChange={(e) => set('comments', e.target.value)}
           rows={3}
-          style={{ ...inputStyle, resize: 'vertical' }}
+          className="w-full px-3.5 py-2.5 text-sm rounded-md border border-border bg-surface text-on-surface outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-150"
+          style={{ resize: 'vertical' }}
         />
       </div>
 
       {/* Actions */}
-      <div style={{ display: 'flex', gap: '0.75rem' }}>
-        <button
-          type="submit"
-          disabled={submitting}
-          style={{
-            padding: '0.625rem 1.5rem',
-            background: submitting ? '#86efac' : '#16a34a',
-            color: '#fff',
-            border: 'none',
-            borderRadius: 8,
-            fontFamily: "'Manrope', sans-serif",
-            fontSize: '0.875rem',
-            fontWeight: 600,
-            cursor: submitting ? 'default' : 'pointer',
-          }}
-        >
+      <div className="flex gap-3">
+        <Button type="submit" disabled={submitting}>
           {submitting ? 'Guardando...' : isEdit ? 'Actualizar' : 'Crear Animal'}
-        </button>
-        <button
-          type="button"
-          onClick={() => router.back()}
-          style={{
-            padding: '0.625rem 1.5rem',
-            background: 'var(--background, #fff)',
-            color: 'var(--foreground, #111)',
-            border: '1px solid #d1d5db',
-            borderRadius: 8,
-            fontFamily: "'Manrope', sans-serif",
-            fontSize: '0.875rem',
-            fontWeight: 500,
-            cursor: 'pointer',
-          }}
-        >
+        </Button>
+        <Button type="button" variant="ghost" onClick={() => router.back()}>
           Cancelar
-        </button>
+        </Button>
       </div>
     </form>
   );

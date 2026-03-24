@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import { Manrope, Noto_Serif } from 'next/font/google';
 import './globals.css';
-import './components/theme/tokens.css';
 import LayoutShell from './components/layout/LayoutShell';
 import { AuthProvider } from './lib/auth-context';
+import { ThemeProvider } from './lib/theme-context';
 
 const manrope = Manrope({
   variable: '--font-body',
@@ -32,16 +32,16 @@ export default function RootLayout({
       lang="es"
       className={`${manrope.variable} ${notoSerif.variable} h-full antialiased`}
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: `(function(){var t=localStorage.getItem('ganado-theme')||'pasturePrime';if(t==='system')t=window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t)})()` }} />
+      </head>
       <body
-        className="min-h-full flex flex-col"
-        style={{
-          fontFamily: 'var(--font-body)',
-          background: 'var(--surface)',
-          color: 'var(--on-surface)',
-        }}
+        className="min-h-full flex flex-col bg-background text-on-background font-body"
       >
         <AuthProvider>
-          <LayoutShell>{children}</LayoutShell>
+          <ThemeProvider>
+            <LayoutShell>{children}</LayoutShell>
+          </ThemeProvider>
         </AuthProvider>
       </body>
     </html>

@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import { apiFetch } from '../lib/api';
 import Link from 'next/link';
+import KPICard from '../components/ui/KPICard';
+import Button from '../components/ui/Button';
 
 interface Counts {
   cattle: number;
@@ -48,11 +50,11 @@ export default function DashboardPage() {
     load();
   }, []);
 
-  const metrics = [
-    { label: 'Total Ganado', value: counts.cattle, icon: '🐄' },
-    { label: 'Compras Activas', value: counts.purchases, icon: '🛒' },
-    { label: 'Ventas del Mes', value: counts.sales, icon: '💰' },
-    { label: 'Eventos Activos', value: counts.events, icon: '📋' },
+  const metrics: { label: string; value: string | number; icon: string; variant: 'positive' | 'neutral' | 'alert' }[] = [
+    { label: 'Total Ganado', value: loading ? '—' : counts.cattle, icon: '🐄', variant: 'positive' },
+    { label: 'Compras Activas', value: loading ? '—' : counts.purchases, icon: '🛒', variant: 'neutral' },
+    { label: 'Ventas del Mes', value: loading ? '—' : counts.sales, icon: '💰', variant: 'neutral' },
+    { label: 'Eventos Activos', value: loading ? '—' : counts.events, icon: '📋', variant: 'alert' },
   ];
 
   const quickActions = [
@@ -63,91 +65,37 @@ export default function DashboardPage() {
   ];
 
   return (
-    <div style={{ padding: '2rem', maxWidth: 1100, margin: '0 auto' }}>
-      <h1 style={{
-        fontFamily: "'Noto Serif', serif",
-        fontSize: '2rem',
-        fontWeight: 700,
-        margin: 0,
-        color: 'var(--foreground)',
-      }}>
+    <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+      <h1 className="font-heading text-3xl font-bold text-on-surface m-0">
         Panel de Control
       </h1>
-      <p style={{
-        fontFamily: "'Manrope', sans-serif",
-        color: '#666',
-        marginTop: '0.25rem',
-        marginBottom: '2rem',
-        fontSize: '1rem',
-      }}>
+      <p className="font-body text-on-surface-muted mt-1 mb-8 text-base">
         Resumen de operaciones del rancho
       </p>
 
       {/* Metric Cards */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
-        gap: '1.25rem',
-        marginBottom: '2.5rem',
-      }}>
+      <div className="grid gap-5 mb-10" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))' }}>
         {metrics.map((m) => (
-          <div key={m.label} style={{
-            background: 'var(--background, #fff)',
-            border: '1px solid #e5e7eb',
-            borderRadius: 12,
-            padding: '1.5rem',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '0.5rem',
-          }}>
-            <span style={{ fontSize: '1.75rem' }}>{m.icon}</span>
-            <span style={{
-              fontFamily: "'Manrope', sans-serif",
-              fontSize: '2rem',
-              fontWeight: 700,
-              color: '#16a34a',
-            }}>
-              {loading ? '—' : m.value}
-            </span>
-            <span style={{
-              fontFamily: "'Manrope', sans-serif",
-              fontSize: '0.875rem',
-              color: '#6b7280',
-            }}>
-              {m.label}
-            </span>
-          </div>
+          <KPICard
+            key={m.label}
+            title={m.label}
+            value={m.value}
+            bgVariant={m.variant}
+            icon={<span className="text-2xl">{m.icon}</span>}
+          />
         ))}
       </div>
 
       {/* Quick Actions */}
-      <h2 style={{
-        fontFamily: "'Noto Serif', serif",
-        fontSize: '1.25rem',
-        fontWeight: 600,
-        marginBottom: '1rem',
-        color: 'var(--foreground)',
-      }}>
+      <h2 className="font-heading text-xl font-semibold text-on-surface mb-4">
         Acciones Rápidas
       </h2>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+      <div className="flex flex-wrap gap-3">
         {quickActions.map((a) => (
-          <Link key={a.href} href={a.href} style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            padding: '0.625rem 1.25rem',
-            background: '#16a34a',
-            color: '#fff',
-            borderRadius: 8,
-            fontFamily: "'Manrope', sans-serif",
-            fontSize: '0.875rem',
-            fontWeight: 600,
-            textDecoration: 'none',
-            transition: 'background 0.15s',
-          }}>
-            + {a.label}
+          <Link key={a.href} href={a.href} className="no-underline">
+            <Button variant="primary" size="md">
+              + {a.label}
+            </Button>
           </Link>
         ))}
       </div>
