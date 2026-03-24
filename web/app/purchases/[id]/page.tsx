@@ -71,9 +71,16 @@ export default function PurchaseDetailPage() {
 
       {purchase && (
         <>
-          <h1 className="font-heading text-3xl font-bold text-on-surface mt-4 mb-2">
-            Compra #{purchase.id}
-          </h1>
+          <div className="flex justify-between items-start mt-4 mb-2 flex-wrap gap-4">
+            <h1 className="font-heading text-3xl font-bold text-on-surface m-0">
+              Compra #{purchase.id}
+            </h1>
+            <Link href={`/receptions?purchaseId=${purchase.id}`} className="no-underline">
+              <span className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-md bg-primary text-on-primary hover:bg-primary-dark transition-colors cursor-pointer shadow-sm">
+                Recepción
+              </span>
+            </Link>
+          </div>
 
           <Card className="mb-8">
             <div className="grid gap-5" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))' }}>

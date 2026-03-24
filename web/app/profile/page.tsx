@@ -25,6 +25,13 @@ export default function ProfilePage() {
   const [changingPw, setChangingPw] = useState(false);
   const [pwMsg, setPwMsg] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
 
+  // Notification preferences
+  const [notifDaily, setNotifDaily] = useState(false);
+  const [notifCritical, setNotifCritical] = useState(true);
+  const [notifFinancial, setNotifFinancial] = useState(false);
+  const [savingNotif, setSavingNotif] = useState(false);
+  const [notifMsg, setNotifMsg] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
+
   // Estado 2FA
   const [otpStatus, setOtpStatus] = useState<{ isEnabled: boolean; backupCodesRemaining: number } | null>(null);
   const [otpLoading, setOtpLoading] = useState(true);
@@ -103,10 +110,32 @@ export default function ProfilePage() {
     }
   }
 
+  async function handleNotifSave() {
+    setSavingNotif(true);
+    setNotifMsg(null);
+    try {
+      await apiFetch('/users/me', {
+        method: 'PUT',
+        body: JSON.stringify({
+          notification_preferences: {
+            daily_summary: notifDaily,
+            critical_alerts: notifCritical,
+            financial_reports: notifFinancial,
+          },
+        }),
+      });
+      setNotifMsg({ type: 'ok', text: 'Preferencias de notificación guardadas.' });
+    } catch (err) {
+      setNotifMsg({ type: 'err', text: err instanceof Error ? err.message : 'Error al guardar preferencias' });
+    } finally {
+      setSavingNotif(false);
+    }
+  }
+
   if (!user) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh]">
-        <p className="text-on-surface-muted">Cargando perfil...</p>
+      <div className="flex items-center justify-center py-20">
+        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -157,6 +186,84 @@ export default function ProfilePage() {
         <h2 className="text-[1.0625rem] font-bold text-on-surface m-0 mb-3">Preferencias de Apariencia</h2>
         <p className="text-sm text-on-surface-muted mb-4 mt-0">Selecciona un tema para personalizar la apariencia.</p>
         <ThemePicker />
+      </Card>
+
+      {/* Notification Preferences */}
+      <Card className="mb-6">
+        <h2 className="text-[1.0625rem] font-bold text-on-surface m-0 mb-3">Preferencias de Notificación</h2>
+        <p className="text-sm text-on-surface-muted mb-4 mt-0">Configura cómo y cuándo recibir notificaciones.</p>
+
+        <div className="flex flex-col gap-4">
+          {/* Toggle: Daily Summary */}
+          <label className="flex items-center justify-between cursor-pointer py-2">
+            <div>
+              <div className="text-sm font-semibold text-on-surface">Resumen Diario por Email</div>
+              <div className="text-xs text-on-surface-muted mt-0.5">Recibe un resumen diario de actividad en tu correo</div>
+            </div>
+            <div className="relative">
+              <input
+                type="checkbox"
+                checked={notifDaily}
+                onChange={(e) => setNotifDaily(e.target.checked)}
+                className="sr-only peer"
+              />
+              <div className="w-11 h-6 bg-surface border border-border rounded-full peer-checked:bg-primary transition-colors" />
+              <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform peer-checked:translate-x-5" />
+            </div>
+          </label>
+
+          <div className="border-t border-border-light" />
+
+          {/* Toggle: Critical Alerts */}
+          <label className="flex items-center justify-between cursor-pointer py-2">
+            <div>
+              <div className="text-sm font-semibold text-on-surface">Alertas Críticas de Ganado</div>
+              <div className="text-xs text-on-surface-muted mt-0.5">Notificaciones inmediatas sobre eventos críticos de salud</div>
+            </div>
+            <div className="relative">
+              <input
+                type="checkbox"
+                checked={notifCritical}
+                onChange={(e) => setNotifCritical(e.target.checked)}
+                className="sr-only peer"
+              />
+              <div className="w-11 h-6 bg-surface border border-border rounded-full peer-checked:bg-primary transition-colors" />
+              <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform peer-checked:translate-x-5" />
+            </div>
+          </label>
+
+          <div className="border-t border-border-light" />
+
+          {/* Toggle: Financial Reports */}
+          <label className="flex items-center justify-between cursor-pointer py-2">
+            <div>
+              <div className="text-sm font-semibold text-on-surface">Reportes Financieros (Mensual)</div>
+              <div className="text-xs text-on-surface-muted mt-0.5">Resumen mensual de ventas, compras e impuestos</div>
+            </div>
+            <div className="relative">
+              <input
+                type="checkbox"
+                checked={notifFinancial}
+                onChange={(e) => setNotifFinancial(e.target.checked)}
+                className="sr-only peer"
+              />
+              <div className="w-11 h-6 bg-surface border border-border rounded-full peer-checked:bg-primary transition-colors" />
+              <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform peer-checked:translate-x-5" />
+            </div>
+          </label>
+        </div>
+
+        {notifMsg && (
+          <div className={`rounded-lg px-4 py-3 text-sm mt-4 ${notifMsg.type === 'ok' ? 'bg-success/10 border border-success/30 text-success' : 'bg-error/10 border border-error/30 text-error'}`}>
+            {notifMsg.text}
+          </div>
+        )}
+
+        <div className="mt-5">
+          <Button onClick={handleNotifSave} disabled={savingNotif}>
+            {savingNotif ? 'Guardando...' : 'Guardar Preferencias'}
+          </Button>
+        </div>
       </Card>
 
       {/* Password change */}

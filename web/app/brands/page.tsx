@@ -109,8 +109,11 @@ export default function BrandsPage() {
       )}
 
       {!loading && !error && brands.length === 0 && (
-        <div className="text-center py-12 text-on-surface-muted">
-          No hay hierros registrados
+        <div className="text-center py-16 text-on-surface-muted">
+          <div className="text-5xl mb-4">&#9678;</div>
+          <p className="text-lg font-semibold mb-2 text-on-surface">No hay hierros registrados</p>
+          <p className="text-sm mb-5">Comienza agregando el primer hierro de tu rancho.</p>
+          <Button onClick={() => setShowForm(true)}>+ Crear Primer Hierro</Button>
         </div>
       )}
 

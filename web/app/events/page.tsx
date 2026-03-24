@@ -8,6 +8,7 @@ import Badge from '../components/ui/Badge';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
+import KPICard from '../components/ui/KPICard';
 
 interface MassiveEvent {
   id: number;
@@ -16,7 +17,10 @@ interface MassiveEvent {
   status?: string;
   createdAt?: string;
   date?: string;
+  type?: string;
 }
+
+type TabFilter = 'todos' | 'vacunacion' | 'tratamiento' | 'movimiento';
 
 export default function EventsPage() {
   const [events, setEvents] = useState<MassiveEvent[]>([]);
@@ -26,6 +30,7 @@ export default function EventsPage() {
   const [formName, setFormName] = useState('');
   const [formDesc, setFormDesc] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [activeTab, setActiveTab] = useState<TabFilter>('todos');
 
   async function load() {
     try {
@@ -60,9 +65,45 @@ export default function EventsPage() {
     }
   }
 
+  // Filter events by tab
+  const filteredEvents = activeTab === 'todos'
+    ? events
+    : events.filter(ev => {
+        const t = (ev.type || ev.name || '').toLowerCase();
+        if (activeTab === 'vacunacion') return t.includes('vacun');
+        if (activeTab === 'tratamiento') return t.includes('tratam') || t.includes('medic');
+        if (activeTab === 'movimiento') return t.includes('movim') || t.includes('traslad');
+        return true;
+      });
+
+  // KPI mock counts (TODO: replace with API data when available)
+  const activeCount = events.filter(e => e.status === 'open').length;
+  const totalAnimals = events.length * 12; // mock estimate
+  const upcoming7d = Math.min(events.length, 3); // mock
+  const complianceRate = events.length > 0 ? 87 : 0; // mock
+
+  function eventTypeLabel(ev: MassiveEvent): string {
+    const t = (ev.type || ev.name || '').toLowerCase();
+    if (t.includes('vacun')) return 'Vacunación';
+    if (t.includes('tratam') || t.includes('medic')) return 'Tratamiento';
+    if (t.includes('movim') || t.includes('traslad')) return 'Movimiento';
+    return 'General';
+  }
+
+  function eventTypeBadgeVariant(ev: MassiveEvent): 'info' | 'warning' | 'success' | 'neutral' {
+    const t = (ev.type || ev.name || '').toLowerCase();
+    if (t.includes('vacun')) return 'info';
+    if (t.includes('tratam') || t.includes('medic')) return 'warning';
+    if (t.includes('movim') || t.includes('traslad')) return 'success';
+    return 'neutral';
+  }
+
   const columns = [
     { key: 'name', label: 'Nombre', render: (ev: MassiveEvent) => <span className="font-semibold">{ev.name}</span> },
-    { key: 'description', label: 'Descripcion', render: (ev: MassiveEvent) => ev.description || '—' },
+    { key: 'type', label: 'Tipo', render: (ev: MassiveEvent) => (
+      <Badge label={eventTypeLabel(ev)} variant={eventTypeBadgeVariant(ev)} />
+    )},
+    { key: 'description', label: 'Descripción', render: (ev: MassiveEvent) => ev.description || '—' },
     { key: 'status', label: 'Estado', render: (ev: MassiveEvent) => (
       <Badge
         label={ev.status === 'open' ? 'Abierto' : ev.status === 'closed' ? 'Cerrado' : (ev.status || '—')}
@@ -75,6 +116,13 @@ export default function EventsPage() {
     )},
   ];
 
+  const tabs: { key: TabFilter; label: string }[] = [
+    { key: 'todos', label: 'Todos' },
+    { key: 'vacunacion', label: 'Vacunaciones' },
+    { key: 'tratamiento', label: 'Tratamientos' },
+    { key: 'movimiento', label: 'Movimientos' },
+  ];
+
   return (
     <div className="font-body" style={{ maxWidth: 1100, margin: '0 auto' }}>
       <div className="flex justify-between items-center mb-6">
@@ -82,13 +130,58 @@ export default function EventsPage() {
         <Button onClick={() => setShowForm(!showForm)}>+ Nuevo Evento</Button>
       </div>
 
+      {/* KPI Cards */}
+      <div className="grid gap-4 mb-6" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))' }}>
+        <KPICard
+          title="Tratamientos Activos"
+          value={activeCount}
+          delta={`${events.length} total`}
+          bgVariant="positive"
+        />
+        <KPICard
+          title="Animales Afectados"
+          value={totalAnimals}
+          delta="Estimado acumulado"
+          bgVariant="neutral"
+        />
+        <KPICard
+          title="Programados Próx. 7D"
+          value={upcoming7d}
+          delta="Eventos próximos"
+          bgVariant="alert"
+        />
+        <KPICard
+          title="Tasa de Cumplimiento"
+          value={`${complianceRate}%`}
+          delta="Último mes"
+          bgVariant="positive"
+        />
+      </div>
+
+      {/* Tab Filters */}
+      <div className="flex gap-2 mb-5 flex-wrap">
+        {tabs.map((tab) => (
+          <button
+            key={tab.key}
+            onClick={() => setActiveTab(tab.key)}
+            className={`px-4 py-2 text-sm font-semibold rounded-md transition-colors cursor-pointer border ${
+              activeTab === tab.key
+                ? 'bg-primary text-on-primary border-primary'
+                : 'bg-surface text-on-surface-muted border-border hover:bg-surface-alt'
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
       {showForm && (
         <Card className="mb-6">
           <form onSubmit={handleCreate} className="flex flex-col gap-4">
             <Input label="Nombre" type="text" value={formName} onChange={(e) => setFormName(e.target.value)} required placeholder="Nombre del evento" />
             <div>
-              <label className="text-xs font-semibold text-on-surface-muted uppercase tracking-wide block mb-1">Descripcion</label>
-              <textarea value={formDesc} onChange={(e) => setFormDesc(e.target.value)} rows={2} className="w-full px-3.5 py-2.5 text-sm rounded-md border border-border bg-surface text-on-surface outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-150" style={{ resize: 'vertical' }} placeholder="Descripcion del evento" />
+              <label className="text-xs font-semibold text-on-surface-muted uppercase tracking-wide block mb-1">Descripción</label>
+              <textarea value={formDesc} onChange={(e) => setFormDesc(e.target.value)} rows={2} className="w-full px-3.5 py-2.5 text-sm rounded-md border border-border bg-surface text-on-surface outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-150" style={{ resize: 'vertical' }} placeholder="Descripción del evento" />
             </div>
             <div className="flex gap-3">
               <Button type="submit" disabled={submitting}>
@@ -106,7 +199,7 @@ export default function EventsPage() {
         <div className="bg-error/10 border border-error/30 text-error rounded-lg px-4 py-3 text-sm mb-4">{error}</div>
       )}
 
-      <DataTable columns={columns} data={events} loading={loading} emptyMessage="No hay eventos registrados" />
+      <DataTable columns={columns} data={filteredEvents} loading={loading} emptyMessage="No hay eventos registrados" />
     </div>
   );
 }

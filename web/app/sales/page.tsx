@@ -43,6 +43,9 @@ export default function SalesPage() {
     { key: 'totalWeight', label: 'Peso Total', render: (s: Sale) => s.totalWeight != null ? `${s.totalWeight} kg` : '—' },
     { key: 'totalPrice', label: 'Precio Total', render: (s: Sale) => s.totalPrice != null ? `COP $${s.totalPrice.toLocaleString()}` : '—' },
     { key: 'status', label: 'Estado', render: (s: Sale) => <Badge label={s.status || 'pendiente'} variant={s.status === 'completed' ? 'success' : 'warning'} /> },
+    { key: '_actions', label: 'Acciones', render: (s: Sale) => (
+      <Link href={`/sales/${s.id}`} className="text-primary font-semibold no-underline hover:underline text-sm">Ver</Link>
+    )},
   ];
 
   return (

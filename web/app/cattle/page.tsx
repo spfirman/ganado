@@ -51,6 +51,7 @@ export default function CattleListPage() {
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('');
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const fetchCattle = useCallback(async () => {
@@ -70,7 +71,8 @@ export default function CattleListPage() {
         setCattle(res.data ?? []);
         setTotal(res.total ?? 0);
       }
-    } catch {
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Error al cargar ganado');
       setCattle([]);
       setTotal(0);
     } finally {
@@ -118,9 +120,14 @@ export default function CattleListPage() {
         <h1 className="font-heading text-3xl font-bold text-on-surface m-0">
           Ganado
         </h1>
-        <Link href="/cattle/new" className="no-underline">
-          <Button>+ Nuevo Animal</Button>
-        </Link>
+        <div className="flex gap-3">
+          <Link href="/cattle/import" className="no-underline">
+            <Button variant="ghost">Importar</Button>
+          </Link>
+          <Link href="/cattle/new" className="no-underline">
+            <Button>+ Nuevo Animal</Button>
+          </Link>
+        </div>
       </div>
 
       {/* Filters */}
@@ -145,6 +152,12 @@ export default function CattleListPage() {
           <option value="deceased">Fallecido</option>
         </select>
       </div>
+
+      {error && (
+        <div className="bg-error/10 text-error px-4 py-3 rounded-lg mb-4">
+          {error}
+        </div>
+      )}
 
       {/* Table */}
       <DataTable

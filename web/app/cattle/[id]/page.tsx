@@ -80,8 +80,8 @@ export default function CattleDetailPage() {
 
   if (loading) {
     return (
-      <div className="p-8 text-center font-body text-on-surface-muted">
-        Cargando...
+      <div className="flex items-center justify-center py-20">
+        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }

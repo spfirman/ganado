@@ -16,6 +16,7 @@ interface Counts {
 export default function DashboardPage() {
   const [counts, setCounts] = useState<Counts>({ cattle: 0, purchases: 0, sales: 0, events: 0 });
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function load() {
@@ -41,8 +42,8 @@ export default function DashboardPage() {
           sales: extractCount(salesRes),
           events: extractCount(eventsRes),
         });
-      } catch {
-        // leave zeros
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Error al cargar datos del panel');
       } finally {
         setLoading(false);
       }
@@ -64,6 +65,14 @@ export default function DashboardPage() {
     { label: 'Nuevo Evento', href: '/events/new' },
   ];
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <div style={{ maxWidth: 1100, margin: '0 auto' }}>
       <h1 className="font-heading text-3xl font-bold text-on-surface m-0">
@@ -72,6 +81,12 @@ export default function DashboardPage() {
       <p className="font-body text-on-surface-muted mt-1 mb-8 text-base">
         Resumen de operaciones del rancho
       </p>
+
+      {error && (
+        <div className="bg-error/10 text-error px-4 py-3 rounded-lg mb-4">
+          {error}
+        </div>
+      )}
 
       {/* Metric Cards */}
       <div className="grid gap-5 mb-10" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))' }}>

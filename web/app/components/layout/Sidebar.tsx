@@ -108,6 +108,28 @@ function IconRole() {
   );
 }
 
+function IconTax() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+      <polyline points="14 2 14 8 20 8" />
+      <line x1="16" y1="13" x2="8" y2="13" />
+      <line x1="16" y1="17" x2="8" y2="17" />
+      <polyline points="10 9 9 9 8 9" />
+    </svg>
+  );
+}
+
+function IconImport() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+      <polyline points="7 10 12 15 17 10" />
+      <line x1="12" y1="15" x2="12" y2="3" />
+    </svg>
+  );
+}
+
 function IconSettings() {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -138,6 +160,7 @@ const navSections: NavSection[] = [
     items: [
       { label: 'Panel', href: '/dashboard', icon: <IconDashboard /> },
       { label: 'Ganado', href: '/cattle', icon: <IconCattle /> },
+      { label: 'Importar Ganado', href: '/cattle/import', icon: <IconImport /> },
       { label: 'Hierros', href: '/brands', icon: <IconBrand /> },
     ],
   },
@@ -147,6 +170,12 @@ const navSections: NavSection[] = [
       { label: 'Compras', href: '/purchases', icon: <IconPurchase /> },
       { label: 'Ventas', href: '/sales', icon: <IconSale /> },
       { label: 'Proveedores', href: '/providers', icon: <IconProvider /> },
+    ],
+  },
+  {
+    title: 'FINANZAS',
+    items: [
+      { label: 'Impuestos', href: '/tax', icon: <IconTax /> },
     ],
   },
   {
@@ -167,7 +196,7 @@ const navSections: NavSection[] = [
 
 /* ─── Sidebar component ─── */
 
-export default function Sidebar() {
+export default function Sidebar({ onClose }: { onClose?: () => void }) {
   const pathname = usePathname();
 
   const isActive = (href: string) =>
@@ -177,6 +206,18 @@ export default function Sidebar() {
     <aside className="fixed top-0 left-0 bottom-0 flex flex-col z-40 overflow-y-auto overflow-x-hidden bg-sidebar-bg" style={{ width: 256 }}>
       {/* Brand */}
       <div className="flex items-center gap-3 border-b border-white/8" style={{ padding: '24px 20px 20px' }}>
+        {onClose && (
+          <button
+            className="md:hidden w-8 h-8 flex items-center justify-center border-none bg-transparent rounded-lg text-white/65 cursor-pointer hover:bg-white/10 shrink-0"
+            onClick={onClose}
+            aria-label="Cerrar menú"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        )}
         <div className="flex items-center justify-center shrink-0 rounded-lg" style={{ width: 40, height: 40, background: 'rgba(201,168,76,0.12)' }}>
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gold-accent, #C9A84C)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <ellipse cx="12" cy="14" rx="8" ry="6" />
@@ -203,6 +244,7 @@ export default function Sidebar() {
                 <Link
                   key={item.href}
                   href={item.href}
+                  onClick={onClose}
                   className={`
                     relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
                     no-underline transition-all duration-150 mb-0.5 font-body

@@ -95,8 +95,13 @@ export default function RolesPage() {
       )}
 
       {roles.length === 0 ? (
-        <Card className="text-center text-on-surface-muted py-8">
-          No hay roles configurados
+        <Card className="text-center text-on-surface-muted py-12">
+          <div className="flex flex-col items-center gap-2">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="opacity-40">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+            <p className="text-sm m-0">No hay roles configurados</p>
+          </div>
         </Card>
       ) : (
         <div className="flex flex-col gap-5">
