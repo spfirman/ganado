@@ -32,9 +32,15 @@ interface Lot {
   gender?: string;
 }
 
+interface Provider {
+  id: string;
+  name: string;
+}
+
 interface PurchaseDetail {
   id: number | string;
   purchaseDate: string;
+  idProvider?: string;
   providerName?: string;
   provider?: { name: string };
   totalAnimals?: number;
@@ -58,7 +64,15 @@ export default function PurchaseDetailPage() {
   useEffect(() => {
     async function load() {
       try {
-        const res = await apiFetch<PurchaseDetail>(`/purchases/${id}`);
+        const [res, providersRes] = await Promise.all([
+          apiFetch<PurchaseDetail>(`/purchases/${id}`),
+          apiFetch<Provider[] | { data?: Provider[]; items?: Provider[] }>('/providers').catch(() => [] as Provider[]),
+        ]);
+        const providers = Array.isArray(providersRes) ? providersRes : (providersRes as { items?: Provider[]; data?: Provider[] }).items ?? (providersRes as { data?: Provider[] }).data ?? [];
+        if (res.idProvider && !res.providerName && !res.provider) {
+          const prov = providers.find(p => p.id === res.idProvider);
+          if (prov) res.providerName = prov.name;
+        }
         setPurchase(res);
       } catch (e: unknown) {
         setError(e instanceof Error ? e.message : 'Error al cargar la compra');

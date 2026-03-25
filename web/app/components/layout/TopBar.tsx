@@ -121,9 +121,13 @@ export default function TopBar({ onMenuToggle }: { onMenuToggle?: () => void }) 
             </div>
             <div className="flex flex-col items-start" style={{ lineHeight: 1.3 }}>
               <span className="text-[0.8125rem] font-semibold text-on-surface">{user ? `${user.first_name ?? ''} ${user.last_name ?? ''}`.trim() || user.username : 'Usuario'}</span>
-              <span className="text-[0.6875rem] text-on-surface-muted">{
-                ({ SYS_ADMIN: 'Administrador', MANAGER: 'Gerente', ACCOUNTANT: 'Contador', FARM_WORKER: 'Operario' } as Record<string, string>)[user?.role ?? ''] ?? user?.role ?? 'Usuario'
-              }</span>
+              <span className="text-[0.6875rem] text-on-surface-muted">{(() => {
+                const roleMap: Record<string, string> = { SYS_ADMIN: 'Administrador', MANAGER: 'Gerente', ACCOUNTANT: 'Contador', FARM_WORKER: 'Operario' };
+                const code = (user as Record<string, unknown>)?.roles && Array.isArray((user as Record<string, unknown>).roles)
+                  ? ((user as Record<string, unknown>).roles as Array<{ code?: string }>)[0]?.code
+                  : user?.role;
+                return roleMap[code ?? ''] ?? code ?? 'Usuario';
+              })()}</span>
             </div>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="6 9 12 15 18 9" />

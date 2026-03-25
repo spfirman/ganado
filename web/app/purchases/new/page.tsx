@@ -10,8 +10,9 @@ import Select from '../../components/ui/Select';
 import Button from '../../components/ui/Button';
 
 interface Provider {
-  id: number;
+  id: number | string;
   name: string;
+  type?: string;
 }
 
 interface Lot {
@@ -56,8 +57,9 @@ export default function NewPurchasePage() {
   useEffect(() => {
     async function loadProviders() {
       try {
-        const res = await apiFetch<Provider[] | { data: Provider[] }>('/providers');
-        setProviders(Array.isArray(res) ? res : res.data ?? []);
+        const res = await apiFetch<Provider[] | { data?: Provider[]; items?: Provider[] }>('/providers');
+        const all = Array.isArray(res) ? res : res.items ?? res.data ?? [];
+        setProviders(all.filter(p => !p.type || p.type === 'PROVIDER'));
       } catch {
         // silent
       }

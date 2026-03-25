@@ -8,11 +8,12 @@ import Badge from '../components/ui/Badge';
 import Button from '../components/ui/Button';
 
 interface Purchase {
-  id: number;
+  id: number | string;
   purchaseDate: string;
   providerName?: string;
   provider?: { name: string };
   totalAnimals?: number;
+  totalCattle?: number;
   totalWeight?: number;
   totalPrice?: number;
   status?: string;
@@ -26,8 +27,8 @@ export default function PurchasesPage() {
   useEffect(() => {
     async function load() {
       try {
-        const res = await apiFetch<Purchase[] | { data: Purchase[] }>('/purchases');
-        setPurchases(Array.isArray(res) ? res : res.data ?? []);
+        const res = await apiFetch<Purchase[] | { data?: Purchase[]; items?: Purchase[] }>('/purchases');
+        setPurchases(Array.isArray(res) ? res : res.items ?? res.data ?? []);
       } catch (e: unknown) {
         setError(e instanceof Error ? e.message : 'Error al cargar compras');
       } finally {
@@ -40,7 +41,7 @@ export default function PurchasesPage() {
   const columns = [
     { key: 'purchaseDate', label: 'Fecha', render: (p: Purchase) => p.purchaseDate ? new Date(p.purchaseDate).toLocaleDateString('es-CO') : '—' },
     { key: 'providerName', label: 'Proveedor', render: (p: Purchase) => p.providerName || p.provider?.name || '—' },
-    { key: 'totalAnimals', label: '# Animales', render: (p: Purchase) => p.totalAnimals ?? '—' },
+    { key: 'totalAnimals', label: '# Animales', render: (p: Purchase) => p.totalCattle ?? p.totalAnimals ?? '—' },
     { key: 'totalWeight', label: 'Peso Total', render: (p: Purchase) => p.totalWeight != null ? `${p.totalWeight} kg` : '—' },
     { key: 'totalPrice', label: 'Precio Total', render: (p: Purchase) => p.totalPrice != null ? `COP $${p.totalPrice.toLocaleString()}` : '—' },
     { key: 'status', label: 'Estado', render: (p: Purchase) => <Badge label={p.status || 'pendiente'} variant={p.status === 'completed' ? 'success' : 'warning'} /> },

@@ -8,11 +8,16 @@ import Badge from '../components/ui/Badge';
 import Button from '../components/ui/Button';
 
 interface Sale {
-  id: number;
-  saleDate: string;
+  id: number | string;
+  transactionDate?: string;
+  saleDate?: string;
+  buyer?: { name: string };
   buyerName?: string;
+  totalAnimalCount?: number;
   totalAnimals?: number;
+  totalWeightKg?: number;
   totalWeight?: number;
+  totalAmount?: number;
   totalPrice?: number;
   status?: string;
 }
@@ -25,8 +30,8 @@ export default function SalesPage() {
   useEffect(() => {
     async function load() {
       try {
-        const res = await apiFetch<Sale[] | { data: Sale[] }>('/sales');
-        setSales(Array.isArray(res) ? res : res.data ?? []);
+        const res = await apiFetch<Sale[] | { data?: Sale[]; items?: Sale[] }>('/sales');
+        setSales(Array.isArray(res) ? res : res.items ?? res.data ?? []);
       } catch (e: unknown) {
         setError(e instanceof Error ? e.message : 'Error al cargar ventas');
       } finally {
@@ -37,12 +42,12 @@ export default function SalesPage() {
   }, []);
 
   const columns = [
-    { key: 'saleDate', label: 'Fecha', render: (s: Sale) => s.saleDate ? new Date(s.saleDate).toLocaleDateString('es-CO') : '—' },
-    { key: 'buyerName', label: 'Comprador', render: (s: Sale) => s.buyerName || '—' },
-    { key: 'totalAnimals', label: '# Animales', render: (s: Sale) => s.totalAnimals ?? '—' },
-    { key: 'totalWeight', label: 'Peso Total', render: (s: Sale) => s.totalWeight != null ? `${s.totalWeight} kg` : '—' },
-    { key: 'totalPrice', label: 'Precio Total', render: (s: Sale) => s.totalPrice != null ? `COP $${s.totalPrice.toLocaleString()}` : '—' },
-    { key: 'status', label: 'Estado', render: (s: Sale) => <Badge label={s.status || 'pendiente'} variant={s.status === 'completed' ? 'success' : 'warning'} /> },
+    { key: 'transactionDate', label: 'Fecha', render: (s: Sale) => { const d = s.transactionDate || s.saleDate; return d ? new Date(d).toLocaleDateString('es-CO') : '—'; } },
+    { key: 'buyer', label: 'Comprador', render: (s: Sale) => s.buyer?.name || s.buyerName || '—' },
+    { key: 'totalAnimalCount', label: '# Animales', render: (s: Sale) => s.totalAnimalCount ?? s.totalAnimals ?? '—' },
+    { key: 'totalWeightKg', label: 'Peso Total', render: (s: Sale) => { const w = s.totalWeightKg ?? s.totalWeight; return w != null ? `${Number(w).toLocaleString()} kg` : '—'; } },
+    { key: 'totalAmount', label: 'Precio Total', render: (s: Sale) => { const p = s.totalAmount ?? s.totalPrice; return p != null ? `COP $${Number(p).toLocaleString()}` : '—'; } },
+    { key: 'status', label: 'Estado', render: (s: Sale) => <Badge label={s.status || 'activa'} variant={s.status === 'completed' ? 'success' : 'warning'} /> },
     { key: '_actions', label: 'Acciones', render: (s: Sale) => (
       <Link href={`/sales/${s.id}`} className="text-primary font-semibold no-underline hover:underline text-sm">Ver</Link>
     )},

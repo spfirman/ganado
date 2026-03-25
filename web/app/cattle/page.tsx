@@ -68,7 +68,7 @@ export default function CattleListPage() {
         setCattle(res);
         setTotal(res.length);
       } else {
-        setCattle(res.data ?? []);
+        setCattle(res.data ?? (res as unknown as { items?: Cattle[] }).items ?? []);
         setTotal(res.total ?? 0);
       }
     } catch (err) {
