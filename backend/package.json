@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "nest build",
+    "build": "rm -rf dist tsconfig.tsbuildinfo && tsc -p tsconfig.build.json --incremental false && cp -r src/modules/i18n/locales dist/modules/i18n/locales",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -23,7 +23,8 @@
     "migration:run:prod": "typeorm migration:run -d dist/database/data-source.js",
     "migration:revert": "npm run typeorm migration:revert -- -d src/database/data-source.ts",
     "migration:show": "npm run typeorm migration:show -- -d src/database/data-source.ts",
-    "migration:generate": "npm run typeorm migration:generate -- -d src/database/data-source.ts"
+    "migration:generate": "npm run typeorm migration:generate -- -d src/database/data-source.ts",
+    "seed:admin": "ts-node -r tsconfig-paths/register src/database/seed-admin.ts"
   },
   "dependencies": {
     "@aws-sdk/client-ses": "^3.1015.0",
@@ -55,6 +56,7 @@
     "qrcode": "^1.5.4",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
+    "sanitize-html": "^2.17.2",
     "typeorm": "^0.3.28"
   },
   "overrides": {
@@ -88,6 +90,7 @@
     "@types/ioredis": "^4.28.10",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.10.7",
+    "@types/sanitize-html": "^2.16.1",
     "@types/supertest": "^6.0.2",
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^10.0.1",

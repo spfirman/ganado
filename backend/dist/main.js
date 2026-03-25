@@ -6,6 +6,7 @@ const common_1 = require("@nestjs/common");
 const app_module_1 = require("./app.module");
 const config_1 = require("@nestjs/config");
 const all_exception_filter_1 = require("./common/filters/all-exception.filter");
+const sanitize_pipe_1 = require("./common/pipes/sanitize.pipe");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule, { bufferLogs: true });
     app.useGlobalFilters(new all_exception_filter_1.AllExceptionFilter());
@@ -15,7 +16,7 @@ async function bootstrap() {
         : ['error', 'warn', 'log', 'debug', 'verbose'];
     common_1.Logger.overrideLogger(logLevels);
     app.useLogger(new common_1.Logger('FincaApp'));
-    app.useGlobalPipes(new common_1.ValidationPipe({
+    app.useGlobalPipes(new sanitize_pipe_1.SanitizeInputPipe(), new common_1.ValidationPipe({
         transform: true,
         whitelist: true,
         forbidNonWhitelisted: true,
@@ -83,49 +84,55 @@ async function bootstrap() {
     });
     const expressApp = app.getHttpAdapter().getInstance();
     expressApp.disable('x-powered-by');
-    const authRateLimitMap = new Map();
-    const AUTH_RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
-    const AUTH_RATE_LIMIT_MAX = 10;
-    const createRateLimiter = (limitMap, windowMs, maxRequests, message) => {
-        return (req, res, next) => {
-            if (req.method !== 'POST')
-                return next();
-            const ip = req.ip || req.connection?.remoteAddress || 'unknown';
-            const now = Date.now();
-            let entry = limitMap.get(ip);
-            if (limitMap.size > 10000) {
-                for (const [key, val] of limitMap) {
-                    if (val.resetAt < now)
-                        limitMap.delete(key);
+    const rateLimitDisabled = configService.get('RATE_LIMIT_DISABLED') === 'true';
+    if (!rateLimitDisabled) {
+        const authRateLimitMap = new Map();
+        const AUTH_RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
+        const AUTH_RATE_LIMIT_MAX = 10;
+        const createRateLimiter = (limitMap, windowMs, maxRequests, message) => {
+            return (req, res, next) => {
+                if (req.method !== 'POST')
+                    return next();
+                const ip = req.ip || req.connection?.remoteAddress || 'unknown';
+                const now = Date.now();
+                let entry = limitMap.get(ip);
+                if (limitMap.size > 10000) {
+                    for (const [key, val] of limitMap) {
+                        if (val.resetAt < now)
+                            limitMap.delete(key);
+                    }
                 }
-            }
-            if (!entry || entry.resetAt < now) {
-                entry = { count: 0, resetAt: now + windowMs };
-                limitMap.set(ip, entry);
-            }
-            entry.count++;
-            res.setHeader('X-RateLimit-Limit', maxRequests);
-            res.setHeader('X-RateLimit-Remaining', Math.max(0, maxRequests - entry.count));
-            res.setHeader('X-RateLimit-Reset', Math.ceil(entry.resetAt / 1000));
-            if (entry.count > maxRequests) {
-                return res.status(429).json({
-                    success: false,
-                    message,
-                    error: 'RATE_LIMIT_EXCEEDED',
-                    retryAfter: Math.ceil((entry.resetAt - now) / 1000),
-                });
-            }
-            next();
+                if (!entry || entry.resetAt < now) {
+                    entry = { count: 0, resetAt: now + windowMs };
+                    limitMap.set(ip, entry);
+                }
+                entry.count++;
+                res.setHeader('X-RateLimit-Limit', maxRequests);
+                res.setHeader('X-RateLimit-Remaining', Math.max(0, maxRequests - entry.count));
+                res.setHeader('X-RateLimit-Reset', Math.ceil(entry.resetAt / 1000));
+                if (entry.count > maxRequests) {
+                    return res.status(429).json({
+                        success: false,
+                        message,
+                        error: 'RATE_LIMIT_EXCEEDED',
+                        retryAfter: Math.ceil((entry.resetAt - now) / 1000),
+                    });
+                }
+                next();
+            };
         };
-    };
-    const loginLimiter = createRateLimiter(authRateLimitMap, AUTH_RATE_LIMIT_WINDOW_MS, AUTH_RATE_LIMIT_MAX, 'Demasiados intentos de inicio de sesión. Intenta de nuevo más tarde.');
-    const recoveryRateLimitMap = new Map();
-    const recoveryLimiter = createRateLimiter(recoveryRateLimitMap, AUTH_RATE_LIMIT_WINDOW_MS, 5, 'Demasiadas solicitudes. Intenta de nuevo más tarde.');
-    expressApp.use('/api/v1/auth/login', loginLimiter);
-    expressApp.use('/api/v1/auth/forgot-password', recoveryLimiter);
-    expressApp.use('/api/v1/auth/reset-password', recoveryLimiter);
-    expressApp.use('/api/v1/auth/passcode/request', recoveryLimiter);
-    expressApp.use('/api/v1/auth/passcode/verify', recoveryLimiter);
+        const loginLimiter = createRateLimiter(authRateLimitMap, AUTH_RATE_LIMIT_WINDOW_MS, AUTH_RATE_LIMIT_MAX, 'Demasiados intentos de inicio de sesión. Intenta de nuevo más tarde.');
+        const recoveryRateLimitMap = new Map();
+        const recoveryLimiter = createRateLimiter(recoveryRateLimitMap, AUTH_RATE_LIMIT_WINDOW_MS, 5, 'Demasiadas solicitudes. Intenta de nuevo más tarde.');
+        expressApp.use('/api/v1/auth/login', loginLimiter);
+        expressApp.use('/api/v1/auth/forgot-password', recoveryLimiter);
+        expressApp.use('/api/v1/auth/reset-password', recoveryLimiter);
+        expressApp.use('/api/v1/auth/passcode/request', recoveryLimiter);
+        expressApp.use('/api/v1/auth/passcode/verify', recoveryLimiter);
+    }
+    else {
+        common_1.Logger.log('Rate limiting DISABLED (RATE_LIMIT_DISABLED=true)', 'Security');
+    }
     const port = configService.get('APP_PORT') ?? 3000;
     expressApp.get('/.well-known/ai.txt', (req, res) => {
         res.type('text/plain').send([

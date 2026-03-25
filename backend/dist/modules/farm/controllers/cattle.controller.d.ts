@@ -19,7 +19,7 @@ export declare class CattleController {
     findOne(id: string, sessionUser: SessionUserDto): Promise<import("../entities/cattle.entity").Cattle>;
     update(id: string, sessionUser: SessionUserDto, dto: UpdateCattleDto): Promise<any>;
     addMedication(id: string, sessionUser: SessionUserDto, dto: CreateCattleMedicationHistoryDto): Promise<import("../entities/cattle-medication-history.entity").CattleMedicationHistory>;
-    remove(id: string, sessionUser: SessionUserDto): void;
+    remove(id: string, sessionUser: SessionUserDto): Promise<void>;
     list(sessionUser: SessionUserDto, query: CattleListQueryDto): Promise<PagedResponseDto<any>>;
     getBasicInfo(sessionUser: SessionUserDto): Promise<any[]>;
     getBasicInfoPaged(sessionUser: SessionUserDto, query: CattleBasicQueryDto): Promise<any>;

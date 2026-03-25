@@ -88,6 +88,7 @@ services:
       EMAIL_APP_NAME: ${EMAIL_APP_NAME:-GPCB Ganado}
       APP_URL: ${APP_URL:-https://ganado.gpcb.com.co}
       OTP_ENCRYPTION_KEY: ${OTP_ENCRYPTION_KEY:-ganado-otp-default-key-change-me}
+      RATE_LIMIT_DISABLED: "true"
     volumes:
       - ganado-uploads:/app/uploads
     networks:

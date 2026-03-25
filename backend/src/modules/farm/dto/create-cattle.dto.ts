@@ -8,6 +8,8 @@ import {
   IsArray,
   IsEnum,
   MaxLength,
+  Min,
+  Max,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { CattleGender } from '../enums/cattle-gender.enum';
@@ -17,6 +19,7 @@ export class CreateCattleDto {
   idTenant?: string;
 
   @IsUUID()
+  @IsOptional()
   idDevice?: string;
 
   @ApiProperty({ required: false })
@@ -48,10 +51,14 @@ export class CreateCattleDto {
 
   @ApiProperty({ required: true })
   @IsNumber()
+  @Min(0, { message: 'Weight cannot be negative' })
+  @Max(2000, { message: 'Weight exceeds maximum (2000 kg)' })
   receivedWeight: number;
 
   @ApiProperty({ required: true })
   @IsNumber()
+  @Min(0, { message: 'Weight cannot be negative' })
+  @Max(2000, { message: 'Weight exceeds maximum (2000 kg)' })
   purchaseWeight: number;
 
   @ApiProperty({ required: false })
@@ -61,18 +68,22 @@ export class CreateCattleDto {
 
   @ApiProperty({ required: false })
   @IsString()
+  @IsOptional()
   purchasedFrom?: string;
 
   @ApiProperty({ required: true })
   @IsNumber()
+  @Min(0, { message: 'Price cannot be negative' })
   purchasePrice: number;
 
   @ApiProperty({ required: false })
   @IsNumber()
+  @IsOptional()
   purchaseCommission?: number;
 
   @ApiProperty({ required: false })
   @IsNumber()
+  @IsOptional()
   negotiatedPricePerKg?: number;
 
   @ApiProperty({ required: false })
@@ -92,6 +103,8 @@ export class CreateCattleDto {
 
   @ApiProperty({ required: false })
   @IsNumber()
+  @Min(0, { message: 'Weight cannot be negative' })
+  @Max(2000, { message: 'Weight exceeds maximum (2000 kg)' })
   @IsOptional()
   saleWeight?: number;
 
@@ -164,5 +177,7 @@ export class CreateCattleDto {
 
   @ApiProperty({ required: true })
   @IsNumber()
+  @Min(0, { message: 'Weight cannot be negative' })
+  @Max(2000, { message: 'Weight exceeds maximum (2000 kg)' })
   lastWeight: number;
 }

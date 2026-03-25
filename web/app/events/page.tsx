@@ -51,7 +51,7 @@ export default function EventsPage() {
     try {
       await apiFetch('/massive-events', {
         method: 'POST',
-        body: JSON.stringify({ name: formName, description: formDesc }),
+        body: JSON.stringify({ eventDate: new Date().toISOString(), name: formName || undefined }),
       });
       setFormName('');
       setFormDesc('');

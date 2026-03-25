@@ -4,6 +4,7 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { AllExceptionFilter } from './common/filters/all-exception.filter';
+import { SanitizeInputPipe } from './common/pipes/sanitize.pipe';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
@@ -20,6 +21,7 @@ async function bootstrap() {
   app.useLogger(new Logger('FincaApp'));
 
   app.useGlobalPipes(
+    new SanitizeInputPipe(),
     new ValidationPipe({
       transform: true,
       whitelist: true,
@@ -103,73 +105,82 @@ async function bootstrap() {
   const expressApp = app.getHttpAdapter().getInstance();
   expressApp.disable('x-powered-by');
 
-  // In-memory rate limiter for auth endpoints (no external package required)
-  const authRateLimitMap = new Map<string, { count: number; resetAt: number }>();
-  const AUTH_RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000; // 15 minutes
-  const AUTH_RATE_LIMIT_MAX = 10; // max 10 failed auth attempts per 15 min per IP
+  // Rate limiting — disabled when RATE_LIMIT_DISABLED=true.
+  // Remove this env var before going to production.
+  const rateLimitDisabled =
+    configService.get('RATE_LIMIT_DISABLED') === 'true';
 
-  // Rate limiter middleware factory
-  const createRateLimiter = (
-    limitMap: Map<string, { count: number; resetAt: number }>,
-    windowMs: number,
-    maxRequests: number,
-    message: string,
-  ) => {
-    return (req: any, res: any, next: any) => {
-      if (req.method !== 'POST') return next();
-      const ip = req.ip || req.connection?.remoteAddress || 'unknown';
-      const now = Date.now();
-      let entry = limitMap.get(ip);
+  if (!rateLimitDisabled) {
+    // In-memory rate limiter for auth endpoints (no external package required)
+    const authRateLimitMap = new Map<string, { count: number; resetAt: number }>();
+    const AUTH_RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000; // 15 minutes
+    const AUTH_RATE_LIMIT_MAX = 10; // max 10 failed auth attempts per 15 min per IP
 
-      if (limitMap.size > 10000) {
-        for (const [key, val] of limitMap) {
-          if (val.resetAt < now) limitMap.delete(key);
+    // Rate limiter middleware factory
+    const createRateLimiter = (
+      limitMap: Map<string, { count: number; resetAt: number }>,
+      windowMs: number,
+      maxRequests: number,
+      message: string,
+    ) => {
+      return (req: any, res: any, next: any) => {
+        if (req.method !== 'POST') return next();
+        const ip = req.ip || req.connection?.remoteAddress || 'unknown';
+        const now = Date.now();
+        let entry = limitMap.get(ip);
+
+        if (limitMap.size > 10000) {
+          for (const [key, val] of limitMap) {
+            if (val.resetAt < now) limitMap.delete(key);
+          }
         }
-      }
 
-      if (!entry || entry.resetAt < now) {
-        entry = { count: 0, resetAt: now + windowMs };
-        limitMap.set(ip, entry);
-      }
+        if (!entry || entry.resetAt < now) {
+          entry = { count: 0, resetAt: now + windowMs };
+          limitMap.set(ip, entry);
+        }
 
-      entry.count++;
+        entry.count++;
 
-      res.setHeader('X-RateLimit-Limit', maxRequests);
-      res.setHeader('X-RateLimit-Remaining', Math.max(0, maxRequests - entry.count));
-      res.setHeader('X-RateLimit-Reset', Math.ceil(entry.resetAt / 1000));
+        res.setHeader('X-RateLimit-Limit', maxRequests);
+        res.setHeader('X-RateLimit-Remaining', Math.max(0, maxRequests - entry.count));
+        res.setHeader('X-RateLimit-Reset', Math.ceil(entry.resetAt / 1000));
 
-      if (entry.count > maxRequests) {
-        return res.status(429).json({
-          success: false,
-          message,
-          error: 'RATE_LIMIT_EXCEEDED',
-          retryAfter: Math.ceil((entry.resetAt - now) / 1000),
-        });
-      }
-      next();
+        if (entry.count > maxRequests) {
+          return res.status(429).json({
+            success: false,
+            message,
+            error: 'RATE_LIMIT_EXCEEDED',
+            retryAfter: Math.ceil((entry.resetAt - now) / 1000),
+          });
+        }
+        next();
+      };
     };
-  };
 
-  const loginLimiter = createRateLimiter(
-    authRateLimitMap,
-    AUTH_RATE_LIMIT_WINDOW_MS,
-    AUTH_RATE_LIMIT_MAX,
-    'Demasiados intentos de inicio de sesión. Intenta de nuevo más tarde.',
-  );
+    const loginLimiter = createRateLimiter(
+      authRateLimitMap,
+      AUTH_RATE_LIMIT_WINDOW_MS,
+      AUTH_RATE_LIMIT_MAX,
+      'Demasiados intentos de inicio de sesión. Intenta de nuevo más tarde.',
+    );
 
-  const recoveryRateLimitMap = new Map<string, { count: number; resetAt: number }>();
-  const recoveryLimiter = createRateLimiter(
-    recoveryRateLimitMap,
-    AUTH_RATE_LIMIT_WINDOW_MS,
-    5,
-    'Demasiadas solicitudes. Intenta de nuevo más tarde.',
-  );
+    const recoveryRateLimitMap = new Map<string, { count: number; resetAt: number }>();
+    const recoveryLimiter = createRateLimiter(
+      recoveryRateLimitMap,
+      AUTH_RATE_LIMIT_WINDOW_MS,
+      5,
+      'Demasiadas solicitudes. Intenta de nuevo más tarde.',
+    );
 
-  expressApp.use('/api/v1/auth/login', loginLimiter);
-  expressApp.use('/api/v1/auth/forgot-password', recoveryLimiter);
-  expressApp.use('/api/v1/auth/reset-password', recoveryLimiter);
-  expressApp.use('/api/v1/auth/passcode/request', recoveryLimiter);
-  expressApp.use('/api/v1/auth/passcode/verify', recoveryLimiter);
+    expressApp.use('/api/v1/auth/login', loginLimiter);
+    expressApp.use('/api/v1/auth/forgot-password', recoveryLimiter);
+    expressApp.use('/api/v1/auth/reset-password', recoveryLimiter);
+    expressApp.use('/api/v1/auth/passcode/request', recoveryLimiter);
+    expressApp.use('/api/v1/auth/passcode/verify', recoveryLimiter);
+  } else {
+    Logger.log('Rate limiting DISABLED (RATE_LIMIT_DISABLED=true)', 'Security');
+  }
 
   const port = configService.get('APP_PORT') ?? 3000;
 

@@ -42,7 +42,7 @@ const emptyForm = {
   lot: '',
   brand: '',
   color: '',
-  gender: 'macho',
+  gender: 'MALE',
   eartagLeft: '',
   eartagRight: '',
   castrated: false,
@@ -87,19 +87,19 @@ export default function ReceptionPage() {
       await apiFetch('/purchase-receptions/receive-cattle', {
         method: 'POST',
         body: JSON.stringify({
-          purchase_id: Number(purchaseId),
-          number: Number(form.number),
-          received_weight: Number(form.receivedWeight),
-          purchase_weight: Number(form.purchaseWeight),
-          purchase_price: Number(form.purchasePrice),
-          lot: form.lot,
-          brand: form.brand,
-          color: form.color,
+          idPurchase: purchaseId,
+          number: form.number,
+          receivedWeight: Number(form.receivedWeight),
+          purchaseWeight: Number(form.purchaseWeight) || undefined,
+          purchasePrice: Number(form.purchasePrice) || undefined,
+          idLot: form.lot || undefined,
+          idBrand: form.brand || undefined,
+          color: form.color || 'BLACK',
           gender: form.gender,
-          eartag_left: form.eartagLeft,
-          eartag_right: form.eartagRight,
+          eartagLeft: form.eartagLeft || undefined,
+          eartagRight: form.eartagRight || undefined,
           castrated: form.castrated,
-          has_horn: form.hasHorn,
+          hasHorn: form.hasHorn,
         }),
       });
       setForm(emptyForm);
@@ -157,7 +157,7 @@ export default function ReceptionPage() {
             <Input label="Color" value={form.color} onChange={e => setForm(p => ({ ...p, color: e.target.value }))} />
             <Select
               label="Género"
-              options={[{ value: 'macho', label: 'Macho' }, { value: 'hembra', label: 'Hembra' }]}
+              options={[{ value: 'MALE', label: 'Macho' }, { value: 'FEMALE', label: 'Hembra' }]}
               value={form.gender}
               onChange={e => setForm(p => ({ ...p, gender: e.target.value }))}
             />

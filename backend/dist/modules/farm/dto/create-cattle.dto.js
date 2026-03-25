@@ -19,6 +19,7 @@ class CreateCattleDto {
 exports.CreateCattleDto = CreateCattleDto;
 __decorate([
     (0, class_validator_1.IsUUID)(),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateCattleDto.prototype, "idDevice", void 0);
 __decorate([
@@ -56,11 +57,15 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({ required: true }),
     (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.Min)(0, { message: 'Weight cannot be negative' }),
+    (0, class_validator_1.Max)(2000, { message: 'Weight exceeds maximum (2000 kg)' }),
     __metadata("design:type", Number)
 ], CreateCattleDto.prototype, "receivedWeight", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ required: true }),
     (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.Min)(0, { message: 'Weight cannot be negative' }),
+    (0, class_validator_1.Max)(2000, { message: 'Weight exceeds maximum (2000 kg)' }),
     __metadata("design:type", Number)
 ], CreateCattleDto.prototype, "purchaseWeight", void 0);
 __decorate([
@@ -72,21 +77,25 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({ required: false }),
     (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateCattleDto.prototype, "purchasedFrom", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ required: true }),
     (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.Min)(0, { message: 'Price cannot be negative' }),
     __metadata("design:type", Number)
 ], CreateCattleDto.prototype, "purchasePrice", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ required: false }),
     (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Number)
 ], CreateCattleDto.prototype, "purchaseCommission", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ required: false }),
     (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Number)
 ], CreateCattleDto.prototype, "negotiatedPricePerKg", void 0);
 __decorate([
@@ -110,6 +119,8 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({ required: false }),
     (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.Min)(0, { message: 'Weight cannot be negative' }),
+    (0, class_validator_1.Max)(2000, { message: 'Weight exceeds maximum (2000 kg)' }),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Number)
 ], CreateCattleDto.prototype, "saleWeight", void 0);
@@ -196,6 +207,8 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({ required: true }),
     (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.Min)(0, { message: 'Weight cannot be negative' }),
+    (0, class_validator_1.Max)(2000, { message: 'Weight exceeds maximum (2000 kg)' }),
     __metadata("design:type", Number)
 ], CreateCattleDto.prototype, "lastWeight", void 0);
 //# sourceMappingURL=create-cattle.dto.js.map

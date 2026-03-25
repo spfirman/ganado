@@ -59,8 +59,8 @@ let CattleController = CattleController_1 = class CattleController {
     addMedication(id, sessionUser, dto) {
         return this.cattleService.addMedicationHistory(sessionUser.tenant_id, id, dto, sessionUser.sub);
     }
-    remove(id, sessionUser) {
-        this.cattleService.remove(sessionUser.tenant_id, id);
+    async remove(id, sessionUser) {
+        return this.cattleService.remove(sessionUser.tenant_id, id);
     }
     async list(sessionUser, query) {
         const { items, total, page, limit } = await this.cattleService.listPaged(sessionUser.tenant_id, query);
@@ -248,7 +248,7 @@ __decorate([
     __param(1, (0, session_user_decorator_1.SessionUser)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, session_user_dto_1.SessionUserDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], CattleController.prototype, "remove", null);
 __decorate([
     (0, common_1.Get)(),

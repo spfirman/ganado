@@ -205,11 +205,11 @@ export class CattleController {
   })
   @ApiResponse({ status: 404, description: 'Cattle not found' })
   @RequireAction('delete')
-  remove(
+  async remove(
     @Param('id') id: string,
     @SessionUser() sessionUser: SessionUserDto,
   ) {
-    this.cattleService.remove(sessionUser.tenant_id, id);
+    return this.cattleService.remove(sessionUser.tenant_id, id);
   }
 
   @Get()
