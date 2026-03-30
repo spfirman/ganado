@@ -45,5 +45,5 @@ export default defineConfig({
 
   timeout: 60_000,
   expect: { timeout: 10_000 },
-  outputDir: isDocker ? '/results/ganado/artifacts/' : 'test-results/',
+  outputDir: isDocker ? '/results/ganado-artifacts/' : 'test-results/',
 });
