@@ -8,3 +8,35 @@ infra/server/captured/
 
 # Backup data
 /srv/backups/
+
+# Build artifacts and logs
+build/
+
+# Capacitor / web hybrid artifacts
+capacitor.config.json
+frontend/package-lock.json
+
+# Flutter generated platform dirs (regeneratable)
+mobile/.metadata
+mobile/android/
+mobile/ios/
+mobile/macos/
+mobile/test/
+
+# Utility scripts
+mobile/enable_macos.sh
+
+# AI session documentation artifacts
+mobile/ADAPTIVE_LAYOUTS.md
+mobile/ENHANCED_LAYOUTS.md
+mobile/IMPLEMENTATION_GUIDE.md
+mobile/IMPLEMENTATION_SUMMARY.md
+mobile/README_ENHANCEMENTS.md
+mobile/FILES_CREATED.txt
+mobile/README.md
+backend/API_ENDPOINTS.md
+backend/IMPLEMENTATION_COMPLETE.txt
+backend/MODULES_CREATED.md
+
+# DS_Store
+.DS_Store
