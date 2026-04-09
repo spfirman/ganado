@@ -227,6 +227,173 @@ class AnimalSimpleEventTable extends Table {
   Set<Column> get primaryKey => {id};
 }
 
+// ─── Health Event Table ───
+class HealthEventTable extends Table {
+  @override
+  String get tableName => 'health_events';
+
+  TextColumn get id => text()();
+  TextColumn get idTenant => text().nullable()();
+  TextColumn get idCattle => text()();
+  TextColumn get cattleNumber => text().nullable()();
+  TextColumn get type => text()();
+  TextColumn get name => text()();
+  TextColumn get description => text().nullable()();
+  TextColumn get medication => text().nullable()();
+  TextColumn get dosage => text().nullable()();
+  TextColumn get diagnosis => text().nullable()();
+  TextColumn get veterinarian => text().nullable()();
+  RealColumn get cost => real().nullable()();
+  TextColumn get status => text().nullable()();
+  DateTimeColumn get eventDate => dateTime()();
+  DateTimeColumn get followUpDate => dateTime().nullable()();
+  TextColumn get notes => text().nullable()();
+  DateTimeColumn get createdAt => dateTime().nullable()();
+  DateTimeColumn get updatedAt => dateTime().nullable()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+// ─── Breeding Event Table ───
+class BreedingEventTable extends Table {
+  @override
+  String get tableName => 'breeding_events';
+
+  TextColumn get id => text()();
+  TextColumn get idTenant => text().nullable()();
+  TextColumn get idCattle => text()();
+  TextColumn get cattleNumber => text().nullable()();
+  TextColumn get sireId => text().nullable()();
+  TextColumn get sireNumber => text().nullable()();
+  TextColumn get type => text()();
+  TextColumn get pregnancyStatus => text().nullable()();
+  DateTimeColumn get eventDate => dateTime()();
+  DateTimeColumn get expectedCalvingDate => dateTime().nullable()();
+  DateTimeColumn get actualCalvingDate => dateTime().nullable()();
+  TextColumn get calvingDifficulty => text().nullable()();
+  IntColumn get calvesCount => integer().nullable()();
+  TextColumn get calfId => text().nullable()();
+  RealColumn get calfBirthWeight => real().nullable()();
+  TextColumn get calfGender => text().nullable()();
+  TextColumn get inseminationType => text().nullable()();
+  TextColumn get semenBatch => text().nullable()();
+  TextColumn get technician => text().nullable()();
+  TextColumn get notes => text().nullable()();
+  DateTimeColumn get createdAt => dateTime().nullable()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+// ─── Work Order Table ───
+class WorkOrderTable extends Table {
+  @override
+  String get tableName => 'work_orders';
+
+  TextColumn get id => text()();
+  TextColumn get idTenant => text().nullable()();
+  TextColumn get title => text()();
+  TextColumn get description => text().nullable()();
+  TextColumn get type => text()();
+  TextColumn get priority => text()();
+  TextColumn get status => text().withDefault(const Constant('pending'))();
+  TextColumn get assignedTo => text().nullable()();
+  TextColumn get assignedToName => text().nullable()();
+  DateTimeColumn get dueDate => dateTime().nullable()();
+  DateTimeColumn get completedAt => dateTime().nullable()();
+  TextColumn get notes => text().nullable()();
+  DateTimeColumn get createdAt => dateTime().nullable()();
+  DateTimeColumn get updatedAt => dateTime().nullable()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+// ─── Pasture Table ───
+class PastureTable extends Table {
+  @override
+  String get tableName => 'pastures';
+
+  TextColumn get id => text()();
+  TextColumn get idTenant => text().nullable()();
+  TextColumn get name => text()();
+  RealColumn get areaHectares => real().nullable()();
+  TextColumn get grassType => text().nullable()();
+  TextColumn get status => text().withDefault(const Constant('resting'))();
+  IntColumn get capacity => integer().nullable()();
+  IntColumn get currentCount => integer().withDefault(const Constant(0))();
+  DateTimeColumn get lastRotationDate => dateTime().nullable()();
+  DateTimeColumn get nextRotationDate => dateTime().nullable()();
+  TextColumn get notes => text().nullable()();
+  DateTimeColumn get createdAt => dateTime().nullable()();
+  DateTimeColumn get updatedAt => dateTime().nullable()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+// ─── Grazing Rotation Table ───
+class GrazingRotationTable extends Table {
+  @override
+  String get tableName => 'grazing_rotations';
+
+  TextColumn get id => text()();
+  TextColumn get pastureId => text()();
+  TextColumn get pastureName => text().nullable()();
+  DateTimeColumn get startDate => dateTime()();
+  DateTimeColumn get endDate => dateTime().nullable()();
+  IntColumn get cattleCount => integer().withDefault(const Constant(0))();
+  TextColumn get notes => text().nullable()();
+  DateTimeColumn get createdAt => dateTime().nullable()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+// ─── Feed Type Table ───
+class FeedTypeTable extends Table {
+  @override
+  String get tableName => 'feed_types';
+
+  TextColumn get id => text()();
+  TextColumn get idTenant => text().nullable()();
+  TextColumn get name => text()();
+  TextColumn get category => text()();
+  TextColumn get unit => text().nullable()();
+  RealColumn get pricePerUnit => real().nullable()();
+  TextColumn get nutritionalInfo => text().nullable()();
+  BoolColumn get inStock => boolean().withDefault(const Constant(true))();
+  DateTimeColumn get createdAt => dateTime().nullable()();
+  DateTimeColumn get updatedAt => dateTime().nullable()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+// ─── Feeding Record Table ───
+class FeedingRecordTable extends Table {
+  @override
+  String get tableName => 'feeding_records';
+
+  TextColumn get id => text()();
+  TextColumn get idTenant => text().nullable()();
+  TextColumn get feedTypeId => text()();
+  TextColumn get feedTypeName => text().nullable()();
+  RealColumn get quantity => real()();
+  TextColumn get unit => text().nullable()();
+  TextColumn get targetGroup => text()();
+  TextColumn get targetId => text().nullable()();
+  DateTimeColumn get fedAt => dateTime()();
+  TextColumn get fedBy => text().nullable()();
+  RealColumn get cost => real().nullable()();
+  TextColumn get notes => text().nullable()();
+  DateTimeColumn get createdAt => dateTime().nullable()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
 @DriftDatabase(tables: [
   SyncQueue,
   CattleTable,
@@ -239,6 +406,13 @@ class AnimalSimpleEventTable extends Table {
   MassiveEventTable,
   SimpleEventTable,
   AnimalSimpleEventTable,
+  HealthEventTable,
+  BreedingEventTable,
+  WorkOrderTable,
+  PastureTable,
+  GrazingRotationTable,
+  FeedTypeTable,
+  FeedingRecordTable,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(connection.openConnection());

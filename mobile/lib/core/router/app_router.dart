@@ -22,6 +22,21 @@ import 'package:ganado_app/features/receptions/screens/reception_screen.dart';
 import 'package:ganado_app/features/devices/screens/device_list_screen.dart';
 import 'package:ganado_app/features/employees/users/screens/user_list_screen.dart';
 import 'package:ganado_app/features/employees/roles/screens/role_list_screen.dart';
+import 'package:ganado_app/features/health/screens/health_event_list_screen.dart';
+import 'package:ganado_app/features/health/screens/health_event_detail_screen.dart';
+import 'package:ganado_app/features/health/screens/health_event_form_screen.dart';
+import 'package:ganado_app/features/breeding/screens/breeding_list_screen.dart';
+import 'package:ganado_app/features/breeding/screens/breeding_detail_screen.dart';
+import 'package:ganado_app/features/breeding/screens/breeding_form_screen.dart';
+import 'package:ganado_app/features/work_orders/screens/work_order_list_screen.dart';
+import 'package:ganado_app/features/work_orders/screens/work_order_form_screen.dart';
+import 'package:ganado_app/features/grazing/screens/pasture_list_screen.dart';
+import 'package:ganado_app/features/grazing/screens/pasture_detail_screen.dart';
+import 'package:ganado_app/features/grazing/screens/pasture_form_screen.dart';
+import 'package:ganado_app/features/feed/screens/feed_type_list_screen.dart';
+import 'package:ganado_app/features/feed/screens/feeding_log_screen.dart';
+import 'package:ganado_app/features/feed/screens/feed_record_form_screen.dart';
+import 'package:ganado_app/features/reports/screens/reports_screen.dart';
 import 'package:ganado_app/features/settings/screens/settings_screen.dart';
 import 'package:ganado_app/shared/widgets/app_scaffold.dart';
 
@@ -153,6 +168,90 @@ final routerProvider = Provider<GoRouter>((ref) {
             ),
           ),
 
+          // ─── Health Events ───
+          GoRoute(
+            path: '/health-events',
+            builder: (context, state) => const HealthEventListScreen(),
+          ),
+          GoRoute(
+            path: '/health-events/new',
+            builder: (context, state) => const HealthEventFormScreen(),
+          ),
+          GoRoute(
+            path: '/health-events/:id',
+            builder: (context, state) => HealthEventDetailScreen(
+              eventId: state.pathParameters['id']!,
+            ),
+          ),
+          GoRoute(
+            path: '/health-events/:id/edit',
+            builder: (context, state) => HealthEventFormScreen(
+              eventId: state.pathParameters['id'],
+            ),
+          ),
+
+          // ─── Breeding ───
+          GoRoute(
+            path: '/breeding',
+            builder: (context, state) => const BreedingListScreen(),
+          ),
+          GoRoute(
+            path: '/breeding/new',
+            builder: (context, state) => const BreedingFormScreen(),
+          ),
+          GoRoute(
+            path: '/breeding/:id',
+            builder: (context, state) => BreedingDetailScreen(
+              eventId: state.pathParameters['id']!,
+            ),
+          ),
+          GoRoute(
+            path: '/breeding/:id/edit',
+            builder: (context, state) => BreedingFormScreen(
+              eventId: state.pathParameters['id'],
+            ),
+          ),
+
+          // ─── Work Orders ───
+          GoRoute(
+            path: '/work-orders',
+            builder: (context, state) => const WorkOrderListScreen(),
+          ),
+          GoRoute(
+            path: '/work-orders/new',
+            builder: (context, state) => const WorkOrderFormScreen(),
+          ),
+
+          // ─── Grazing / Pastures ───
+          GoRoute(
+            path: '/pastures',
+            builder: (context, state) => const PastureListScreen(),
+          ),
+          GoRoute(
+            path: '/pastures/new',
+            builder: (context, state) => const PastureFormScreen(),
+          ),
+          GoRoute(
+            path: '/pastures/:id',
+            builder: (context, state) => PastureDetailScreen(
+              pastureId: state.pathParameters['id']!,
+            ),
+          ),
+
+          // ─── Feed Management ───
+          GoRoute(
+            path: '/feed-types',
+            builder: (context, state) => const FeedTypeListScreen(),
+          ),
+          GoRoute(
+            path: '/feeding-log',
+            builder: (context, state) => const FeedingLogScreen(),
+          ),
+          GoRoute(
+            path: '/feeding-log/new',
+            builder: (context, state) => const FeedRecordFormScreen(),
+          ),
+
           // ─── Devices ───
           GoRoute(
             path: '/devices',
@@ -167,6 +266,12 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/roles',
             builder: (context, state) => const RoleListScreen(),
+          ),
+
+          // ─── Reports ───
+          GoRoute(
+            path: '/reports',
+            builder: (context, state) => const ReportsScreen(),
           ),
 
           // ─── Settings ───
