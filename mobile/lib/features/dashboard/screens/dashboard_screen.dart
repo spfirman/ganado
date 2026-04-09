@@ -100,6 +100,31 @@ class DashboardScreen extends ConsumerWidget {
           label: l10n.receiveAnimals,
           onTap: () => context.go('/purchases'),
         ),
+        _QuickAction(
+          icon: Icons.medical_services,
+          label: 'Health Events',
+          onTap: () => context.go('/health-events'),
+        ),
+        _QuickAction(
+          icon: Icons.child_care,
+          label: 'Breeding',
+          onTap: () => context.go('/breeding'),
+        ),
+        _QuickAction(
+          icon: Icons.assignment,
+          label: 'Work Orders',
+          onTap: () => context.go('/work-orders'),
+        ),
+        _QuickAction(
+          icon: Icons.grass,
+          label: 'Pastures',
+          onTap: () => context.go('/pastures'),
+        ),
+        _QuickAction(
+          icon: Icons.restaurant,
+          label: 'Feed Log',
+          onTap: () => context.go('/feeding-log'),
+        ),
       ],
     );
   }
