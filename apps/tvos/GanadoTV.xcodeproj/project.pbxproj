@@ -1,0 +1,580 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		191CD2AE53FC76DF7155347B /* BreedingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731DACF3C9003B71C0D0AA37 /* BreedingService.swift */; };
+		1B39D4CC967267D09BFBAB12 /* PastureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD611A3E749FDC924A096DD4 /* PastureService.swift */; };
+		213BFDC4A3CAB4AACEA4534D /* HerdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF12C812F091C4F8A396718C /* HerdView.swift */; };
+		2C22D0D7A5E6779C2156C6A0 /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EADDCFB747CBB1F26C220D /* DashboardViewModel.swift */; };
+		34EB0ADFCA70C459AC592131 /* FeedService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D96F68AF2EE0B8A7F4C45F5E /* FeedService.swift */; };
+		3C30F2DC9D5A418545612A49 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B22C8D2FF44A08878A011E /* APIClient.swift */; };
+		444B822C19093E63EC3E33F9 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE304D2CA419E5CAA7F4FDC5 /* LoginView.swift */; };
+		566914D70CC49CA0E8538962 /* Feed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3B8641550D455D41BA4BDD /* Feed.swift */; };
+		5899ACA992A3875E97D15D15 /* MassiveEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019440529612068D91B5E8F1 /* MassiveEvent.swift */; };
+		69ED13E255242B3E1B7AD337 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4673EE6953B51AD7FEB103A2 /* ContentView.swift */; };
+		7709B8AAD9D1C0C913AB026A /* Commerce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E21BE14DF51D325F2E0410 /* Commerce.swift */; };
+		900BD7393B4D1F28B8315FB9 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D4FAFB54C11FDC29E3B348 /* SettingsView.swift */; };
+		9857128B9A5C2C1D2699C4F3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8F7056CD15AFFBDE0594A120 /* Assets.xcassets */; };
+		ACAE1BA847AAFFF01EFE5E05 /* CattleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EEFC8682131236CFA67702 /* CattleService.swift */; };
+		AF61DF19E29071771C825DE3 /* MarketViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF2091223BC86B3C689D7AC /* MarketViewModel.swift */; };
+		B6F6AB24ECDFE07712086549 /* EventsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A72C126A4780755237A54F /* EventsViewModel.swift */; };
+		BD91C8E8A7F42C84FC38D0D2 /* WorkOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB91DF24028D47B81FC32EC4 /* WorkOrder.swift */; };
+		C0216D660733207EB4E66EF9 /* CommerceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDFA82A8373EDBB0B0847ED /* CommerceService.swift */; };
+		C319C562AA1DFE1574040C49 /* Cattle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967D2A3FBA1BFA6E8540AAF2 /* Cattle.swift */; };
+		C91338F21DCDFB1281542B3D /* ContentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F6ED7648790DCF70F3E475 /* ContentProvider.swift */; };
+		D8C2C6FF4596DA43C7D8AAC0 /* MarketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A9E99C788A1E8F10F68CF /* MarketView.swift */; };
+		DEB35E54A18DF60565F5AAA1 /* HerdViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15637645D00BCDA084850BE2 /* HerdViewModel.swift */; };
+		E152C51C21B541543358A27E /* Pasture.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8378C1728953E630C7BBAB0 /* Pasture.swift */; };
+		EA635694DC20722298FC9663 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D085185D966A5D1CB021F5CD /* AuthService.swift */; };
+		EBE0FA5B6A7B965293E09509 /* HealthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BB6E54420C443160021D4F /* HealthService.swift */; };
+		EF2BE6AAB5D7939DDC9B144E /* AnimalsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5AE597C456189D4A24BD31 /* AnimalsView.swift */; };
+		EF6EC3E6A6E34C5303A81662 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E757E1A4A75AE7316C6FD98 /* User.swift */; };
+		F2D39B7A3554DB0D8C09F7C8 /* GanadoTVApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBDA6EF161D6647761BB59B /* GanadoTVApp.swift */; };
+		F96A6B20EC3E6A999D1817B6 /* BreedingEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94492DC0F6CDD10BD9E9D31 /* BreedingEvent.swift */; };
+		FAFABBEE5982EE7A13016C90 /* HealthEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0923050F2A0A6237E9285B29 /* HealthEvent.swift */; };
+		FEC6844825007242B4DEF017 /* EventsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED685E8155E4268FBFA0F437 /* EventsView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A2FC45EB56C7BAFED374855E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 70DC845B81EA9D26A2E6FFD3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 852CAB7EEEAC7BC2C49D51C1;
+			remoteInfo = GanadoTV;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		019440529612068D91B5E8F1 /* MassiveEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MassiveEvent.swift; sourceTree = "<group>"; };
+		07A07545CDC7024D49C901B5 /* GanadoTopShelf.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = GanadoTopShelf.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		0923050F2A0A6237E9285B29 /* HealthEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthEvent.swift; sourceTree = "<group>"; };
+		0C5AE597C456189D4A24BD31 /* AnimalsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimalsView.swift; sourceTree = "<group>"; };
+		0EDFA82A8373EDBB0B0847ED /* CommerceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommerceService.swift; sourceTree = "<group>"; };
+		15637645D00BCDA084850BE2 /* HerdViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HerdViewModel.swift; sourceTree = "<group>"; };
+		23E21BE14DF51D325F2E0410 /* Commerce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commerce.swift; sourceTree = "<group>"; };
+		30EADDCFB747CBB1F26C220D /* DashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModel.swift; sourceTree = "<group>"; };
+		44B22C8D2FF44A08878A011E /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		45A72C126A4780755237A54F /* EventsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsViewModel.swift; sourceTree = "<group>"; };
+		4673EE6953B51AD7FEB103A2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		5C0DA822CF28CC4877570428 /* GanadoTV.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GanadoTV.entitlements; sourceTree = "<group>"; };
+		731DACF3C9003B71C0D0AA37 /* BreedingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedingService.swift; sourceTree = "<group>"; };
+		780E235174DF1C73F5FEF1A2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		7D3B8641550D455D41BA4BDD /* Feed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.swift; sourceTree = "<group>"; };
+		7E757E1A4A75AE7316C6FD98 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		84D4FAFB54C11FDC29E3B348 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		8BBDA6EF161D6647761BB59B /* GanadoTVApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GanadoTVApp.swift; sourceTree = "<group>"; };
+		8F7056CD15AFFBDE0594A120 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		967D2A3FBA1BFA6E8540AAF2 /* Cattle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cattle.swift; sourceTree = "<group>"; };
+		973A9E99C788A1E8F10F68CF /* MarketView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketView.swift; sourceTree = "<group>"; };
+		9EF29F3739F40C3539B2F7E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		AD611A3E749FDC924A096DD4 /* PastureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastureService.swift; sourceTree = "<group>"; };
+		B2EEFC8682131236CFA67702 /* CattleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CattleService.swift; sourceTree = "<group>"; };
+		C94492DC0F6CDD10BD9E9D31 /* BreedingEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedingEvent.swift; sourceTree = "<group>"; };
+		D085185D966A5D1CB021F5CD /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		D2BB6E54420C443160021D4F /* HealthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthService.swift; sourceTree = "<group>"; };
+		D6F6ED7648790DCF70F3E475 /* ContentProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentProvider.swift; sourceTree = "<group>"; };
+		D80D6EBDE2666DBAE48241FE /* GanadoTV.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = GanadoTV.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8378C1728953E630C7BBAB0 /* Pasture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pasture.swift; sourceTree = "<group>"; };
+		D96F68AF2EE0B8A7F4C45F5E /* FeedService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedService.swift; sourceTree = "<group>"; };
+		DB91DF24028D47B81FC32EC4 /* WorkOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkOrder.swift; sourceTree = "<group>"; };
+		DCF2091223BC86B3C689D7AC /* MarketViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketViewModel.swift; sourceTree = "<group>"; };
+		ED685E8155E4268FBFA0F437 /* EventsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsView.swift; sourceTree = "<group>"; };
+		FE304D2CA419E5CAA7F4FDC5 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		FF12C812F091C4F8A396718C /* HerdView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HerdView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0B544844D92836415CB7847C /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				44B22C8D2FF44A08878A011E /* APIClient.swift */,
+				D085185D966A5D1CB021F5CD /* AuthService.swift */,
+				731DACF3C9003B71C0D0AA37 /* BreedingService.swift */,
+				B2EEFC8682131236CFA67702 /* CattleService.swift */,
+				0EDFA82A8373EDBB0B0847ED /* CommerceService.swift */,
+				D96F68AF2EE0B8A7F4C45F5E /* FeedService.swift */,
+				D2BB6E54420C443160021D4F /* HealthService.swift */,
+				AD611A3E749FDC924A096DD4 /* PastureService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		4077D1DD1418C083DC261135 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C94492DC0F6CDD10BD9E9D31 /* BreedingEvent.swift */,
+				967D2A3FBA1BFA6E8540AAF2 /* Cattle.swift */,
+				23E21BE14DF51D325F2E0410 /* Commerce.swift */,
+				7D3B8641550D455D41BA4BDD /* Feed.swift */,
+				0923050F2A0A6237E9285B29 /* HealthEvent.swift */,
+				019440529612068D91B5E8F1 /* MassiveEvent.swift */,
+				D8378C1728953E630C7BBAB0 /* Pasture.swift */,
+				7E757E1A4A75AE7316C6FD98 /* User.swift */,
+				DB91DF24028D47B81FC32EC4 /* WorkOrder.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		ABDB5FB61E7C9FAFA8F6AF67 = {
+			isa = PBXGroup;
+			children = (
+				CC9D9414CB0E77D17A47D6A1 /* GanadoTV */,
+				C287DCFF7D2DDF88D8938D93 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C287DCFF7D2DDF88D8938D93 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				07A07545CDC7024D49C901B5 /* GanadoTopShelf.appex */,
+				D80D6EBDE2666DBAE48241FE /* GanadoTV.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CC9D9414CB0E77D17A47D6A1 /* GanadoTV */ = {
+			isa = PBXGroup;
+			children = (
+				4077D1DD1418C083DC261135 /* Models */,
+				0B544844D92836415CB7847C /* Services */,
+				D4D3B9FF5FF223338E5ED2D8 /* TopShelfExtension */,
+				FB18019F67C4C75911DCB839 /* ViewModels */,
+				E24629CCC6F79243D038897D /* Views */,
+				8F7056CD15AFFBDE0594A120 /* Assets.xcassets */,
+				5C0DA822CF28CC4877570428 /* GanadoTV.entitlements */,
+				8BBDA6EF161D6647761BB59B /* GanadoTVApp.swift */,
+				9EF29F3739F40C3539B2F7E2 /* Info.plist */,
+			);
+			path = GanadoTV;
+			sourceTree = "<group>";
+		};
+		D4D3B9FF5FF223338E5ED2D8 /* TopShelfExtension */ = {
+			isa = PBXGroup;
+			children = (
+				D6F6ED7648790DCF70F3E475 /* ContentProvider.swift */,
+				780E235174DF1C73F5FEF1A2 /* Info.plist */,
+			);
+			path = TopShelfExtension;
+			sourceTree = "<group>";
+		};
+		E24629CCC6F79243D038897D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0C5AE597C456189D4A24BD31 /* AnimalsView.swift */,
+				4673EE6953B51AD7FEB103A2 /* ContentView.swift */,
+				ED685E8155E4268FBFA0F437 /* EventsView.swift */,
+				FF12C812F091C4F8A396718C /* HerdView.swift */,
+				FE304D2CA419E5CAA7F4FDC5 /* LoginView.swift */,
+				973A9E99C788A1E8F10F68CF /* MarketView.swift */,
+				84D4FAFB54C11FDC29E3B348 /* SettingsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		FB18019F67C4C75911DCB839 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				30EADDCFB747CBB1F26C220D /* DashboardViewModel.swift */,
+				45A72C126A4780755237A54F /* EventsViewModel.swift */,
+				15637645D00BCDA084850BE2 /* HerdViewModel.swift */,
+				DCF2091223BC86B3C689D7AC /* MarketViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		443EA6688AF47FEE6F993A35 /* GanadoTopShelf */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9E661EFBF8A9FBE8FF6F6BF7 /* Build configuration list for PBXNativeTarget "GanadoTopShelf" */;
+			buildPhases = (
+				55299318F59FDF3B7CA3589D /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				09D992AECA9AB6FFDC68DB29 /* PBXTargetDependency */,
+			);
+			name = GanadoTopShelf;
+			packageProductDependencies = (
+			);
+			productName = GanadoTopShelf;
+			productReference = 07A07545CDC7024D49C901B5 /* GanadoTopShelf.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		852CAB7EEEAC7BC2C49D51C1 /* GanadoTV */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F9F6B1A964EDAD80B77FE71E /* Build configuration list for PBXNativeTarget "GanadoTV" */;
+			buildPhases = (
+				293AA11AD7022DD78A45293C /* Sources */,
+				822457C3A191516977B8D148 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GanadoTV;
+			packageProductDependencies = (
+			);
+			productName = GanadoTV;
+			productReference = D80D6EBDE2666DBAE48241FE /* GanadoTV.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		70DC845B81EA9D26A2E6FFD3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					443EA6688AF47FEE6F993A35 = {
+						DevelopmentTeam = WR7US63J6X;
+						ProvisioningStyle = Automatic;
+					};
+					852CAB7EEEAC7BC2C49D51C1 = {
+						DevelopmentTeam = WR7US63J6X;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 7C381981D6B62C6B6FFBDA6F /* Build configuration list for PBXProject "GanadoTV" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = ABDB5FB61E7C9FAFA8F6AF67;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = C287DCFF7D2DDF88D8938D93 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				852CAB7EEEAC7BC2C49D51C1 /* GanadoTV */,
+				443EA6688AF47FEE6F993A35 /* GanadoTopShelf */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		822457C3A191516977B8D148 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9857128B9A5C2C1D2699C4F3 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		293AA11AD7022DD78A45293C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3C30F2DC9D5A418545612A49 /* APIClient.swift in Sources */,
+				EF2BE6AAB5D7939DDC9B144E /* AnimalsView.swift in Sources */,
+				EA635694DC20722298FC9663 /* AuthService.swift in Sources */,
+				F96A6B20EC3E6A999D1817B6 /* BreedingEvent.swift in Sources */,
+				191CD2AE53FC76DF7155347B /* BreedingService.swift in Sources */,
+				C319C562AA1DFE1574040C49 /* Cattle.swift in Sources */,
+				ACAE1BA847AAFFF01EFE5E05 /* CattleService.swift in Sources */,
+				7709B8AAD9D1C0C913AB026A /* Commerce.swift in Sources */,
+				C0216D660733207EB4E66EF9 /* CommerceService.swift in Sources */,
+				69ED13E255242B3E1B7AD337 /* ContentView.swift in Sources */,
+				2C22D0D7A5E6779C2156C6A0 /* DashboardViewModel.swift in Sources */,
+				FEC6844825007242B4DEF017 /* EventsView.swift in Sources */,
+				B6F6AB24ECDFE07712086549 /* EventsViewModel.swift in Sources */,
+				566914D70CC49CA0E8538962 /* Feed.swift in Sources */,
+				34EB0ADFCA70C459AC592131 /* FeedService.swift in Sources */,
+				F2D39B7A3554DB0D8C09F7C8 /* GanadoTVApp.swift in Sources */,
+				FAFABBEE5982EE7A13016C90 /* HealthEvent.swift in Sources */,
+				EBE0FA5B6A7B965293E09509 /* HealthService.swift in Sources */,
+				213BFDC4A3CAB4AACEA4534D /* HerdView.swift in Sources */,
+				DEB35E54A18DF60565F5AAA1 /* HerdViewModel.swift in Sources */,
+				444B822C19093E63EC3E33F9 /* LoginView.swift in Sources */,
+				D8C2C6FF4596DA43C7D8AAC0 /* MarketView.swift in Sources */,
+				AF61DF19E29071771C825DE3 /* MarketViewModel.swift in Sources */,
+				5899ACA992A3875E97D15D15 /* MassiveEvent.swift in Sources */,
+				E152C51C21B541543358A27E /* Pasture.swift in Sources */,
+				1B39D4CC967267D09BFBAB12 /* PastureService.swift in Sources */,
+				900BD7393B4D1F28B8315FB9 /* SettingsView.swift in Sources */,
+				EF6EC3E6A6E34C5303A81662 /* User.swift in Sources */,
+				BD91C8E8A7F42C84FC38D0D2 /* WorkOrder.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		55299318F59FDF3B7CA3589D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C91338F21DCDFB1281542B3D /* ContentProvider.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		09D992AECA9AB6FFDC68DB29 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 852CAB7EEEAC7BC2C49D51C1 /* GanadoTV */;
+			targetProxy = A2FC45EB56C7BAFED374855E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		098D14CA7D3A4F77277439BB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = WR7US63J6X;
+				INFOPLIST_FILE = GanadoTV/TopShelfExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = co.com.gpcb.ganado.topshelf;
+				PRODUCT_NAME = GanadoTopShelf;
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 17.0;
+			};
+			name = Debug;
+		};
+		3C368D176CECAECA02F1D00B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = GanadoTV/GanadoTV.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = WR7US63J6X;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = GanadoTV/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = co.com.gpcb.ganado;
+				PRODUCT_NAME = Ganado;
+				SDKROOT = appletvos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 17.0;
+			};
+			name = Debug;
+		};
+		4311C1EAF667B9DE80541BCA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = WR7US63J6X;
+				INFOPLIST_FILE = GanadoTV/TopShelfExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = co.com.gpcb.ganado.topshelf;
+				PRODUCT_NAME = GanadoTopShelf;
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 17.0;
+			};
+			name = Release;
+		};
+		5EF1D0871A79AAC64D0953F3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 5;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = WR7US63J6X;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+				TVOS_DEPLOYMENT_TARGET = 17.0;
+			};
+			name = Release;
+		};
+		ACF472A1D23E65BBB5F23E22 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 5;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = WR7US63J6X;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+				TVOS_DEPLOYMENT_TARGET = 17.0;
+			};
+			name = Debug;
+		};
+		EB19EF69D2AA495B36F1FC25 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = GanadoTV/GanadoTV.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = WR7US63J6X;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = GanadoTV/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = co.com.gpcb.ganado;
+				PRODUCT_NAME = Ganado;
+				SDKROOT = appletvos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 17.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7C381981D6B62C6B6FFBDA6F /* Build configuration list for PBXProject "GanadoTV" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ACF472A1D23E65BBB5F23E22 /* Debug */,
+				5EF1D0871A79AAC64D0953F3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		9E661EFBF8A9FBE8FF6F6BF7 /* Build configuration list for PBXNativeTarget "GanadoTopShelf" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				098D14CA7D3A4F77277439BB /* Debug */,
+				4311C1EAF667B9DE80541BCA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F9F6B1A964EDAD80B77FE71E /* Build configuration list for PBXNativeTarget "GanadoTV" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3C368D176CECAECA02F1D00B /* Debug */,
+				EB19EF69D2AA495B36F1FC25 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 70DC845B81EA9D26A2E6FFD3 /* Project object */;
+}

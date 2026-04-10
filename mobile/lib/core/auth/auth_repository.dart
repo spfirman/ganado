@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ganado_app/core/auth/auth_exceptions.dart';
 import 'package:ganado_app/core/network/api_client.dart';
+import 'package:dio/dio.dart';
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   return AuthRepository(ref.read(apiClientProvider));
@@ -14,12 +16,59 @@ class AuthRepository {
     required String username,
     required String password,
   }) async {
+    try {
+      final response = await _apiClient.post(
+        '/auth/login',
+        data: {
+          'company_username': 'gpcb_ranch',
+          'username': username,
+          'password': password,
+        },
+      );
+
+      final data = response.data as Map<String, dynamic>;
+      return LoginResult(
+        accessToken: data['access_token'] as String,
+        refreshToken: data['refresh_token'] as String,
+        expiresIn: data['expires_in'] as int,
+        user: data['user'] as Map<String, dynamic>,
+        permissions: data['permissions'] as Map<String, dynamic>,
+      );
+    } on DioException catch (e) {
+      // Check if OTP is required
+      if (e.response?.statusCode == 403) {
+        final data = e.response?.data as Map<String, dynamic>?;
+        if (data?['error'] == 'otp_required') {
+          final tempToken = data?['temp_token'] as String?;
+          if (tempToken != null) {
+            throw OtpRequiredError(
+              tempToken: tempToken,
+              message: data?['message'] ?? 'OTP verification required',
+            );
+          }
+        }
+      }
+      rethrow;
+    }
+  }
+
+  Future<void> logout(String refreshToken) async {
+    await _apiClient.post(
+      '/auth/logout',
+      data: {'refresh_token': refreshToken},
+    );
+  }
+
+  /// Verify OTP code and complete login
+  Future<LoginResult> verifyOtp({
+    required String tempToken,
+    required String code,
+  }) async {
     final response = await _apiClient.post(
-      '/auth/login',
+      '/auth/otp/verify',
       data: {
-        'company_username': 'gpcb_ranch',
-        'username': username,
-        'password': password,
+        'temp_token': tempToken,
+        'code': code,
       },
     );
 
@@ -30,13 +79,6 @@ class AuthRepository {
       expiresIn: data['expires_in'] as int,
       user: data['user'] as Map<String, dynamic>,
       permissions: data['permissions'] as Map<String, dynamic>,
-    );
-  }
-
-  Future<void> logout(String refreshToken) async {
-    await _apiClient.post(
-      '/auth/logout',
-      data: {'refresh_token': refreshToken},
     );
   }
 }

@@ -1,0 +1,36 @@
+name: GanadoVision
+options:
+  bundleIdPrefix: co.com.gpcb
+  deploymentTarget:
+    visionOS: "1.0"
+  xcodeVersion: "15.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+
+settings:
+  base:
+    MARKETING_VERSION: "1.0.0"
+    CURRENT_PROJECT_VERSION: "5"
+    DEVELOPMENT_TEAM: WR7US63J6X
+    SWIFT_VERSION: "5.9"
+    GENERATE_INFOPLIST_FILE: false
+
+targets:
+  GanadoVision:
+    type: application
+    platform: visionOS
+    deploymentTarget: "1.0"
+    sources:
+      - GanadoVision
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: co.com.gpcb.ganado
+        INFOPLIST_FILE: GanadoVision/Info.plist
+        PRODUCT_NAME: "Ganado"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        DEVELOPMENT_TEAM: WR7US63J6X
+        CODE_SIGN_STYLE: Automatic
+        SWIFT_EMIT_LOC_STRINGS: "YES"
+        ENABLE_PREVIEWS: "YES"
+    entitlements:
+      path: GanadoVision/GanadoVision.entitlements

@@ -1,0 +1,667 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		01F8B1268CAD6C771E593787 /* StatCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE474211ED2EE24472A8FE3 /* StatCard.swift */; };
+		03A04B6C02CC4F2AB1CEA9EE /* CommerceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B086785AE8F437EA6F6F3158 /* CommerceService.swift */; };
+		03A9F48F750499856F31BEB6 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E06C5A417591105D316447 /* DashboardView.swift */; };
+		05B85D662E42AFF5F4604CE6 /* PastureListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C4D1607A14552E4153929A /* PastureListView.swift */; };
+		05C7E364D32D7795C18EEE3B /* WorkOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB51875AC88A54A63BDA01AE /* WorkOrder.swift */; };
+		078448AD9AF178FC2C205636 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52564452D09580BF3AC47871 /* FeedViewModel.swift */; };
+		0F90DB4832533CECF3205349 /* CattleDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC55C33A6F90C6F6F1B57C24 /* CattleDetailView.swift */; };
+		108351DC794B9E7811582AB6 /* PastureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E5724B84D40CD3EB96CDBA /* PastureService.swift */; };
+		11A964BBC93E0636A10D6881 /* FeedTypeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18993C53A63E3C648112D02 /* FeedTypeListView.swift */; };
+		1FD7A2A99A12922AD7A94FE0 /* HerdVisualizationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D66366E5D8AEFB461CD90D7 /* HerdVisualizationView.swift */; };
+		20E821CCB64DD9CDC1836F96 /* CommerceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98973AD2F495AF93A3D0C02 /* CommerceView.swift */; };
+		26568C9078715912A7F9E7EF /* BreedingEventListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E96CC4375DD3F2E2A1FAFED /* BreedingEventListView.swift */; };
+		2CE170A3CB3CD20C3DF77E0C /* NavigationOrnament.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDD3DDC65B528AA8C457010 /* NavigationOrnament.swift */; };
+		2D3ED6B4C9C97250033182CB /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3324B431DE2E4AE72CC8E78 /* LoginView.swift */; };
+		2FD46E22442AF81AC38F0826 /* PastureDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C35017295FAC5717E55ECBF /* PastureDetailView.swift */; };
+		32AF29470A8534A44B0486E9 /* FarmOverviewSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B982B767AEFAF7D297DE46 /* FarmOverviewSpace.swift */; };
+		3333BBFD08B3EA7F8ED32794 /* PastureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82AED835ECF6E272EB8429D /* PastureViewModel.swift */; };
+		37EF8B124312F99290398949 /* BreedingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68E477B45817C00B825FC5A /* BreedingViewModel.swift */; };
+		4BA9CE04ED1A2D313CAC5109 /* CattleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1C4E7C522D4D3C4B03A875 /* CattleViewModel.swift */; };
+		5FBA73E0AC60C5B88BD03271 /* GanadoVisionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D868500F7F38E2DC2A1712 /* GanadoVisionApp.swift */; };
+		64544C61C549BC7A6B41D6CD /* Commerce.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6FF762DC63D36CA9279ED19 /* Commerce.swift */; };
+		6CBD18A853F93C81A655E207 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4B1ED45E58D01036902A519 /* LoadingView.swift */; };
+		6D5ED4358A9416419C880DBE /* SearchField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161464DEB6400E558E2B9709 /* SearchField.swift */; };
+		6DFBC42EC9BF95B007BF5E4D /* BreedingEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E03932AEF1354407DEE209 /* BreedingEvent.swift */; };
+		7AC75CA52B141FDE05BEF595 /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88DC20BB3140DDDC2EA6B44E /* DashboardViewModel.swift */; };
+		7FABEAA9046170716E37AFA3 /* CattleListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58BE994ED64EA1085F9D291 /* CattleListView.swift */; };
+		81ACE2424CF930EFD94A3226 /* HealthEventListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3332C03110FDBF745BA4D0E1 /* HealthEventListView.swift */; };
+		81C1C9DB20FF6560700D6DE5 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B97B4360E88F9C5B70D5AA1 /* APIClient.swift */; };
+		830C0837C1C0B11DF8D671CC /* HealthEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1920AF1D43DB306D8A8059CB /* HealthEvent.swift */; };
+		88C753D398E0EF6371F31B02 /* Feed.swift in Sources */ = {isa = PBXBuildFile; fileRef = C477C6F83E92ADDF090399D3 /* Feed.swift */; };
+		959976616DAAAB3760A1E187 /* Pasture.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73654296E610DD6F071D57B /* Pasture.swift */; };
+		998FC62DFF6EED467FAD314F /* WorkOrderListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0D1F318B55127DAD18C2CF /* WorkOrderListView.swift */; };
+		9AAF7F06005B93D6AF490822 /* BreedingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866576229F1AF80E92358887 /* BreedingService.swift */; };
+		9B79F115482AF1C1BCBA8A4F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1042FE63495E5961DC75D3F /* SettingsView.swift */; };
+		9C7B12B9F850CFEF69E37864 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32D11AE40B328FBE4C3A7EB /* ContentView.swift */; };
+		9D5CF5E059B0E4E116D6247B /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D5534F930BEA401237F8460 /* AuthService.swift */; };
+		A011D1BA97D1AB53BA73F3F9 /* AlertCenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9FDF15EE6C46EE393DFAE4 /* AlertCenterView.swift */; };
+		A0463135C2223E70233C6C0A /* CattleEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 330502C772449E7920572AA4 /* CattleEntity.swift */; };
+		ABFBB5A641C8FEE6EFD12405 /* Cattle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FF9492C41F4B78127D93881 /* Cattle.swift */; };
+		ADA3BCA859D1160E3E1B9C5D /* MassiveEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A7295B515C616EBB622561 /* MassiveEvent.swift */; };
+		B3A0D7B61626B1E436E511D8 /* CattleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47BBA77357FD115AF812037 /* CattleService.swift */; };
+		BDA349235C81999C28C24732 /* FeedService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A6B28AEB63C432AE651F1F /* FeedService.swift */; };
+		C0162BA2560EE4F99635735A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED9C2FA002301F25734C7A4F /* User.swift */; };
+		C2F649926C50EE5464A4323F /* MassiveEventListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4891F66475D973CCF5EF42F2 /* MassiveEventListView.swift */; };
+		D367492A29342243A3D8D42B /* HealthEventFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40D3C9CF9AEC5E2D835A7A9 /* HealthEventFormView.swift */; };
+		DD5EE2A4C77FEAB2D8190846 /* CommerceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E9B9E89C09DC11A86179F1 /* CommerceViewModel.swift */; };
+		E04409C7235834AF331DA1B0 /* HealthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEEE665730EC3C331FA7341C /* HealthService.swift */; };
+		E5DA8BB9A48888F57B5F8B21 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B6872C7A40DD0D52D0EECE6 /* Assets.xcassets */; };
+		E803E9739EA31EDD667C60B0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F9CB7C57E60B795EE013B49 /* Preview Assets.xcassets */; };
+		ED889C8B0E4321AADB4FCF0C /* HealthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20193641BF2049E90198EE52 /* HealthViewModel.swift */; };
+		EDCD4985D7E07A45CA4083E4 /* PastureTerrainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A332ADFD2402A069BF94783 /* PastureTerrainView.swift */; };
+		FFF3B03CDAEB3676B636151D /* CattleFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1913EAE8FA7F3C006D3A328C /* CattleFormView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		04E9B9E89C09DC11A86179F1 /* CommerceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommerceViewModel.swift; sourceTree = "<group>"; };
+		0C913A130945217CF4B79A71 /* GanadoVision.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GanadoVision.entitlements; sourceTree = "<group>"; };
+		0E0D1F318B55127DAD18C2CF /* WorkOrderListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkOrderListView.swift; sourceTree = "<group>"; };
+		0FF9492C41F4B78127D93881 /* Cattle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cattle.swift; sourceTree = "<group>"; };
+		161464DEB6400E558E2B9709 /* SearchField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchField.swift; sourceTree = "<group>"; };
+		16D868500F7F38E2DC2A1712 /* GanadoVisionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GanadoVisionApp.swift; sourceTree = "<group>"; };
+		1913EAE8FA7F3C006D3A328C /* CattleFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CattleFormView.swift; sourceTree = "<group>"; };
+		1920AF1D43DB306D8A8059CB /* HealthEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthEvent.swift; sourceTree = "<group>"; };
+		1D5534F930BEA401237F8460 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		20193641BF2049E90198EE52 /* HealthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthViewModel.swift; sourceTree = "<group>"; };
+		28E06C5A417591105D316447 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		2B6872C7A40DD0D52D0EECE6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		330502C772449E7920572AA4 /* CattleEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CattleEntity.swift; sourceTree = "<group>"; };
+		3332C03110FDBF745BA4D0E1 /* HealthEventListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthEventListView.swift; sourceTree = "<group>"; };
+		35ABBCB7108B858577C9540E /* GanadoVision.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = GanadoVision.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4891F66475D973CCF5EF42F2 /* MassiveEventListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MassiveEventListView.swift; sourceTree = "<group>"; };
+		4A332ADFD2402A069BF94783 /* PastureTerrainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastureTerrainView.swift; sourceTree = "<group>"; };
+		4B97B4360E88F9C5B70D5AA1 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		50B982B767AEFAF7D297DE46 /* FarmOverviewSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FarmOverviewSpace.swift; sourceTree = "<group>"; };
+		52564452D09580BF3AC47871 /* FeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
+		56C4D1607A14552E4153929A /* PastureListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastureListView.swift; sourceTree = "<group>"; };
+		6F9CB7C57E60B795EE013B49 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		75A6B28AEB63C432AE651F1F /* FeedService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedService.swift; sourceTree = "<group>"; };
+		866576229F1AF80E92358887 /* BreedingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedingService.swift; sourceTree = "<group>"; };
+		88DC20BB3140DDDC2EA6B44E /* DashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModel.swift; sourceTree = "<group>"; };
+		88E03932AEF1354407DEE209 /* BreedingEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedingEvent.swift; sourceTree = "<group>"; };
+		8AE474211ED2EE24472A8FE3 /* StatCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatCard.swift; sourceTree = "<group>"; };
+		8C35017295FAC5717E55ECBF /* PastureDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastureDetailView.swift; sourceTree = "<group>"; };
+		9D66366E5D8AEFB461CD90D7 /* HerdVisualizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HerdVisualizationView.swift; sourceTree = "<group>"; };
+		9E96CC4375DD3F2E2A1FAFED /* BreedingEventListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedingEventListView.swift; sourceTree = "<group>"; };
+		A3324B431DE2E4AE72CC8E78 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		A98973AD2F495AF93A3D0C02 /* CommerceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommerceView.swift; sourceTree = "<group>"; };
+		AEEE665730EC3C331FA7341C /* HealthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthService.swift; sourceTree = "<group>"; };
+		B086785AE8F437EA6F6F3158 /* CommerceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommerceService.swift; sourceTree = "<group>"; };
+		B2BD61C66A955479654297CF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		B4B1ED45E58D01036902A519 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		B68E477B45817C00B825FC5A /* BreedingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedingViewModel.swift; sourceTree = "<group>"; };
+		BDDD3DDC65B528AA8C457010 /* NavigationOrnament.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationOrnament.swift; sourceTree = "<group>"; };
+		C1042FE63495E5961DC75D3F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		C40D3C9CF9AEC5E2D835A7A9 /* HealthEventFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthEventFormView.swift; sourceTree = "<group>"; };
+		C477C6F83E92ADDF090399D3 /* Feed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.swift; sourceTree = "<group>"; };
+		CA1C4E7C522D4D3C4B03A875 /* CattleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CattleViewModel.swift; sourceTree = "<group>"; };
+		D7E5724B84D40CD3EB96CDBA /* PastureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastureService.swift; sourceTree = "<group>"; };
+		DC55C33A6F90C6F6F1B57C24 /* CattleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CattleDetailView.swift; sourceTree = "<group>"; };
+		DC9FDF15EE6C46EE393DFAE4 /* AlertCenterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertCenterView.swift; sourceTree = "<group>"; };
+		E0A7295B515C616EBB622561 /* MassiveEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MassiveEvent.swift; sourceTree = "<group>"; };
+		E18993C53A63E3C648112D02 /* FeedTypeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedTypeListView.swift; sourceTree = "<group>"; };
+		E47BBA77357FD115AF812037 /* CattleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CattleService.swift; sourceTree = "<group>"; };
+		E82AED835ECF6E272EB8429D /* PastureViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastureViewModel.swift; sourceTree = "<group>"; };
+		ED9C2FA002301F25734C7A4F /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		F32D11AE40B328FBE4C3A7EB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		F58BE994ED64EA1085F9D291 /* CattleListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CattleListView.swift; sourceTree = "<group>"; };
+		F6FF762DC63D36CA9279ED19 /* Commerce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commerce.swift; sourceTree = "<group>"; };
+		F73654296E610DD6F071D57B /* Pasture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pasture.swift; sourceTree = "<group>"; };
+		FB51875AC88A54A63BDA01AE /* WorkOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkOrder.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		02F2DA480881538F6E53F7E3 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				6F9CB7C57E60B795EE013B49 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		1A77E0E115A8B69770506789 /* Health */ = {
+			isa = PBXGroup;
+			children = (
+				C40D3C9CF9AEC5E2D835A7A9 /* HealthEventFormView.swift */,
+				3332C03110FDBF745BA4D0E1 /* HealthEventListView.swift */,
+			);
+			path = Health;
+			sourceTree = "<group>";
+		};
+		1C8FDB46F6E37AE3639DFD34 = {
+			isa = PBXGroup;
+			children = (
+				1E2732A5BBEE61334F64342A /* GanadoVision */,
+				70EA236059277216AE839E2F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		1E2732A5BBEE61334F64342A /* GanadoVision */ = {
+			isa = PBXGroup;
+			children = (
+				59BF8DF97E2A15B4062A9873 /* Components */,
+				C084BD3C41C00B4AE4D95C6F /* Models */,
+				02F2DA480881538F6E53F7E3 /* Preview Content */,
+				A7AFF1230117038F8D00BFD3 /* Services */,
+				7CE2C3C31106D817D97EF952 /* Spatial */,
+				A42C6241B6748B01EBA80764 /* ViewModels */,
+				B535AF03397C25A88F1654AF /* Views */,
+				2B6872C7A40DD0D52D0EECE6 /* Assets.xcassets */,
+				F32D11AE40B328FBE4C3A7EB /* ContentView.swift */,
+				0C913A130945217CF4B79A71 /* GanadoVision.entitlements */,
+				16D868500F7F38E2DC2A1712 /* GanadoVisionApp.swift */,
+				B2BD61C66A955479654297CF /* Info.plist */,
+			);
+			path = GanadoVision;
+			sourceTree = "<group>";
+		};
+		2D57FFE81697418413C6FE6D /* Cattle */ = {
+			isa = PBXGroup;
+			children = (
+				DC55C33A6F90C6F6F1B57C24 /* CattleDetailView.swift */,
+				1913EAE8FA7F3C006D3A328C /* CattleFormView.swift */,
+				F58BE994ED64EA1085F9D291 /* CattleListView.swift */,
+			);
+			path = Cattle;
+			sourceTree = "<group>";
+		};
+		3A5270EF2BA47E8C9F77ADC6 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				C1042FE63495E5961DC75D3F /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		59BF8DF97E2A15B4062A9873 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				B4B1ED45E58D01036902A519 /* LoadingView.swift */,
+				BDDD3DDC65B528AA8C457010 /* NavigationOrnament.swift */,
+				161464DEB6400E558E2B9709 /* SearchField.swift */,
+				8AE474211ED2EE24472A8FE3 /* StatCard.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		70EA236059277216AE839E2F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				35ABBCB7108B858577C9540E /* GanadoVision.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		768B3F84D51E7FEEA7BBE777 /* WorkOrders */ = {
+			isa = PBXGroup;
+			children = (
+				0E0D1F318B55127DAD18C2CF /* WorkOrderListView.swift */,
+			);
+			path = WorkOrders;
+			sourceTree = "<group>";
+		};
+		769E9FC9FE7CCE9688D77FB4 /* Events */ = {
+			isa = PBXGroup;
+			children = (
+				4891F66475D973CCF5EF42F2 /* MassiveEventListView.swift */,
+			);
+			path = Events;
+			sourceTree = "<group>";
+		};
+		79E25E74BE855A598F26A66B /* Pastures */ = {
+			isa = PBXGroup;
+			children = (
+				8C35017295FAC5717E55ECBF /* PastureDetailView.swift */,
+				56C4D1607A14552E4153929A /* PastureListView.swift */,
+			);
+			path = Pastures;
+			sourceTree = "<group>";
+		};
+		7CE2C3C31106D817D97EF952 /* Spatial */ = {
+			isa = PBXGroup;
+			children = (
+				330502C772449E7920572AA4 /* CattleEntity.swift */,
+				50B982B767AEFAF7D297DE46 /* FarmOverviewSpace.swift */,
+				9D66366E5D8AEFB461CD90D7 /* HerdVisualizationView.swift */,
+				4A332ADFD2402A069BF94783 /* PastureTerrainView.swift */,
+			);
+			path = Spatial;
+			sourceTree = "<group>";
+		};
+		A290696FCAEC60E5B2757B90 /* Feed */ = {
+			isa = PBXGroup;
+			children = (
+				E18993C53A63E3C648112D02 /* FeedTypeListView.swift */,
+			);
+			path = Feed;
+			sourceTree = "<group>";
+		};
+		A42C6241B6748B01EBA80764 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				B68E477B45817C00B825FC5A /* BreedingViewModel.swift */,
+				CA1C4E7C522D4D3C4B03A875 /* CattleViewModel.swift */,
+				04E9B9E89C09DC11A86179F1 /* CommerceViewModel.swift */,
+				88DC20BB3140DDDC2EA6B44E /* DashboardViewModel.swift */,
+				52564452D09580BF3AC47871 /* FeedViewModel.swift */,
+				20193641BF2049E90198EE52 /* HealthViewModel.swift */,
+				E82AED835ECF6E272EB8429D /* PastureViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		A7AFF1230117038F8D00BFD3 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				4B97B4360E88F9C5B70D5AA1 /* APIClient.swift */,
+				1D5534F930BEA401237F8460 /* AuthService.swift */,
+				866576229F1AF80E92358887 /* BreedingService.swift */,
+				E47BBA77357FD115AF812037 /* CattleService.swift */,
+				B086785AE8F437EA6F6F3158 /* CommerceService.swift */,
+				75A6B28AEB63C432AE651F1F /* FeedService.swift */,
+				AEEE665730EC3C331FA7341C /* HealthService.swift */,
+				D7E5724B84D40CD3EB96CDBA /* PastureService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		B535AF03397C25A88F1654AF /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				EF8391DC053DA883BDB559AF /* Alerts */,
+				E045A502125F2814AF6ECF1C /* Breeding */,
+				2D57FFE81697418413C6FE6D /* Cattle */,
+				F7B2CEB7B03C8FEC23F8455A /* Commerce */,
+				CB46FC8D4C6958D8F361EB8B /* Dashboard */,
+				769E9FC9FE7CCE9688D77FB4 /* Events */,
+				A290696FCAEC60E5B2757B90 /* Feed */,
+				1A77E0E115A8B69770506789 /* Health */,
+				79E25E74BE855A598F26A66B /* Pastures */,
+				3A5270EF2BA47E8C9F77ADC6 /* Settings */,
+				768B3F84D51E7FEEA7BBE777 /* WorkOrders */,
+				A3324B431DE2E4AE72CC8E78 /* LoginView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C084BD3C41C00B4AE4D95C6F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				88E03932AEF1354407DEE209 /* BreedingEvent.swift */,
+				0FF9492C41F4B78127D93881 /* Cattle.swift */,
+				F6FF762DC63D36CA9279ED19 /* Commerce.swift */,
+				C477C6F83E92ADDF090399D3 /* Feed.swift */,
+				1920AF1D43DB306D8A8059CB /* HealthEvent.swift */,
+				E0A7295B515C616EBB622561 /* MassiveEvent.swift */,
+				F73654296E610DD6F071D57B /* Pasture.swift */,
+				ED9C2FA002301F25734C7A4F /* User.swift */,
+				FB51875AC88A54A63BDA01AE /* WorkOrder.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		CB46FC8D4C6958D8F361EB8B /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				28E06C5A417591105D316447 /* DashboardView.swift */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		E045A502125F2814AF6ECF1C /* Breeding */ = {
+			isa = PBXGroup;
+			children = (
+				9E96CC4375DD3F2E2A1FAFED /* BreedingEventListView.swift */,
+			);
+			path = Breeding;
+			sourceTree = "<group>";
+		};
+		EF8391DC053DA883BDB559AF /* Alerts */ = {
+			isa = PBXGroup;
+			children = (
+				DC9FDF15EE6C46EE393DFAE4 /* AlertCenterView.swift */,
+			);
+			path = Alerts;
+			sourceTree = "<group>";
+		};
+		F7B2CEB7B03C8FEC23F8455A /* Commerce */ = {
+			isa = PBXGroup;
+			children = (
+				A98973AD2F495AF93A3D0C02 /* CommerceView.swift */,
+			);
+			path = Commerce;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4B396F9629C41CCA8092BFB3 /* GanadoVision */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B08540918E0624AE307CEF87 /* Build configuration list for PBXNativeTarget "GanadoVision" */;
+			buildPhases = (
+				F55103EB9C3BD50C3B75DBE1 /* Sources */,
+				DC87FBD8825DDA1107BCBF55 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GanadoVision;
+			packageProductDependencies = (
+			);
+			productName = GanadoVision;
+			productReference = 35ABBCB7108B858577C9540E /* GanadoVision.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		70C59533758D8C7B8EFA1513 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					4B396F9629C41CCA8092BFB3 = {
+						DevelopmentTeam = WR7US63J6X;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 3AB19686C8F799756DDB6107 /* Build configuration list for PBXProject "GanadoVision" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 1C8FDB46F6E37AE3639DFD34;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 70EA236059277216AE839E2F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4B396F9629C41CCA8092BFB3 /* GanadoVision */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DC87FBD8825DDA1107BCBF55 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E5DA8BB9A48888F57B5F8B21 /* Assets.xcassets in Resources */,
+				E803E9739EA31EDD667C60B0 /* Preview Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F55103EB9C3BD50C3B75DBE1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				81C1C9DB20FF6560700D6DE5 /* APIClient.swift in Sources */,
+				A011D1BA97D1AB53BA73F3F9 /* AlertCenterView.swift in Sources */,
+				9D5CF5E059B0E4E116D6247B /* AuthService.swift in Sources */,
+				6DFBC42EC9BF95B007BF5E4D /* BreedingEvent.swift in Sources */,
+				26568C9078715912A7F9E7EF /* BreedingEventListView.swift in Sources */,
+				9AAF7F06005B93D6AF490822 /* BreedingService.swift in Sources */,
+				37EF8B124312F99290398949 /* BreedingViewModel.swift in Sources */,
+				ABFBB5A641C8FEE6EFD12405 /* Cattle.swift in Sources */,
+				0F90DB4832533CECF3205349 /* CattleDetailView.swift in Sources */,
+				A0463135C2223E70233C6C0A /* CattleEntity.swift in Sources */,
+				FFF3B03CDAEB3676B636151D /* CattleFormView.swift in Sources */,
+				7FABEAA9046170716E37AFA3 /* CattleListView.swift in Sources */,
+				B3A0D7B61626B1E436E511D8 /* CattleService.swift in Sources */,
+				4BA9CE04ED1A2D313CAC5109 /* CattleViewModel.swift in Sources */,
+				64544C61C549BC7A6B41D6CD /* Commerce.swift in Sources */,
+				03A04B6C02CC4F2AB1CEA9EE /* CommerceService.swift in Sources */,
+				20E821CCB64DD9CDC1836F96 /* CommerceView.swift in Sources */,
+				DD5EE2A4C77FEAB2D8190846 /* CommerceViewModel.swift in Sources */,
+				9C7B12B9F850CFEF69E37864 /* ContentView.swift in Sources */,
+				03A9F48F750499856F31BEB6 /* DashboardView.swift in Sources */,
+				7AC75CA52B141FDE05BEF595 /* DashboardViewModel.swift in Sources */,
+				32AF29470A8534A44B0486E9 /* FarmOverviewSpace.swift in Sources */,
+				88C753D398E0EF6371F31B02 /* Feed.swift in Sources */,
+				BDA349235C81999C28C24732 /* FeedService.swift in Sources */,
+				11A964BBC93E0636A10D6881 /* FeedTypeListView.swift in Sources */,
+				078448AD9AF178FC2C205636 /* FeedViewModel.swift in Sources */,
+				5FBA73E0AC60C5B88BD03271 /* GanadoVisionApp.swift in Sources */,
+				830C0837C1C0B11DF8D671CC /* HealthEvent.swift in Sources */,
+				D367492A29342243A3D8D42B /* HealthEventFormView.swift in Sources */,
+				81ACE2424CF930EFD94A3226 /* HealthEventListView.swift in Sources */,
+				E04409C7235834AF331DA1B0 /* HealthService.swift in Sources */,
+				ED889C8B0E4321AADB4FCF0C /* HealthViewModel.swift in Sources */,
+				1FD7A2A99A12922AD7A94FE0 /* HerdVisualizationView.swift in Sources */,
+				6CBD18A853F93C81A655E207 /* LoadingView.swift in Sources */,
+				2D3ED6B4C9C97250033182CB /* LoginView.swift in Sources */,
+				ADA3BCA859D1160E3E1B9C5D /* MassiveEvent.swift in Sources */,
+				C2F649926C50EE5464A4323F /* MassiveEventListView.swift in Sources */,
+				2CE170A3CB3CD20C3DF77E0C /* NavigationOrnament.swift in Sources */,
+				959976616DAAAB3760A1E187 /* Pasture.swift in Sources */,
+				2FD46E22442AF81AC38F0826 /* PastureDetailView.swift in Sources */,
+				05B85D662E42AFF5F4604CE6 /* PastureListView.swift in Sources */,
+				108351DC794B9E7811582AB6 /* PastureService.swift in Sources */,
+				EDCD4985D7E07A45CA4083E4 /* PastureTerrainView.swift in Sources */,
+				3333BBFD08B3EA7F8ED32794 /* PastureViewModel.swift in Sources */,
+				6D5ED4358A9416419C880DBE /* SearchField.swift in Sources */,
+				9B79F115482AF1C1BCBA8A4F /* SettingsView.swift in Sources */,
+				01F8B1268CAD6C771E593787 /* StatCard.swift in Sources */,
+				C0162BA2560EE4F99635735A /* User.swift in Sources */,
+				05C7E364D32D7795C18EEE3B /* WorkOrder.swift in Sources */,
+				998FC62DFF6EED467FAD314F /* WorkOrderListView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		2E53D9B5B62C0A9048E9C283 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 5;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = WR7US63J6X;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = xros;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+				XROS_DEPLOYMENT_TARGET = 1.0;
+			};
+			name = Release;
+		};
+		3CF33C644FD404D00EFDD95F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = GanadoVision/GanadoVision.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = WR7US63J6X;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = GanadoVision/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = co.com.gpcb.ganado;
+				PRODUCT_NAME = Ganado;
+				SDKROOT = xros;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 7;
+				XROS_DEPLOYMENT_TARGET = 1.0;
+			};
+			name = Release;
+		};
+		4BCC705F5A917A97DA5C5935 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 5;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = WR7US63J6X;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = xros;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+				XROS_DEPLOYMENT_TARGET = 1.0;
+			};
+			name = Debug;
+		};
+		72EB314CD2FF795E20761C49 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = GanadoVision/GanadoVision.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = WR7US63J6X;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = GanadoVision/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = co.com.gpcb.ganado;
+				PRODUCT_NAME = Ganado;
+				SDKROOT = xros;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 7;
+				XROS_DEPLOYMENT_TARGET = 1.0;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3AB19686C8F799756DDB6107 /* Build configuration list for PBXProject "GanadoVision" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4BCC705F5A917A97DA5C5935 /* Debug */,
+				2E53D9B5B62C0A9048E9C283 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B08540918E0624AE307CEF87 /* Build configuration list for PBXNativeTarget "GanadoVision" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				72EB314CD2FF795E20761C49 /* Debug */,
+				3CF33C644FD404D00EFDD95F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 70C59533758D8C7B8EFA1513 /* Project object */;
+}
