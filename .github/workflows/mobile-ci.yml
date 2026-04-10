@@ -26,7 +26,7 @@ env:
   TEAM_ID: 'WR7US63J6X'
   APP_BUNDLE_ID: 'co.com.gpcb.ganado'
   TVOS_TOPSHELF_BUNDLE_ID: 'co.com.gpcb.ganado.topshelf'
-  BUILD_NUMBER: ${{ github.run_number + 10 }}
+  BUILD_OFFSET: '10'
 
 jobs:
   # ============================================================================
@@ -120,10 +120,10 @@ jobs:
           echo "keyPassword=$ANDROID_KEY_PASSWORD" >> android/key.properties
 
       - name: Build APK (Release)
-        run: flutter build apk --release --verbose --build-number=${{ github.run_number + 10 }}
+        run: BUILD_NUM=$(( ${{ github.run_number }} + 10 )) && flutter build apk --release --verbose --build-number=$BUILD_NUM
 
       - name: Build App Bundle (Release)
-        run: flutter build appbundle --release --verbose --build-number=${{ github.run_number + 10 }}
+        run: BUILD_NUM=$(( ${{ github.run_number }} + 10 )) && flutter build appbundle --release --verbose --build-number=$BUILD_NUM
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
@@ -199,7 +199,7 @@ jobs:
           flutter build ipa \
             --release \
             --export-options-plist=ios/exportOptions.plist \
-            --build-number=${{ github.run_number + 10 }} \
+            --build-number=$(( ${{ github.run_number }} + 10 )) \
             --verbose
 
       - name: Upload IPA Artifact
@@ -269,7 +269,7 @@ jobs:
 
       - name: Set Build Number (tvOS)
         working-directory: ./apps/tvos
-        run: xcrun agvtool new-version -all ${{ github.run_number + 10 }}
+        run: xcrun agvtool new-version -all $(( ${{ github.run_number }} + 10 ))
 
       - name: Build tvOS Archive
         working-directory: ./apps/tvos
@@ -361,7 +361,7 @@ jobs:
 
       - name: Set Build Number (visionOS)
         working-directory: ./apps/visionos
-        run: xcrun agvtool new-version -all ${{ github.run_number + 10 }}
+        run: xcrun agvtool new-version -all $(( ${{ github.run_number }} + 10 ))
 
       - name: Build visionOS Archive
         working-directory: ./apps/visionos
