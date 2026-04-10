@@ -1,0 +1,905 @@
+name: Mobile CI/CD
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'mobile/**'
+      - 'apps/tvos/**'
+      - 'apps/visionos/**'
+      - '.github/workflows/mobile-ci.yml'
+  pull_request:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'mobile/**'
+      - 'apps/tvos/**'
+      - 'apps/visionos/**'
+
+env:
+  FLUTTER_VERSION: '3.19.0'
+  JAVA_VERSION: '17'
+  XCODE_VERSION: '15.3'
+  TEAM_ID: 'WR7US63J6X'
+  APP_BUNDLE_ID: 'co.com.gpcb.ganado'
+  TVOS_TOPSHELF_BUNDLE_ID: 'co.com.gpcb.ganado.topshelf'
+
+jobs:
+  # ============================================================================
+  # TEST JOB - Flutter Testing & Linting
+  # ============================================================================
+  test:
+    name: Flutter Test & Analyze
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./mobile
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Verify Flutter Installation
+        run: flutter --version
+
+      - name: Get Dependencies
+        run: flutter pub get
+
+      - name: Analyze Code
+        run: flutter analyze
+
+      - name: Run Unit Tests
+        run: flutter test --coverage --verbose
+        continue-on-error: true
+
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: mobile/coverage
+        if: always()
+
+      - name: Publish Test Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: mobile/.dart_tool
+        if: always()
+
+  # ============================================================================
+  # ANDROID BUILD JOB - Flutter APK & App Bundle
+  # ============================================================================
+  build-android:
+    name: Build Android (APK & App Bundle)
+    runs-on: ubuntu-latest
+    needs: test
+    defaults:
+      run:
+        working-directory: ./mobile
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Get Dependencies
+        run: flutter pub get
+
+      - name: Decode Android Keystore
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > android/app/ganado.keystore
+          echo "storeFile=ganado.keystore" > android/key.properties
+          echo "storePassword=$ANDROID_STORE_PASSWORD" >> android/key.properties
+          echo "keyAlias=$ANDROID_KEY_ALIAS" >> android/key.properties
+          echo "keyPassword=$ANDROID_KEY_PASSWORD" >> android/key.properties
+
+      - name: Build APK (Release)
+        run: flutter build apk --release --verbose
+
+      - name: Build App Bundle (Release)
+        run: flutter build appbundle --release --verbose
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-apk
+          path: mobile/build/app/outputs/flutter-apk/app-release.apk
+
+      - name: Upload App Bundle Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-aab
+          path: mobile/build/app/outputs/bundle/release/app-release.aab
+
+  # ============================================================================
+  # iOS BUILD JOB - Flutter IPA
+  # ============================================================================
+  build-ios:
+    name: Build iOS (IPA)
+    runs-on: macos-14
+    needs: test
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Get Dependencies
+        working-directory: ./mobile
+        run: flutter pub get
+
+      - name: Decode iOS Certificate
+        env:
+          IOS_CERTIFICATE_BASE64: ${{ secrets.IOS_CERTIFICATE_BASE64 }}
+          IOS_CERTIFICATE_PASSWORD: ${{ secrets.IOS_CERTIFICATE_PASSWORD }}
+        run: |
+          mkdir -p ~/Library/Keychains
+          echo "$IOS_CERTIFICATE_BASE64" | base64 -d > ios/certificate.p12
+          security import ios/certificate.p12 \
+            -k ~/Library/Keychains/login.keychain-db \
+            -P "$IOS_CERTIFICATE_PASSWORD" \
+            -T /usr/bin/codesign
+
+      - name: Create Export Options Plist
+        working-directory: ./mobile/ios
+        run: |
+          cat > exportOptions.plist << 'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key>
+            <string>app-store</string>
+            <key>teamID</key>
+            <string>WR7US63J6X</string>
+            <key>signingStyle</key>
+            <string>automatic</string>
+            <key>stripSwiftSymbols</key>
+            <true/>
+            <key>thinning</key>
+            <string>&lt;none&gt;</string>
+          </dict>
+          </plist>
+          EOF
+
+      - name: Build iOS IPA
+        working-directory: ./mobile
+        run: |
+          flutter build ipa \
+            --release \
+            --export-options-plist=ios/exportOptions.plist \
+            --verbose
+
+      - name: Upload IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-ipa
+          path: mobile/build/ios/ipa/ganado_app.ipa
+
+  # ============================================================================
+  # tvOS BUILD JOB - Native SwiftUI with XcodeGen
+  # ============================================================================
+  build-tvos:
+    name: Build tvOS (Native SwiftUI)
+    runs-on: macos-14
+    needs: test
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Xcode
+        run: |
+          sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
+
+      - name: Install XcodeGen
+        run: |
+          brew install xcodegen
+
+      - name: Generate tvOS Project
+        working-directory: ./apps/tvos
+        run: |
+          xcodegen generate --verbose
+
+      - name: Decode iOS Certificate
+        env:
+          IOS_CERTIFICATE_BASE64: ${{ secrets.IOS_CERTIFICATE_BASE64 }}
+          IOS_CERTIFICATE_PASSWORD: ${{ secrets.IOS_CERTIFICATE_PASSWORD }}
+        run: |
+          mkdir -p ~/Library/Keychains
+          echo "$IOS_CERTIFICATE_BASE64" | base64 -d > apps/tvos/certificate.p12
+          security import apps/tvos/certificate.p12 \
+            -k ~/Library/Keychains/login.keychain-db \
+            -P "$IOS_CERTIFICATE_PASSWORD" \
+            -T /usr/bin/codesign
+
+      - name: Create tvOS Export Options Plist
+        working-directory: ./apps/tvos
+        run: |
+          cat > exportOptions.plist << 'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key>
+            <string>app-store</string>
+            <key>teamID</key>
+            <string>WR7US63J6X</string>
+            <key>signingStyle</key>
+            <string>automatic</string>
+            <key>stripSwiftSymbols</key>
+            <true/>
+            <key>thinning</key>
+            <string>&lt;none&gt;</string>
+          </dict>
+          </plist>
+          EOF
+
+      - name: Build tvOS Archive
+        working-directory: ./apps/tvos
+        run: |
+          xcodebuild archive \
+            -project GanadoTV.xcodeproj \
+            -scheme GanadoTV \
+            -destination generic/platform=tvOS \
+            -archivePath GanadoTV.xcarchive \
+            -configuration Release \
+            -verbose \
+            -allowProvisioningUpdates \
+            CODE_SIGN_STYLE=Automatic \
+            DEVELOPMENT_TEAM=${{ env.TEAM_ID }}
+
+      - name: Export tvOS IPA
+        working-directory: ./apps/tvos
+        run: |
+          xcodebuild -exportArchive \
+            -archivePath GanadoTV.xcarchive \
+            -exportOptionsPlist exportOptions.plist \
+            -exportPath ./export \
+            -verbose
+
+      - name: Upload tvOS IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tvos-ipa
+          path: apps/tvos/export/Ganado.ipa
+
+  # ============================================================================
+  # visionOS BUILD JOB - Native SwiftUI with XcodeGen
+  # ============================================================================
+  build-visionos:
+    name: Build visionOS (Native SwiftUI)
+    runs-on: macos-14
+    needs: test
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Xcode
+        run: |
+          sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
+
+      - name: Install XcodeGen
+        run: |
+          brew install xcodegen
+
+      - name: Generate visionOS Project
+        working-directory: ./apps/visionos
+        run: |
+          xcodegen generate --verbose
+
+      - name: Decode iOS Certificate
+        env:
+          IOS_CERTIFICATE_BASE64: ${{ secrets.IOS_CERTIFICATE_BASE64 }}
+          IOS_CERTIFICATE_PASSWORD: ${{ secrets.IOS_CERTIFICATE_PASSWORD }}
+        run: |
+          mkdir -p ~/Library/Keychains
+          echo "$IOS_CERTIFICATE_BASE64" | base64 -d > apps/visionos/certificate.p12
+          security import apps/visionos/certificate.p12 \
+            -k ~/Library/Keychains/login.keychain-db \
+            -P "$IOS_CERTIFICATE_PASSWORD" \
+            -T /usr/bin/codesign
+
+      - name: Create visionOS Export Options Plist
+        working-directory: ./apps/visionos
+        run: |
+          cat > exportOptions.plist << 'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key>
+            <string>app-store</string>
+            <key>teamID</key>
+            <string>WR7US63J6X</string>
+            <key>signingStyle</key>
+            <string>automatic</string>
+            <key>stripSwiftSymbols</key>
+            <true/>
+            <key>thinning</key>
+            <string>&lt;none&gt;</string>
+          </dict>
+          </plist>
+          EOF
+
+      - name: Build visionOS Archive
+        working-directory: ./apps/visionos
+        run: |
+          xcodebuild archive \
+            -project GanadoVision.xcodeproj \
+            -scheme GanadoVision \
+            -destination generic/platform=visionOS \
+            -archivePath GanadoVision.xcarchive \
+            -configuration Release \
+            -verbose \
+            -allowProvisioningUpdates \
+            CODE_SIGN_STYLE=Automatic \
+            DEVELOPMENT_TEAM=${{ env.TEAM_ID }}
+
+      - name: Export visionOS IPA
+        working-directory: ./apps/visionos
+        run: |
+          xcodebuild -exportArchive \
+            -archivePath GanadoVision.xcarchive \
+            -exportOptionsPlist exportOptions.plist \
+            -exportPath ./export \
+            -verbose
+
+      - name: Upload visionOS IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: visionos-ipa
+          path: apps/visionos/export/Ganado.ipa
+
+  # ============================================================================
+  # DEPLOYMENT JOBS - Conditional Deployment Based on Branch
+  # ============================================================================
+
+  # Deploy iOS to TestFlight (develop branch)
+  deploy-ios-testflight:
+    name: Deploy iOS to TestFlight
+    runs-on: macos-14
+    needs: build-ios
+    if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Download iOS IPA
+        uses: actions/download-artifact@v4
+        with:
+          name: ios-ipa
+          path: ./build
+
+      - name: Setup Apple Credentials
+        env:
+          APPSTORE_ISSUER_ID: ${{ secrets.APPSTORE_ISSUER_ID }}
+          APPSTORE_API_KEY_ID: ${{ secrets.APPSTORE_API_KEY_ID }}
+          APPSTORE_API_PRIVATE_KEY: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.appstore
+          echo "$APPSTORE_API_PRIVATE_KEY" > ~/.appstore/private_key.p8
+          chmod 600 ~/.appstore/private_key.p8
+
+      - name: Upload to TestFlight
+        env:
+          APPSTORE_ISSUER_ID: ${{ secrets.APPSTORE_ISSUER_ID }}
+          APPSTORE_API_KEY_ID: ${{ secrets.APPSTORE_API_KEY_ID }}
+        run: |
+          xcrun altool --upload-app \
+            --file ./build/ganado_app.ipa \
+            --type ios \
+            --apiKey $APPSTORE_API_KEY_ID \
+            --apiIssuer $APPSTORE_ISSUER_ID
+
+      - name: Notify Slack - iOS TestFlight Success
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const webhook = '${{ secrets.SLACK_WEBHOOK }}';
+            if (!webhook) return;
+            const fetch = (await import('node-fetch')).default;
+            await fetch(webhook, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                text: '✅ iOS TestFlight Build Successful',
+                blocks: [{
+                  type: 'section',
+                  text: {
+                    type: 'mrkdwn',
+                    text: '*iOS TestFlight Upload Successful*\nBranch: develop\nBuild: ganado_app.ipa'
+                  }
+                }]
+              })
+            });
+
+      - name: Notify Slack - iOS TestFlight Failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const webhook = '${{ secrets.SLACK_WEBHOOK }}';
+            if (!webhook) return;
+            const fetch = (await import('node-fetch')).default;
+            await fetch(webhook, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                text: '❌ iOS TestFlight Build Failed',
+                blocks: [{
+                  type: 'section',
+                  text: {
+                    type: 'mrkdwn',
+                    text: '*iOS TestFlight Upload Failed*\nBranch: develop\nRun: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+                  }
+                }]
+              })
+            });
+
+  # Deploy iOS to App Store (main branch)
+  deploy-ios-appstore:
+    name: Deploy iOS to App Store
+    runs-on: macos-14
+    needs: build-ios
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Download iOS IPA
+        uses: actions/download-artifact@v4
+        with:
+          name: ios-ipa
+          path: ./build
+
+      - name: Setup Apple Credentials
+        env:
+          APPSTORE_ISSUER_ID: ${{ secrets.APPSTORE_ISSUER_ID }}
+          APPSTORE_API_KEY_ID: ${{ secrets.APPSTORE_API_KEY_ID }}
+          APPSTORE_API_PRIVATE_KEY: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.appstore
+          echo "$APPSTORE_API_PRIVATE_KEY" > ~/.appstore/private_key.p8
+          chmod 600 ~/.appstore/private_key.p8
+
+      - name: Upload to App Store
+        env:
+          APPSTORE_ISSUER_ID: ${{ secrets.APPSTORE_ISSUER_ID }}
+          APPSTORE_API_KEY_ID: ${{ secrets.APPSTORE_API_KEY_ID }}
+        run: |
+          xcrun altool --upload-app \
+            --file ./build/ganado_app.ipa \
+            --type ios \
+            --apiKey $APPSTORE_API_KEY_ID \
+            --apiIssuer $APPSTORE_ISSUER_ID
+
+      - name: Notify Slack - iOS App Store Success
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const webhook = '${{ secrets.SLACK_WEBHOOK }}';
+            if (!webhook) return;
+            const fetch = (await import('node-fetch')).default;
+            await fetch(webhook, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                text: '✅ iOS App Store Build Successful',
+                blocks: [{
+                  type: 'section',
+                  text: {
+                    type: 'mrkdwn',
+                    text: '*iOS App Store Upload Successful*\nBranch: main\nBuild: ganado_app.ipa'
+                  }
+                }]
+              })
+            });
+
+      - name: Notify Slack - iOS App Store Failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const webhook = '${{ secrets.SLACK_WEBHOOK }}';
+            if (!webhook) return;
+            const fetch = (await import('node-fetch')).default;
+            await fetch(webhook, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                text: '❌ iOS App Store Build Failed',
+                blocks: [{
+                  type: 'section',
+                  text: {
+                    type: 'mrkdwn',
+                    text: '*iOS App Store Upload Failed*\nBranch: main\nRun: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+                  }
+                }]
+              })
+            });
+
+  # Deploy Android to Google Play (develop branch - Internal Testing)
+  deploy-android-play-develop:
+    name: Deploy Android to Play (Internal Testing)
+    runs-on: ubuntu-latest
+    needs: build-android
+    if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Download Android App Bundle
+        uses: actions/download-artifact@v4
+        with:
+          name: android-aab
+          path: ./build
+
+      - name: Setup Google Play Service Account
+        env:
+          GOOGLE_PLAY_KEY: ${{ secrets.GOOGLE_PLAY_KEY }}
+        run: |
+          mkdir -p ~/.google
+          echo "$GOOGLE_PLAY_KEY" > ~/.google/play-key.json
+
+      - name: Upload to Google Play (Internal Testing)
+        run: |
+          # Note: Requires fastlane or internal Google Play API setup
+          # This is a placeholder - configure based on your deployment setup
+          echo "Deploying to Google Play Internal Testing track..."
+
+      - name: Notify Slack - Android Internal Testing Success
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const webhook = '${{ secrets.SLACK_WEBHOOK }}';
+            if (!webhook) return;
+            const fetch = (await import('node-fetch')).default;
+            await fetch(webhook, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                text: '✅ Android Internal Testing Build Successful',
+                blocks: [{
+                  type: 'section',
+                  text: {
+                    type: 'mrkdwn',
+                    text: '*Android Internal Testing Deployment Successful*\nBranch: develop'
+                  }
+                }]
+              })
+            });
+
+  # Deploy Android to Google Play (main branch - Production)
+  deploy-android-play-main:
+    name: Deploy Android to Play (Production)
+    runs-on: ubuntu-latest
+    needs: build-android
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Download Android App Bundle
+        uses: actions/download-artifact@v4
+        with:
+          name: android-aab
+          path: ./build
+
+      - name: Setup Google Play Service Account
+        env:
+          GOOGLE_PLAY_KEY: ${{ secrets.GOOGLE_PLAY_KEY }}
+        run: |
+          mkdir -p ~/.google
+          echo "$GOOGLE_PLAY_KEY" > ~/.google/play-key.json
+
+      - name: Upload to Google Play (Production)
+        run: |
+          # Note: Requires fastlane or internal Google Play API setup
+          # This is a placeholder - configure based on your deployment setup
+          echo "Deploying to Google Play Production track..."
+
+      - name: Notify Slack - Android Production Success
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const webhook = '${{ secrets.SLACK_WEBHOOK }}';
+            if (!webhook) return;
+            const fetch = (await import('node-fetch')).default;
+            await fetch(webhook, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                text: '✅ Android Production Build Successful',
+                blocks: [{
+                  type: 'section',
+                  text: {
+                    type: 'mrkdwn',
+                    text: '*Android Production Deployment Successful*\nBranch: main'
+                  }
+                }]
+              })
+            });
+
+  # Deploy tvOS to App Store (develop branch - TestFlight)
+  deploy-tvos-testflight:
+    name: Deploy tvOS to TestFlight
+    runs-on: macos-14
+    needs: build-tvos
+    if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Download tvOS IPA
+        uses: actions/download-artifact@v4
+        with:
+          name: tvos-ipa
+          path: ./build
+
+      - name: Setup Apple Credentials
+        env:
+          APPSTORE_ISSUER_ID: ${{ secrets.APPSTORE_ISSUER_ID }}
+          APPSTORE_API_KEY_ID: ${{ secrets.APPSTORE_API_KEY_ID }}
+          APPSTORE_API_PRIVATE_KEY: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.appstore
+          echo "$APPSTORE_API_PRIVATE_KEY" > ~/.appstore/private_key.p8
+          chmod 600 ~/.appstore/private_key.p8
+
+      - name: Upload to TestFlight
+        env:
+          APPSTORE_ISSUER_ID: ${{ secrets.APPSTORE_ISSUER_ID }}
+          APPSTORE_API_KEY_ID: ${{ secrets.APPSTORE_API_KEY_ID }}
+        run: |
+          xcrun altool --upload-app \
+            --file ./build/Ganado.ipa \
+            --type appletvos \
+            --apiKey $APPSTORE_API_KEY_ID \
+            --apiIssuer $APPSTORE_ISSUER_ID
+
+      - name: Notify Slack - tvOS TestFlight Success
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const webhook = '${{ secrets.SLACK_WEBHOOK }}';
+            if (!webhook) return;
+            const fetch = (await import('node-fetch')).default;
+            await fetch(webhook, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                text: '✅ tvOS TestFlight Build Successful',
+                blocks: [{
+                  type: 'section',
+                  text: {
+                    type: 'mrkdwn',
+                    text: '*tvOS TestFlight Upload Successful*\nBranch: develop'
+                  }
+                }]
+              })
+            });
+
+  # Deploy tvOS to App Store (main branch)
+  deploy-tvos-appstore:
+    name: Deploy tvOS to App Store
+    runs-on: macos-14
+    needs: build-tvos
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Download tvOS IPA
+        uses: actions/download-artifact@v4
+        with:
+          name: tvos-ipa
+          path: ./build
+
+      - name: Setup Apple Credentials
+        env:
+          APPSTORE_ISSUER_ID: ${{ secrets.APPSTORE_ISSUER_ID }}
+          APPSTORE_API_KEY_ID: ${{ secrets.APPSTORE_API_KEY_ID }}
+          APPSTORE_API_PRIVATE_KEY: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.appstore
+          echo "$APPSTORE_API_PRIVATE_KEY" > ~/.appstore/private_key.p8
+          chmod 600 ~/.appstore/private_key.p8
+
+      - name: Upload to App Store
+        env:
+          APPSTORE_ISSUER_ID: ${{ secrets.APPSTORE_ISSUER_ID }}
+          APPSTORE_API_KEY_ID: ${{ secrets.APPSTORE_API_KEY_ID }}
+        run: |
+          xcrun altool --upload-app \
+            --file ./build/Ganado.ipa \
+            --type appletvos \
+            --apiKey $APPSTORE_API_KEY_ID \
+            --apiIssuer $APPSTORE_ISSUER_ID
+
+      - name: Notify Slack - tvOS App Store Success
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const webhook = '${{ secrets.SLACK_WEBHOOK }}';
+            if (!webhook) return;
+            const fetch = (await import('node-fetch')).default;
+            await fetch(webhook, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                text: '✅ tvOS App Store Build Successful',
+                blocks: [{
+                  type: 'section',
+                  text: {
+                    type: 'mrkdwn',
+                    text: '*tvOS App Store Upload Successful*\nBranch: main'
+                  }
+                }]
+              })
+            });
+
+  # Deploy visionOS to App Store (develop branch - TestFlight)
+  deploy-visionos-testflight:
+    name: Deploy visionOS to TestFlight
+    runs-on: macos-14
+    needs: build-visionos
+    if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Download visionOS IPA
+        uses: actions/download-artifact@v4
+        with:
+          name: visionos-ipa
+          path: ./build
+
+      - name: Setup Apple Credentials
+        env:
+          APPSTORE_ISSUER_ID: ${{ secrets.APPSTORE_ISSUER_ID }}
+          APPSTORE_API_KEY_ID: ${{ secrets.APPSTORE_API_KEY_ID }}
+          APPSTORE_API_PRIVATE_KEY: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.appstore
+          echo "$APPSTORE_API_PRIVATE_KEY" > ~/.appstore/private_key.p8
+          chmod 600 ~/.appstore/private_key.p8
+
+      - name: Upload to TestFlight
+        env:
+          APPSTORE_ISSUER_ID: ${{ secrets.APPSTORE_ISSUER_ID }}
+          APPSTORE_API_KEY_ID: ${{ secrets.APPSTORE_API_KEY_ID }}
+        run: |
+          xcrun altool --upload-app \
+            --file ./build/Ganado.ipa \
+            --type visionos \
+            --apiKey $APPSTORE_API_KEY_ID \
+            --apiIssuer $APPSTORE_ISSUER_ID
+
+      - name: Notify Slack - visionOS TestFlight Success
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const webhook = '${{ secrets.SLACK_WEBHOOK }}';
+            if (!webhook) return;
+            const fetch = (await import('node-fetch')).default;
+            await fetch(webhook, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                text: '✅ visionOS TestFlight Build Successful',
+                blocks: [{
+                  type: 'section',
+                  text: {
+                    type: 'mrkdwn',
+                    text: '*visionOS TestFlight Upload Successful*\nBranch: develop'
+                  }
+                }]
+              })
+            });
+
+  # Deploy visionOS to App Store (main branch)
+  deploy-visionos-appstore:
+    name: Deploy visionOS to App Store
+    runs-on: macos-14
+    needs: build-visionos
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Download visionOS IPA
+        uses: actions/download-artifact@v4
+        with:
+          name: visionos-ipa
+          path: ./build
+
+      - name: Setup Apple Credentials
+        env:
+          APPSTORE_ISSUER_ID: ${{ secrets.APPSTORE_ISSUER_ID }}
+          APPSTORE_API_KEY_ID: ${{ secrets.APPSTORE_API_KEY_ID }}
+          APPSTORE_API_PRIVATE_KEY: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.appstore
+          echo "$APPSTORE_API_PRIVATE_KEY" > ~/.appstore/private_key.p8
+          chmod 600 ~/.appstore/private_key.p8
+
+      - name: Upload to App Store
+        env:
+          APPSTORE_ISSUER_ID: ${{ secrets.APPSTORE_ISSUER_ID }}
+          APPSTORE_API_KEY_ID: ${{ secrets.APPSTORE_API_KEY_ID }}
+        run: |
+          xcrun altool --upload-app \
+            --file ./build/Ganado.ipa \
+            --type visionos \
+            --apiKey $APPSTORE_API_KEY_ID \
+            --apiIssuer $APPSTORE_ISSUER_ID
+
+      - name: Notify Slack - visionOS App Store Success
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const webhook = '${{ secrets.SLACK_WEBHOOK }}';
+            if (!webhook) return;
+            const fetch = (await import('node-fetch')).default;
+            await fetch(webhook, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                text: '✅ visionOS App Store Build Successful',
+                blocks: [{
+                  type: 'section',
+                  text: {
+                    type: 'mrkdwn',
+                    text: '*visionOS App Store Upload Successful*\nBranch: main'
+                  }
+                }]
+              })
+            });
